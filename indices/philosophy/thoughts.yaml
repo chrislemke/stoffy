@@ -1,0 +1,551 @@
+# =============================================================================
+# THOUGHTS INDEX - Philosophical Explorations Registry
+# =============================================================================
+# Load this index when tracking thought explorations and reflections.
+# =============================================================================
+
+meta:
+  version: "2.8"
+  last_updated: 2025-12-30
+  domain: thoughts
+  purpose: "Track philosophical thought explorations"
+  count: 27
+
+# =============================================================================
+# THOUGHTS REGISTRY
+# =============================================================================
+
+thoughts:
+  self_reference_computation_truth:
+    title: "Self-Reference, State, and Computational Truth"
+    theme: knowledge
+    status: seed
+    path: thoughts/knowledge/2025-12-26_self_reference_computation_truth/
+    related_thinkers:
+      - ludwig_wittgenstein
+      - nagarjuna
+      - immanuel_kant
+      - georg_hegel
+      - thomas_nagel
+      - aristotle
+      - rene_descartes
+      - daniel_dennett
+    started: 2025-12-26
+    key_insight: "Self-reference differs fundamentally between mathematics (stateless) and computation (stateful); computational truth faces limit in subjective experience."
+    next_step: "Explore Kripke's grounded/ungrounded distinction; create Saul Kripke thinker profile"
+
+  vier_kraenkungen_menschheit:
+    title: "W.H.Y - Die vier Kränkungen der Menschheit"
+    theme: free_will
+    status: seed
+    path: thoughts/free_will/2025-12-26_vier_kraenkungen_menschheit/
+    related_thinkers:
+      - arthur_schopenhauer
+      - baruch_spinoza
+      - friedrich_nietzsche
+      - daniel_dennett
+      - jean_paul_sartre
+    started: 2025-12-26
+    key_insight: "Spekulative vierte Kränkung (Voluntas, 2072): Der Mensch als biologische Maschine ohne freien Willen. Das Ich als Funktion, nicht Zustand."
+    next_step: "Freud Thinker-Profil erstellen; Beziehung zu computationalem Funktionalismus vertiefen"
+
+  vernichtung_als_methode:
+    title: "Vernichtung als Methode - Nichten jenseits binärer Opposition"
+    theme: existence
+    status: seed
+    path: thoughts/existence/2025-12-26_vernichtung_als_methode/
+    related_thinkers:
+      - martin_heidegger
+      - georg_hegel
+      - nagarjuna
+      - ludwig_wittgenstein
+      - laozi
+    started: 2025-12-26
+    key_insight: "Nichten entfernt sich vom Begriff ohne sich dem Gegenteil zu nähern. Das Nichts ist Freiheit - Freiheit von dem was es vernichtet."
+    next_step: "Formale Unterscheidung dualistischer vs. nicht-dualistischer Begriffe entwickeln"
+
+  existentielle_potenzialitaet:
+    title: "Existentielle Potenzialitat"
+    theme: existence
+    status: exploring
+    path: thoughts/existence/2025-12-25_existentielle_potenzialitaet/
+    related_thinkers:
+      - aristotle
+      - nagarjuna
+      - martin_heidegger
+      - georg_hegel
+      - siddhartha_gautama
+      - baruch_spinoza
+      - jean_paul_sartre
+      - laozi
+      - david_hume
+      - william_james
+      - martha_nussbaum
+      - soren_kierkegaard
+      - simone_de_beauvoir
+      - plato
+      - immanuel_kant
+      - friedrich_nietzsche
+      - arthur_schopenhauer
+      - karl_friston
+      - david_krakauer
+    started: 2025-12-25
+    key_insight: "Existenz ist nicht das Primare - Potenzialitat ist es. Dinge existieren nicht durch essentielle Eigenschaften, sondern durch ihre Fahigkeit, Relationen einzugehen."
+    next_step: "Formale Logik fur Potenzialraume entwickeln (Modal- oder intuitionistische Logik)"
+
+  improvised_self:
+    title: "The Improvised Self: Synthesizing Flat Mind and Active Inference"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_improvised_self.md
+    related_thinkers:
+      - nick_chater
+      - karl_friston
+      - daniel_dennett
+      - david_hume
+    started: 2025-12-26
+    key_insight: "The brain has computational depth (hierarchical models) without us having access to that depth (no introspective transparency). We experience a flat surface because we only experience outputs, not model structure."
+    next_step: "Develop the distinction between subpersonal mechanism and personal-level experience"
+
+  emergence_nichten:
+    title: "Emergence and Nichten: Transcendence Through Complexity"
+    theme: existence
+    status: seed
+    path: thoughts/existence/2025-12-26_emergence_nichten.md
+    related_thinkers:
+      - david_krakauer
+      - martin_heidegger
+      - georg_hegel
+      - nagarjuna
+    started: 2025-12-26
+    key_insight: "Emergence is the scientific formalization of Nichten. Both describe transcendence of binary categories through the opening of new ontological space."
+    next_step: "Formalize the connection between edge of chaos and Nichten through phase transition theory"
+
+  kompatibilismus_2_0:
+    title: "Kompatibilismus 2.0 - Naturalisierte Willensfreiheit"
+    theme: free_will
+    status: seed
+    path: thoughts/free_will/2025-12-26_kompatibilismus_2_0/
+    related_thinkers:
+      - daniel_dennett
+      - david_hume
+      - baruch_spinoza
+      - karl_friston
+      - immanuel_kant
+      - nick_chater
+      - arthur_schopenhauer
+      - jean_paul_sartre
+      - aristotle
+    started: 2025-12-26
+    key_insight: "Freedom is reasons-responsiveness, hierarchical self-control, and trainable plasticity - not escape from causation but sophisticated navigation of it."
+    next_step: "Connect to Vier Kraenkungen as dialectical counterpoint"
+
+  kuenstlerische_mikroentscheidung:
+    title: "Theorie der künstlerischen Mikro-Entscheidung"
+    theme: consciousness
+    status: exploring
+    path: thoughts/consciousness/2025-12-26_kuenstlerische_mikroentscheidung/
+    related_thinkers:
+      - immanuel_kant
+      - arthur_schopenhauer
+      - martin_heidegger
+      - nick_chater
+      - karl_friston
+      - friedrich_nietzsche
+      - ludwig_wittgenstein
+      - jean_paul_sartre
+      - daniel_dennett
+    started: 2025-12-26
+    key_insight: "Kunst beginnt dort, wo die Begründungskette abbricht. Künstlerische Entscheidungen sind solche, die nicht als Mittel für externe Zwecke erklärt werden können - autotelische Handlungen im entstehenden Sinnfeld des Werks."
+    next_step: "Verbindung zu Zen-Malerei (Ensō) und die Frage der Trainierbarkeit des Kunst-Mikromments erkunden"
+
+  schwellenmoment_kreativitaet:
+    title: "Der Schwellenmoment: Warum wir nicht einfach anfangen"
+    theme: consciousness
+    status: exploring
+    path: thoughts/consciousness/2025-12-26_schwellenmoment_kreativitaet/
+    related_thinkers:
+      - jean_paul_sartre
+      - martin_heidegger
+      - arthur_schopenhauer
+      - siddhartha_gautama
+      - immanuel_kant
+    started: 2025-12-26
+    key_insight: "Die Blockade vor dem ersten kreativen Akt ist keine Faulheit, sondern intelligente Schutzreflexe: Irreversibilitäts-Aversion, Besitztumseffekt, Identitätsrisiko, Zweck-Motorik. Der erste Strich ist ein existenzielles Statement."
+    next_step: "Zen-Malerei als Gegenmittel untersuchen; Operative Gegenstrategien testen"
+
+  philosophie_quantenphysik:
+    title: "Philosophische Einflüsse auf die Quantenphysik"
+    theme: knowledge
+    status: exploring
+    path: thoughts/knowledge/2025-12-26_philosophie_quantenphysik/
+    related_thinkers:
+      - immanuel_kant
+      - aristotle
+      - arthur_schopenhauer
+      - david_hume
+      - baruch_spinoza
+    started: 2025-12-26
+    key_insight: "Die Quantenrevolution war philosophisch durchtränkt: Machs Positivismus (Heisenberg), Kants Erkenntnistheorie (Bohr), Aristoteles' dynamis (potentia), Schopenhauer/Vedānta (Schrödinger), Realismus (Einstein)."
+    next_step: "Heisenbergs potentia-Deutung mit existentieller Potenzialität vergleichen; aktuelle Interpretationen (Many-Worlds, QBism) philosophisch kartieren"
+
+  wu_wei_free_energy:
+    title: "Wu Wei und Freie Energie: Effortless Action as Variational Inference"
+    theme: existence
+    status: crystallized
+    path: thoughts/existence/2025-12-26_wu_wei_free_energy.md
+    related_thinkers:
+      - laozi
+      - karl_friston
+      - spinoza
+      - heidegger
+      - andy_clark
+      - evan_thompson
+    started: 2025-12-26
+    key_insight: "Wu Wei is the phenomenology of free energy minimization. When an organism's generative model achieves alignment with environmental regularities, action becomes effortless—the Tao as internalized statistical structure of reality."
+    next_step: "Explore normative dimensions and connections to contemplative practice (meditation as precision training)"
+
+  sinnfeld_und_potenzialitaet:
+    title: "Sinnfeld und Potenzialität: Ontologische Parallelen"
+    theme: existence
+    status: seed
+    path: thoughts/existence/2025-12-26_sinnfeld_und_potenzialitaet/
+    related_thinkers:
+      - markus_gabriel
+      - nagarjuna
+      - martin_heidegger
+      - aristotle
+    started: 2025-12-26
+    key_insight: "Sinnfelder und Potenzialitätskontexte beschreiben dasselbe Phänomen aus verschiedenen Perspektiven – Gabriel epistemisch (wie erscheint etwas?), ich ontologisch (was ermöglicht Erscheinen?)."
+    next_step: "Dialog mit Gabriels akademischem Werk 'Sinn und Existenz'; Verbindung zu östlicher Philosophie (Nagarjuna)"
+
+  strange_loops_computational_self:
+    title: "Strange Loops and the Computational Self"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_strange_loops_computational_self/
+    related_thinkers:
+      - douglas_hofstadter
+      - thomas_metzinger
+      - joscha_bach
+      - daniel_dennett
+      - nick_chater
+      - andy_clark
+    started: 2025-12-26
+    key_insight: "The self is a strange loop (Hofstadter) implemented as a computational simulation (Bach), experienced as a transparent self-model (Metzinger). Structure + phenomenology + mechanism = the computational self."
+    next_step: "Explore Buddhist parallels (Anatta); investigate AI consciousness implications"
+
+  interface_reality:
+    title: "Interface Reality: Perception Without Truth"
+    theme: knowledge
+    status: seed
+    path: thoughts/knowledge/2025-12-26_interface_reality/
+    related_thinkers:
+      - donald_hoffman
+      - markus_gabriel
+      - andy_clark
+      - karl_friston
+      - immanuel_kant
+    started: 2025-12-26
+    key_insight: "Reality as interface: evolved (Hoffman), predicted (Clark), plural (Gabriel), relational (Potentiality). Science operates at interface level—discovering stable patterns, not 'ultimate' reality."
+    next_step: "Investigate Active Inference-Interface Theory connection; address intersubjectivity question"
+
+  kantian_roots_predictive_processing:
+    title: "The Kantian Roots of Predictive Processing"
+    theme: knowledge
+    status: seed
+    path: thoughts/knowledge/2025-12-26_kantian_roots_predictive_processing/
+    related_thinkers:
+      - immanuel_kant
+      - karl_friston
+      - jakob_hohwy
+      - andy_clark
+    started: 2025-12-26
+    key_insight: "Predictive processing is computational Kantianism. The categories and forms of intuition ARE the brain's priors. The phenomenal world is generated by prediction."
+    next_step: "Explore whether PP vindicates or undermines transcendental idealism"
+
+  enactivism_vs_fep:
+    title: "Enactivism vs. Free Energy: A Productive Tension"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_enactivism_vs_fep/
+    related_thinkers:
+      - karl_friston
+      - evan_thompson
+      - francisco_varela
+      - maxwell_ramstead
+      - andy_clark
+    started: 2025-12-26
+    key_insight: "Ramstead's synthesis: active inference IS enactive inference. The tension around representation dissolves when we distinguish strong (inner pictures) from weak (action-guiding patterns) representation."
+    next_step: "Explore implications for AI consciousness and biological necessity"
+
+  interoceptive_embodied_self:
+    title: "Interoceptive Inference and the Embodied Self"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_interoceptive_embodied_self/
+    related_thinkers:
+      - anil_seth
+      - karl_friston
+      - thomas_metzinger
+      - mark_solms
+      - william_james
+    started: 2025-12-26
+    key_insight: "The self is constructed from the inside out. Interoceptive predictions about bodily states are the foundation of selfhood. We are beast machines—consciousness grounded in biological self-regulation."
+    next_step: "Connect to contemplative practice (mindfulness of body) and clinical applications"
+
+  fep_hard_problem:
+    title: "The Free Energy Principle and the Hard Problem"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_fep_hard_problem/
+    related_thinkers:
+      - karl_friston
+      - mark_solms
+      - david_chalmers
+      - anil_seth
+      - thomas_metzinger
+    started: 2025-12-26
+    key_insight: "Solms locates consciousness in brainstem affect, not cortical cognition. Affect IS the subjective aspect of free energy dynamics. The FEP doesn't solve the hard problem but provides the best framework for progress."
+    next_step: "Explore dual-aspect monism and artificial consciousness implications"
+
+  computational_phenomenology:
+    title: "Computational Phenomenology: Bridging Math and Experience"
+    theme: consciousness
+    status: seed
+    path: thoughts/consciousness/2025-12-26_computational_phenomenology/
+    related_thinkers:
+      - maxwell_ramstead
+      - karl_friston
+      - edmund_husserl
+      - evan_thompson
+      - francisco_varela
+    started: 2025-12-26
+    key_insight: "Active inference provides a 'translation function' between phenomenological descriptions (Husserl's time-consciousness) and formal models (Bayesian inference). Husserl's retention/primal impression/protention maps onto posterior/prediction error/prior."
+    next_step: "Explore modeling of contemplative states and cross-cultural phenomenologies"
+
+  inferential_architecture_complexity:
+    title: "The Inferential Architecture of Complexity: How Free Energy Illuminates Problem-Solving Matter"
+    theme: existence
+    status: crystallized
+    path: thoughts/existence/2025-12-27_inferential_architecture_complexity.md
+    related_thinkers:
+      - karl_friston
+      - david_krakauer
+      - stuart_kauffman
+      - ilya_prigogine
+      - andy_clark
+      - per_bak
+      - jakob_hohwy
+      - anil_seth
+      - nagarjuna
+      - georg_hegel
+      - baruch_spinoza
+      - martin_heidegger
+      - laozi
+    started: 2025-12-27
+    key_insight: "The Free Energy Principle provides the inferential architecture underlying Krakauer's four pillars of complexity science. Evolution is phylogenetic inference, entropy provides thermodynamic constraint, dynamics describes inference trajectories, computation IS inference. Problem-solving matter IS active inference."
+    next_step: "Develop formal mathematical mappings between FEP and complexity measures; explore social applications of nested Markov blankets"
+
+  complexity_constructivism:
+    title: "Complexity Theory and Constructivism: An Epistemological Synthesis"
+    theme: knowledge
+    status: crystallized
+    path: thoughts/knowledge/2025-12-27_complexity_constructivism.md
+    related_thinkers:
+      - karl_friston
+      - david_krakauer
+      - jean_piaget
+      - ernst_von_glasersfeld
+      - lev_vygotsky
+      - humberto_maturana
+      - francisco_varela
+      - andy_clark
+      - evan_thompson
+      - immanuel_kant
+      - nagarjuna
+      - donald_hoffman
+      - markus_gabriel
+    started: 2025-12-27
+    key_insight: "Constructivism provides the epistemology for complexity theory's ontology. Knowledge IS variational inference by self-organizing systems. The FEP formalizes what constructivism describes phenomenologically: to know is to construct, and to exist is to infer. Eight core correspondences identified: self-organization=autopoiesis, emergence=construction, Markov blankets=operational closure, free energy=viability, prediction error=disequilibrium, generative models=schemas, edge of chaos=ZPD, nested blankets=social construction."
+    next_step: "Develop formal models of Piagetian development using FEP; explore normative implications of Inferential Constructivism"
+
+  inferentielle_autonomie:
+    title: "Inferentielle Autonomie: Willensfreiheit durch die Linse des Free Energy Principle"
+    theme: free_will
+    status: crystallized
+    path: thoughts/free_will/2025-12-27_friston_willensfreiheit/
+    related_thinkers:
+      - karl_friston
+      - daniel_dennett
+      - baruch_spinoza
+      - immanuel_kant
+      - nick_chater
+      - david_hume
+      - arthur_schopenhauer
+      - thomas_metzinger
+      - andy_clark
+      - maxwell_ramstead
+    started: 2025-12-27
+    key_insight: "Willensfreiheit ist die emergente Eigenschaft inferentieller Systeme, die sich selbst modellieren. Freiheit entsteht durch rekursive Selbstmodellierung + epistemischen Wert (Neugier) + temporale Tiefe (kontrafaktisches Denken) + Meta-Lernen (Selbstformung). Freiheit ist nicht Unverursachtheit, sondern eine besondere Art der Kausalität."
+    next_step: "Verbindung zur Improvised-Self-Synthese; empirische Prüfbarkeit; moralische Verantwortung explizit entwickeln"
+
+  inferentielle_autonomie_2:
+    title: "Inferentielle Autonomie 2.0: Eine Dreifach-Synthese"
+    theme: free_will
+    status: crystallized
+    path: thoughts/free_will/2025-12-27_inferentielle_autonomie_2/
+    related_thinkers:
+      - karl_friston
+      - nick_chater
+      - robert_sapolsky
+      - daniel_dennett
+      - baruch_spinoza
+      - immanuel_kant
+      - david_hume
+      - arthur_schopenhauer
+      - thomas_metzinger
+    started: 2025-12-27
+    key_insight: "Dreifach-Synthese von Friston (FEP), Chater (Flat Mind) und Sapolsky (Hard Incompatibilism). Drei neue Konzepte: Flache Tiefe (phänomenologische Flachheit + komputationale Tiefe), Determinierte Selbstformung (Freiheit als besondere Struktur der Kausalität), Die wirksame Illusion (kausale Rolle des Freiheitsglaubens)."
+    next_step: "Implementierbarkeit prüfen; formale Modelle entwickeln; ethische Implikationen vertiefen"
+
+  krakauer_debate_prep:
+    title: "Die komplexe Welt verstehen: Vollständige akademische Zusammenfassung zu Krakauers Kapitel I-VI"
+    theme: knowledge
+    status: exploring
+    path: thoughts/knowledge/2025-12-27_krakauer_debate_prep/
+    related_thinkers:
+      - david_krakauer
+      - karl_friston
+      - stuart_kauffman
+      - ilya_prigogine
+      - james_maxwell
+      - charles_babbage
+      - warren_weaver
+      - norbert_wiener
+      - claude_shannon
+      - alan_turing
+      - john_von_neumann
+      - philip_anderson
+    started: 2025-12-27
+    last_updated: 2025-12-28
+    key_insight: "Vollständige Debattenvorbereitung zu Krakauers 'The Complex World' Kap. I-VI: Krise der Einfachheit, Präfundationen (1840-1870), Definitional Pursuits, Emergenz & Effektive Theorien (K1/K2-Unterscheidung, Emergenz-Gitter), Information/Computation/Cognition (DMD, 'It from Bit'), acht Schlussthesen. Tiefe Verbindungen zu FEP, Konstruktivismus und Nichten-Konzept."
+    next_step: "Nach Debatte: Erkenntnisse integrieren oder archivieren"
+
+  argumente_freier_wille:
+    title: "Argumente für und gegen den freien Willen - Eine systematische Bestandsaufnahme"
+    theme: free_will
+    status: seed
+    path: thoughts/free_will/2025-12-28_argumente_freier_wille/
+    related_thinkers:
+      - immanuel_kant
+      - arthur_schopenhauer
+      - robert_sapolsky
+      - daniel_dennett
+      - sam_harris
+      - baruch_spinoza
+      - william_james
+      - jean_paul_sartre
+      - daniel_wegner
+      - benjamin_libet
+      - harry_frankfurt
+      - galen_strawson
+    started: 2025-12-28
+    key_insight: "Systematische Sammlung von 12+12 der stärksten Argumente für und gegen den freien Willen. Pro: Phänomenologie (James), Moral (Kant), Agent Causation (Chisholm), Quanten (Penrose), Reasons-Responsiveness (Fischer), Hierarchie (Frankfurt), Emergenz (Ellis), Deliberation (van Inwagen), Narrativ (Ricœur), Kreativität (Bergson), Selbstformung (Kane), Praxis (Korsgaard). Contra: Determinismus (Laplace), Libet, Biologie (Sapolsky), Unbewusstes (Freud), Schopenhauer-Paradox, Basic Argument (Strawson), Illusion (Wegner), Luck (Mele), Manipulation (Pereboom), Neuronal (Churchland), Spinoza, Sozial (Bourdieu)."
+    next_step: "Tiefere Analyse der stärksten Argumente beider Seiten; Verbindung zu Inferentielle Autonomie"
+
+  computational_philosophy:
+    title: "Computational Philosophy: Software Patterns for Thought Management"
+    theme: knowledge
+    status: exploring
+    path: thoughts/computational_philosophy/
+    related_thinkers:
+      - gottlob_frege
+      - rudolf_carnap
+      - alan_turing
+      - kurt_goedel
+      - ludwig_wittgenstein
+      - karl_friston
+    started: 2025-12-30
+    key_insight: "Software development patterns (unit testing, debugging, CI/CD, LLM agent collaboration, dependency management, version control) can be practically adapted to digitally managed philosophy projects. Key insight: tests FLAG rather than FAIL—detected tensions might be productive dialectical resources, not bugs to fix. Deeper level: philosophy has always had computational structure; software tools make this visible."
+    next_step: "Develop practical implementations of proposed scripts; test on repository workflow"
+
+# Add thought entries here. Example:
+#  meaning_through_creation:
+#    path: thoughts/life_meaning/meaning_through_creation/
+#    theme: life_meaning
+#    status: exploring
+#    started: 2025-12-25
+#    key_insight: "Meaning emerges through creative engagement"
+#    related_thinkers: [viktor_frankl, aristotle]
+#    next_step: "Explore relationship to Aristotle's ergon argument"
+#
+#  consciousness_as_fundamental:
+#    path: thoughts/consciousness/consciousness_as_fundamental/
+#    theme: consciousness
+#    status: seed
+#    started: 2025-12-25
+#    key_insight: null
+#    related_thinkers: [david_chalmers]
+#    next_step: "Read Chalmers' 'The Conscious Mind'"
+
+# =============================================================================
+# STATUS VALUES (for reference)
+# =============================================================================
+# seed           - Initial spark, needs development
+# exploring      - Actively thinking through
+# developing     - Building coherent position
+# crystallized   - Clear position formed
+# challenged     - Position under reconsideration
+# integrated     - Woven into broader worldview
+# archived       - No longer active
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed from ideas.yaml for philosophical focus"
+  - date: 2025-12-25
+    change: "Added thought: Existentielle Potenzialitat - comprehensive theory with connections to 17 thinkers"
+  - date: 2025-12-26
+    change: "Added thought: Self-Reference, State, and Computational Truth - connections to 8 thinkers"
+  - date: 2025-12-26
+    change: "Added thought: W.H.Y - Die vier Kränkungen der Menschheit - connections to 5 thinkers"
+  - date: 2025-12-26
+    change: "Added thought: Vernichtung als Methode - connections to 5 thinkers"
+  - date: 2025-12-26
+    change: "Added thought: The Improvised Self - synthesizing flat mind and active inference (consciousness)"
+  - date: 2025-12-26
+    change: "Added thought: Emergence and Nichten - connecting complexity science with Vernichtung (existence)"
+  - date: 2025-12-26
+    change: "Updated existing thoughts with new thinker connections (Chater, Friston, Krakauer)"
+  - date: 2025-12-26
+    change: "Added thought: Kompatibilismus 2.0 - naturalized free will with connections to 9 thinkers (Dennett, Hume, Spinoza, Friston, Kant, Chater, Schopenhauer, Sartre, Aristotle)"
+  - date: 2025-12-26
+    change: "Added thought: Künstlerische Mikro-Entscheidung - art begins where the chain of justifications breaks (Kant, Schopenhauer, Heidegger, Chater, Friston, 9 thinkers total)"
+  - date: 2025-12-26
+    change: "Added thought: Schwellenmoment - creative blockade as intelligent protection reflexes (Sartre, Heidegger, Schopenhauer, 5 thinkers)"
+  - date: 2025-12-26
+    change: "Added thought: Philosophie-Quantenphysik - philosophical influences on quantum physics (Kant, Aristotle, Schopenhauer, Hume, 5 thinkers)"
+  - date: 2025-12-26
+    change: "Added thought: Wu Wei und Freie Energie - crystallized synthesis connecting Laozi's Wu Wei with Friston's Free Energy Principle (Laozi, Friston, Spinoza, Heidegger, 6 thinkers)"
+  - date: 2025-12-26
+    change: "Added 3 synthesis thoughts: Sinnfeld und Potenzialität (Gabriel+Potentiality), Strange Loops and the Computational Self (Hofstadter+Metzinger+Bach), Interface Reality (Hoffman+Clark+Gabriel)"
+  - date: 2025-12-26
+    change: "Added 5 FEP synthesis thoughts: Kantian Roots of PP (Kant+Friston), Enactivism vs FEP (Thompson+Ramstead), Interoceptive Embodied Self (Seth+Solms), FEP and Hard Problem (Solms+Chalmers), Computational Phenomenology (Ramstead+Husserl)"
+  - date: 2025-12-27
+    change: "Added thought: The Inferential Architecture of Complexity - crystallized synthesis unifying Friston's FEP with Krakauer's four pillars of complexity science. Connections to 13 thinkers. Seven core arguments: FEP unifies pillars, Markov blankets formalize emergence, edge of chaos as optimal inference, problem-solving matter IS active inference, self-organization as FE minimization, nested blankets for multi-scale, purpose through expected free energy."
+  - date: 2025-12-27
+    change: "Added thought: Complexity Theory and Constructivism: An Epistemological Synthesis - crystallized synthesis unifying complexity/FEP with constructivist epistemology (Piaget, von Glasersfeld, Vygotsky, Maturana/Varela). Connections to 13 thinkers. Eight core correspondences. Novel synthesis position: Inferential Constructivism. Addresses realism/anti-realism debate, representation question, social construction through nested Markov blankets."
+  - date: 2025-12-27
+    change: "Added thought: Inferentielle Autonomie - crystallized German synthesis on free will through Friston's FEP. Original thesis: Freiheit ist emergente Eigenschaft selbstmodellierender inferentieller Systeme. Four core arguments: rekursive Selbstmodellierung, epistemischer Wert (Neugier), temporale Tiefe, Meta-Lernen. Connections to 10 thinkers (Friston, Dennett, Spinoza, Kant, Chater, Hume, Schopenhauer, Metzinger, Clark, Ramstead). ~800 lines."
+  - date: 2025-12-27
+    change: "Added thought: Inferentielle Autonomie 2.0 - Dreifach-Synthese integrating Sapolsky (hard incompatibilism) and Chater (flat mind) with FEP. Three novel concepts: Flache Tiefe, Determinierte Selbstformung, Die wirksame Illusion. Created Robert Sapolsky thinker profile. ~750 lines German text."
+  - date: 2025-12-27
+    change: "Added thought: Die komplexe Welt verstehen - Akademische Zusammenfassung (Deutsch) zu Krakauers 'The Complex World' Kapitel I-III für Debattenvorbereitung. Strukturierte Kapitelanalyse: Krise der Einfachheit, Präfundationen (Maxwell 1868), Definitional Pursuits (Weaver 1948). Verbindungen zu 7 Denkern."
+  - date: 2025-12-28
+    change: "Added thought: Argumente für und gegen den freien Willen - Systematische Bestandsaufnahme mit 12+12 Argumenten. Pro: Phänomenologie, Moral, Agent Causation, Quanten, Reasons-Responsiveness, Hierarchie, Emergenz, Deliberation, Narrativ, Kreativität, Selbstformung, Praxis. Contra: Determinismus, Libet, Biologie, Unbewusstes, Schopenhauer, Basic, Illusion, Luck, Manipulation, Neuronal, Spinoza, Sozial. Verbindungen zu 12 Denkern."
+  - date: 2025-12-30
+    change: "Added thought: Computational Philosophy - Software Patterns for Thought Management. Meta-philosophical exploration of how software development patterns (unit testing, debugging, CI/CD, LLM agents, dependency management, version control) can enhance digitally managed philosophy projects. Key insight: tests FLAG rather than FAIL. Connections to 6 thinkers (Frege, Carnap, Turing, Gödel, Wittgenstein, Friston)."

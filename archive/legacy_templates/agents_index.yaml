@@ -1,0 +1,472 @@
+# =============================================================================
+# AGENTS INDEX TEMPLATE
+# =============================================================================
+# This is the TEMPLATE for the central agent navigation index.
+# Copy this file to the repository root as `agents_index.yaml` and populate it.
+#
+# PURPOSE:
+#   - Reduce agent token usage by providing direct path lookups
+#   - Eliminate redundant instructions across AGENTS.md files
+#   - Enable fast task routing through intent-to-path mappings
+#
+# MAINTENANCE:
+#   - Update `last_updated` whenever you modify this file
+#   - Run validation script periodically: `python scripts/validate_agents_index.py`
+#   - When adding new entities, update the relevant registry section
+#   - Add changelog entry for every structural change
+#
+# CRITICAL: AGENTS.md FILES MUST INSTRUCT AGENTS TO UPDATE THIS INDEX
+#   Every folder's AGENTS.md should include a reminder like:
+#   > **Index Updates**: When [action], you MUST update `agents_index.yaml`
+#   > in the [section] registry and update `meta.last_updated` and `changelog`.
+#
+# FORMAT NOTES:
+#   - YAML 1.2 compliant
+#   - Comments explain each section's purpose
+#   - Use anchors (&name) and aliases (*name) for DRY patterns
+#   - Multi-line strings use | (literal) or > (folded)
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: YYYY-MM-DD  # Update this when modifying the index
+  owner: your_name_slug     # Who maintains this index
+  repository_type: team_management  # What kind of repo this is
+  purpose: |
+    Central navigation hub for LLM agents working with this repository.
+    Provides fast lookups for entities, templates, and task routing.
+    Read this file FIRST before exploring the filesystem.
+
+# =============================================================================
+# SECTION 1: FOLDER REGISTRY
+# =============================================================================
+# Quick reference for what lives where. Each entry describes a top-level folder.
+#
+# Fields:
+#   path: Relative path from repository root (include trailing /)
+#   purpose: One-line description of folder contents
+#   key_files: Array of typical files found here (use patterns like *.md)
+#   template: Path to template for creating new files (null if none)
+#   auto_ingest_target: Default file for @path auto-ingestion (null if N/A)
+#   agents_md: true if folder has its own AGENTS.md with specific rules
+# =============================================================================
+
+folders:
+  - path: communication/people/
+    purpose: Per-person profiles, notes, and meeting history
+    key_files: [profile.md, notes.md, thoughts.md, references.md]
+    template: templates/person_profile.md
+    auto_ingest_target: profile.md
+    agents_md: true
+
+  - path: communication/meetings/
+    purpose: Multi-person meeting notes (non-1:1)
+    key_files: ["YYYY-MM-DD_<topic>.md"]
+    template: templates/meeting_template.md
+    auto_ingest_target: null
+    agents_md: true
+
+  - path: tickets/
+    purpose: External ticket tracking (Jira, etc.)
+    key_files: ["<TICKET-ID>.md"]
+    template: templates/ticket.md
+    auto_ingest_target: "<TICKET-ID>.md"
+    agents_md: true
+
+  - path: project_management/
+    purpose: Active project tracking and progress reports
+    key_files: [project.md, "progress_report_*.md", daily_updates.md]
+    template: templates/project_progress_report.md
+    auto_ingest_target: null
+    agents_md: true
+
+  - path: idea_development/
+    purpose: Innovation pipeline - ideas before they become projects
+    key_files: [project.md]
+    template: templates/project_idea.md
+    auto_ingest_target: project.md
+    agents_md: true
+
+  - path: team_development/
+    purpose: Career growth, performance, skills tracking
+    key_files: []
+    template: null
+    auto_ingest_target: null
+    agents_md: true
+
+  - path: reports/
+    purpose: Generated reports and status updates
+    key_files: []
+    template: null
+    auto_ingest_target: null
+    agents_md: true
+
+  - path: reports/status_updates/
+    purpose: Weekly aggregated status for leadership
+    key_files: ["project_updates_*.md"]
+    template: templates/weekly_status_report.md
+    auto_ingest_target: null
+    agents_md: false
+
+  - path: scripts/
+    purpose: Automation scripts (Python)
+    key_files: ["*.py"]
+    template: null
+    auto_ingest_target: null
+    agents_md: false
+
+  - path: templates/
+    purpose: Templates for all document types
+    key_files: ["*.md", "*.yaml"]
+    template: null
+    auto_ingest_target: null
+    agents_md: false
+
+# =============================================================================
+# SECTION 2: PEOPLE REGISTRY
+# =============================================================================
+# Fast lookup of person -> folder path. Include ALL people with folders.
+#
+# Fields:
+#   path: Relative path to person's folder (include trailing /)
+#   role: Job title or function
+#   relationship: One of [direct_report, manager, peer_lead, executive,
+#                         stakeholder, collaborator, external]
+#   github: GitHub username (optional)
+#   email: Work email (optional)
+#   notes: Brief context about working with this person (optional)
+#
+# ORGANIZATION TIP: Group by relationship type for readability.
+# =============================================================================
+
+people:
+  # -------------------------------------------------------------------------
+  # SELF (Repository Owner)
+  # -------------------------------------------------------------------------
+  your_name_slug:
+    path: communication/people/your_name_slug/
+    role: Your Role
+    relationship: self
+    github: your_github
+    notes: Repository owner
+
+  # -------------------------------------------------------------------------
+  # DIRECT REPORTS
+  # -------------------------------------------------------------------------
+  # team_member_1:
+  #   path: communication/people/team_member_1/
+  #   role: Role Title
+  #   relationship: direct_report
+  #   github: their_github
+
+  # -------------------------------------------------------------------------
+  # MANAGER
+  # -------------------------------------------------------------------------
+  # manager_name:
+  #   path: communication/people/manager_name/
+  #   role: Their Role
+  #   relationship: manager
+
+  # -------------------------------------------------------------------------
+  # PEER LEADS (Same level, different teams)
+  # -------------------------------------------------------------------------
+  # peer_1:
+  #   path: communication/people/peer_1/
+  #   role: Their Role
+  #   relationship: peer_lead
+
+  # -------------------------------------------------------------------------
+  # EXECUTIVES
+  # -------------------------------------------------------------------------
+  # executive_1:
+  #   path: communication/people/executive_1/
+  #   role: CEO / CTO / etc.
+  #   relationship: executive
+
+  # -------------------------------------------------------------------------
+  # STAKEHOLDERS (Product, Legal, etc.)
+  # -------------------------------------------------------------------------
+  # stakeholder_1:
+  #   path: communication/people/stakeholder_1/
+  #   role: Head of Product
+  #   relationship: stakeholder
+
+  # -------------------------------------------------------------------------
+  # COLLABORATORS (Cross-team engineers, analysts)
+  # -------------------------------------------------------------------------
+  # collaborator_1:
+  #   path: communication/people/collaborator_1/
+  #   role: Backend Engineer
+  #   relationship: collaborator
+
+# =============================================================================
+# SECTION 3: PROJECT REGISTRY
+# =============================================================================
+# Fast lookup of project -> folder path.
+#
+# Fields:
+#   path: Relative path to project folder (null if no dedicated folder)
+#   codename: Internal project codename (optional)
+#   repository: Git repository name if external (optional)
+#   status: One of [idea, active, maintenance, paused, archived]
+#   contributors: Array of people slugs involved
+#   related_tickets: Array of ticket prefixes or IDs (use * for wildcard)
+#   description: Brief description (optional)
+# =============================================================================
+
+projects:
+  # example_project:
+  #   path: project_management/example_project/
+  #   codename: CODENAME
+  #   repository: repo-name
+  #   status: active
+  #   contributors: [person_1, person_2]
+  #   related_tickets: [PREFIX-*]
+  #   description: Brief description of the project
+
+# =============================================================================
+# SECTION 4: IDEA REGISTRY
+# =============================================================================
+# Track ideas in the innovation pipeline.
+#
+# Fields:
+#   path: Relative path to idea folder
+#   status: One of [capture, explore, poc, propose, graduated, archived]
+#   owner: Person slug responsible for the idea
+#   next_step: What needs to happen next (optional)
+# =============================================================================
+
+ideas:
+  # example_idea:
+  #   path: idea_development/example_idea/
+  #   status: poc
+  #   owner: your_name_slug
+  #   next_step: Complete prototype and document results
+
+# =============================================================================
+# SECTION 5: TICKET PREFIX REGISTRY
+# =============================================================================
+# Map ticket prefixes to systems and teams. Helps agents recognize and route
+# ticket references correctly.
+#
+# Fields:
+#   system: Issue tracking system (Jira, GitHub, Helpdesk, etc.)
+#   team: Team or area responsible
+#   pattern: Regex pattern for matching (use \\ for escaping in YAML)
+#   example: Example ticket ID
+#   folder: Where to store ticket files (default: tickets/)
+# =============================================================================
+
+ticket_prefixes:
+  # PROJ:
+  #   system: Jira
+  #   team: Team Name
+  #   pattern: "PROJ-\\d{3,4}"
+  #   example: PROJ-123
+  #   folder: tickets/
+
+# =============================================================================
+# SECTION 6: INTENT -> PATH MAPPINGS (Task Routing)
+# =============================================================================
+# Help agents route common requests directly without exploration.
+# These are heuristics - agents should verify paths exist.
+#
+# Fields:
+#   intent: What the user is trying to do
+#   keywords: Array of trigger words/patterns
+#   action: Instructions for the agent (use | for multi-line)
+# =============================================================================
+
+intent_mappings:
+  - intent: "information about a person"
+    keywords: [person, who is, about, profile, contact, team member]
+    action: "Look up person in `people` registry -> read their profile.md"
+
+  - intent: "ticket status or context"
+    keywords: [ticket, JIRA, issue, bug, story]
+    action: "Check tickets/<TICKET-ID>.md first, then external system if not found"
+
+  - intent: "project status"
+    keywords: [project, status, progress, how is, update on]
+    action: "Look up project in `projects` registry -> read latest progress_report"
+
+  - intent: "meeting notes"
+    keywords: [meeting, JF, jour fixe, sync, workshop, standup]
+    action: |
+      1:1 meetings: communication/people/<person>/meetings/
+      Group meetings: communication/meetings/
+      Company-wide: communication/meetings/global_meetings/
+
+  - intent: "add information about someone"
+    keywords: ["@communication/people", notes, remember, update profile]
+    action: "Use auto-ingestion pattern or append to target person's notes.md"
+
+  - intent: "career or performance"
+    keywords: [career, performance, review, growth, skills, 1on1]
+    action: "Check team_development/ for plans; person's folder for 1:1 context"
+
+  - intent: "new idea or POC"
+    keywords: [idea, POC, prototype, research, explore, experiment]
+    action: "Check idea_development/ for existing; use templates/project_idea.md for new"
+
+  - intent: "create new documentation"
+    keywords: [create, new, template, document]
+    action: "ALWAYS check templates/ first; use appropriate template"
+
+  - intent: "weekly status"
+    keywords: [weekly, status, report, update, leadership]
+    action: "Check reports/status_updates/ for existing; use templates/weekly_status_report.md"
+
+# =============================================================================
+# SECTION 7: TEMPLATES REGISTRY
+# =============================================================================
+# Single source of truth for all templates. Agents MUST use these.
+#
+# Keys should match the document type; values are paths to templates.
+# =============================================================================
+
+templates:
+  # Person documentation
+  person_profile: templates/person_profile.md
+  person_notes: templates/person_notes.md
+  person_thoughts: templates/person_thoughts.md
+  person_references: templates/person_references.md
+
+  # Meetings
+  meeting: templates/meeting_template.md
+
+  # Tickets
+  ticket: templates/ticket.md
+
+  # Projects & Ideas
+  project_idea: templates/project_idea.md
+  project_progress: templates/project_progress_report.md
+
+  # Reports
+  weekly_status: templates/weekly_status_report.md
+  contribution_summary: templates/contribution_summary.md
+
+  # This index (meta)
+  agents_index: templates/agents_index.yaml
+
+# =============================================================================
+# SECTION 8: GLOBAL RULES
+# =============================================================================
+# Consolidated rules that apply across all folders. Extracted from distributed
+# AGENTS.md files to eliminate duplication.
+# =============================================================================
+
+global_rules:
+  # ---------------------------------------------------------------------------
+  # Auto-Ingestion Rule
+  # ---------------------------------------------------------------------------
+  auto_ingestion:
+    pattern: "@<path_to_entity> <information>"
+    description: |
+      If user input matches this pattern, AUTOMATICALLY update the 
+      corresponding documentation without asking for confirmation.
+    steps:
+      - "1. Resolve path to most relevant file (profile.md, notes.md, etc.)"
+      - "2. Append information immediately"
+      - "3. Confirm briefly (e.g., 'Added ... to ...')"
+    examples:
+      - input: "@communication/people/person_name/ likes coffee"
+        action: "Add 'Likes coffee' to person_name/profile.md"
+      - input: "@tickets/PROJ-123 deadline extended"
+        action: "Add timeline entry to tickets/PROJ-123.md"
+
+  # ---------------------------------------------------------------------------
+  # Cross-Referencing Rules
+  # ---------------------------------------------------------------------------
+  cross_referencing:
+    - trigger: "person name mentioned in new content"
+      action: "Update their references.md with link to new content"
+    - trigger: "ticket ID mentioned (matches ticket_prefixes patterns)"
+      action: "Create/update tickets/<TICKET-ID>.md"
+    - trigger: "project name mentioned"
+      action: "Check project_management/ for existing folder; link if exists"
+    - trigger: "meeting note created"
+      action: "Update each participant's references.md"
+
+  # ---------------------------------------------------------------------------
+  # Naming Conventions
+  # ---------------------------------------------------------------------------
+  naming_conventions:
+    folders: lowercase_with_underscores
+    files: lowercase_with_underscores.md
+    dates: "ISO 8601 (YYYY-MM-DD)"
+    people_folders: "<first>_<last>/"
+    meeting_files: "YYYY-MM-DD_<topic>.md"
+    progress_reports: "progress_report_YYYY-MM-DD.md"
+    tickets: "<PREFIX>-<NUMBER>.md"
+
+  # ---------------------------------------------------------------------------
+  # Template Usage Rule
+  # ---------------------------------------------------------------------------
+  template_rule: |
+    ALWAYS check the templates registry before creating any new file.
+    If a template exists for the document type, you MUST use it.
+    Templates contain YAML frontmatter for metadata - fill all fields.
+
+  # ---------------------------------------------------------------------------
+  # Writing Style Reference
+  # ---------------------------------------------------------------------------
+  writing_style:
+    reference: communication/people/your_name_slug/writing_style.md
+    note: "Consult this file when generating text in the repository owner's voice"
+
+# =============================================================================
+# SECTION 9: COMPANY & ORGANIZATIONAL CONTEXT
+# =============================================================================
+# Background information about the organization. Helps agents understand
+# stakeholder relationships and communication patterns.
+# =============================================================================
+
+organization:
+  company: Company Name
+  domain: company.com
+  description: Brief company description
+
+  # Key organizational relationships
+  reporting_structure:
+    your_role: Your Role Title
+    reports_to: Manager Name (Manager Role)
+    direct_reports:
+      - Person Name (Role)
+
+  # Peer teams/leads for cross-functional context
+  peer_teams:
+    # - team: Team Name
+    #   lead: Lead Name
+    #   collaboration_focus: What you work with them on
+
+  # Methodology (optional)
+  methodology:
+    name: ShapeUp  # or Scrum, Kanban, etc.
+    cycle_length: "6 weeks"
+    cooldown: "2 weeks"
+
+# =============================================================================
+# SECTION 10: CHANGELOG
+# =============================================================================
+# Track significant changes to this index. Helps agents detect if their
+# cached understanding is outdated.
+# =============================================================================
+
+changelog:
+  - date: YYYY-MM-DD
+    change: "Initial index creation from template"
+  # - date: YYYY-MM-DD
+  #   change: "Added new team member X"
+  # - date: YYYY-MM-DD
+  #   change: "Updated project Y status to maintenance"
+
+# =============================================================================
+# END OF TEMPLATE
+# =============================================================================
+# After populating this template:
+# 1. Save as `agents_index.yaml` in repository root
+# 2. Update root AGENTS.md to reference this index
+# 3. Slim down distributed AGENTS.md files to folder-specific rules only
+# 4. Consider creating validation script in scripts/
+# =============================================================================

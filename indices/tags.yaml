@@ -1,0 +1,191 @@
+# =============================================================================
+# TAGS INDEX - Reverse Lookup for Cross-Domain Discovery
+# =============================================================================
+# Given a tag, find all entries that use it.
+# Enables: "What do I know about X across all domains?"
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2026-01-04
+  description: "Reverse index from tags to entries across all domains"
+  purpose: |
+    This index answers: "What entries are tagged with X?"
+    It aggregates tags from knowledge.yaml, philosophy indices, and future domains.
+
+# =============================================================================
+# TAG -> ENTRIES MAPPING
+# =============================================================================
+
+tags:
+  # Meta & System Tags
+  meta:
+    description: "About the system itself - organization, architecture, process"
+    entries:
+      - {entry: genesis, index: knowledge.yaml}
+      - {entry: philosophy_patterns, index: knowledge.yaml}
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  patterns:
+    description: "Discovered patterns and best practices"
+    entries:
+      - {entry: philosophy_patterns, index: knowledge.yaml}
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  architecture:
+    description: "System architecture and design decisions"
+    entries:
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  # Philosophy Domain Tags
+  philosophy:
+    description: "Philosophical content and explorations"
+    entries:
+      - {entry: genesis, index: knowledge.yaml}
+      - {entry: philosophy_patterns, index: knowledge.yaml}
+      - {entry: philosophy, index: knowledge.yaml}
+      - {entry: thinkers, index: knowledge.yaml}
+      - {entry: thoughts_consciousness, index: knowledge.yaml}
+      - {entry: thoughts_free_will, index: knowledge.yaml}
+      - {entry: thoughts_existence, index: knowledge.yaml}
+      - {entry: philosophy_sources, index: knowledge.yaml}
+    related_index: indices/philosophy/
+
+  consciousness:
+    description: "Mind, awareness, qualia, subjective experience"
+    entries:
+      - {entry: thoughts_consciousness, index: knowledge.yaml}
+    theme_path: knowledge/philosophy/thoughts/consciousness/
+
+  free-will:
+    description: "Agency, determinism, choice, autonomy"
+    entries:
+      - {entry: thoughts_free_will, index: knowledge.yaml}
+    theme_path: knowledge/philosophy/thoughts/free_will/
+
+  existence:
+    description: "Being, reality, metaphysics"
+    entries:
+      - {entry: thoughts_existence, index: knowledge.yaml}
+    theme_path: knowledge/philosophy/thoughts/existence/
+
+  metaphysics:
+    description: "Nature of reality, being, causation"
+    entries:
+      - {entry: thoughts_existence, index: knowledge.yaml}
+
+  thinkers:
+    description: "Philosopher and author profiles"
+    entries:
+      - {entry: thinkers, index: knowledge.yaml}
+    full_index: indices/philosophy/thinkers.yaml
+
+  profiles:
+    description: "Individual thinker profiles"
+    entries:
+      - {entry: thinkers, index: knowledge.yaml}
+
+  sources:
+    description: "Books, articles, references"
+    entries:
+      - {entry: philosophy_sources, index: knowledge.yaml}
+    full_index: indices/philosophy/sources.yaml
+
+  references:
+    description: "Citations and bibliography"
+    entries:
+      - {entry: philosophy_sources, index: knowledge.yaml}
+
+  thoughts:
+    description: "Active thought explorations"
+    entries:
+      - {entry: thoughts_consciousness, index: knowledge.yaml}
+      - {entry: thoughts_free_will, index: knowledge.yaml}
+      - {entry: thoughts_existence, index: knowledge.yaml}
+    full_index: indices/philosophy/thoughts.yaml
+
+  # Technical Tags
+  llm:
+    description: "Large language model related content"
+    entries:
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  indexing:
+    description: "Indexing and navigation systems"
+    entries:
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  yaml:
+    description: "YAML format and configuration"
+    entries:
+      - {entry: indexing_system_research, index: knowledge.yaml}
+
+  ingested:
+    description: "Content imported from external sources"
+    entries:
+      - {entry: philosophy_patterns, index: knowledge.yaml}
+
+  founding:
+    description: "Foundational concepts and origin documents"
+    entries:
+      - {entry: genesis, index: knowledge.yaml}
+
+  domain:
+    description: "Top-level knowledge domains"
+    entries:
+      - {entry: philosophy, index: knowledge.yaml}
+
+  imported:
+    description: "Content imported from other repositories"
+    entries:
+      - {entry: philosophy, index: knowledge.yaml}
+
+# =============================================================================
+# TAG CLUSTERS (for themed exploration)
+# =============================================================================
+
+clusters:
+  technical:
+    description: "Engineering and implementation"
+    tags: [llm, indexing, yaml, architecture, patterns]
+
+  philosophical:
+    description: "Philosophical inquiry and reflection"
+    tags: [philosophy, consciousness, free-will, existence, metaphysics, thinkers, thoughts]
+
+  meta:
+    description: "About the system itself"
+    tags: [meta, patterns, architecture, founding]
+
+  reference:
+    description: "Source materials and citations"
+    tags: [sources, references, ingested, imported]
+
+# =============================================================================
+# USAGE HINTS
+# =============================================================================
+
+usage:
+  find_by_tag: |
+    1. Look up tag in 'tags' section
+    2. Get list of entries and their source indices
+    3. Load source index if needed
+    4. Navigate to entry
+
+  explore_cluster: |
+    1. Find relevant cluster in 'clusters' section
+    2. Get related tags
+    3. Explore entries across all related tags
+
+  cross_domain: |
+    Use tags that span domains (e.g., 'patterns' appears in both
+    technical and philosophical contexts) to discover unexpected connections
+
+# =============================================================================
+# MAINTENANCE
+# =============================================================================
+
+maintenance:
+  when_adding_entry: "Update relevant tags with new entry reference"
+  when_adding_tag: "Create new tag entry, add to relevant clusters"
+  when_removing_entry: "Remove from all tag entries"

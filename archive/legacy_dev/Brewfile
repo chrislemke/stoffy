@@ -1,0 +1,7 @@
+brew "claude-code"
+brew "conda-lock"
+brew "gh"
+brew "micromamba"
+brew "opencode"
+brew "pre-commit"
+brew "terminal-notifier"

@@ -1,0 +1,117 @@
+# =============================================================================
+# MEMORIES INDEX - Human Feedback Learning Registry
+# =============================================================================
+# Load this index when tracking learned memories from human feedback.
+# Memories are persistent records of corrections, insights, and preferences.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-31
+  domain: memories
+  purpose: "Track _memory.md files created by the student agent"
+  count: 2
+
+# =============================================================================
+# MEMORIES REGISTRY
+# =============================================================================
+# Each entry tracks a memory file and its relationship to the source.
+#
+# Entry format:
+#   <memory_slug>:
+#     source_path: "path/to/original/file.md"
+#     memory_path: "path/to/file_memory.md"
+#     source_type: thinker | thought | source | other
+#     feedback_count: <number>
+#     created: YYYY-MM-DD
+#     last_updated: YYYY-MM-DD
+#     summary: "Brief description of key learnings"
+#     feedback_types:
+#       - correction
+#       - importance
+#       - missing
+#       - connection
+#       - preference
+#       - irrelevance
+#       - clarification
+# =============================================================================
+
+memories:
+  friston_laozi_debate:
+    source_path: "debates/2025-12-30_predictive_brain_karl_friston_vs_laozi.md"
+    memory_path: "debates/2025-12-30_predictive_brain_karl_friston_vs_laozi_memory.md"
+    source_type: debate
+    feedback_count: 1
+    created: 2025-12-31
+    last_updated: 2025-12-31
+    summary: "Agents talk past each other; Laozi doesn't engage Friston's specific arguments"
+    feedback_types:
+      - correction
+      - missing
+
+  debate_command:
+    source_path: ".claude/commands/debate.md"
+    memory_path: ".claude/commands/debate_memory.md"
+    source_type: command
+    feedback_count: 1
+    created: 2025-12-31
+    last_updated: 2025-12-31
+    summary: "Agents don't genuinely react to each other; needs mandatory quotation/engagement enforcement"
+    feedback_types:
+      - architectural_limitation
+
+  # Example entry (commented out):
+  # karl_friston_profile:
+  #   source_path: "thinkers/karl_friston/profile.md"
+  #   memory_path: "thinkers/karl_friston/profile_memory.md"
+  #   source_type: thinker
+  #   feedback_count: 3
+  #   created: 2025-12-31
+  #   last_updated: 2025-12-31
+  #   summary: "Active inference clarifications, Helmholtz connection"
+  #   feedback_types:
+  #     - correction
+  #     - missing
+  #     - connection
+
+# =============================================================================
+# STATISTICS
+# =============================================================================
+
+statistics:
+  total_memories: 2
+  total_feedback_entries: 2
+  by_source_type:
+    thinker: 0
+    thought: 0
+    source: 0
+    debate: 1
+    command: 1
+    other: 0
+  by_feedback_type:
+    correction: 1
+    importance: 0
+    missing: 1
+    connection: 0
+    preference: 0
+    irrelevance: 0
+    clarification: 0
+    architectural_limitation: 1
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-31
+    action: added
+    details: "debate_command memory: command-level architectural feedback about agent engagement"
+  - date: 2025-12-31
+    action: fixed
+    details: "Moved memory file to correct location next to source (friston_laozi_debate)"
+  - date: 2025-12-31
+    action: added
+    details: "debate_command memory: agents talk past each other, needs argument extraction"
+  - date: 2025-12-31
+    action: created
+    details: "Initial memories index for student agent"

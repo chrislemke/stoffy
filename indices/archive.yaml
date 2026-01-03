@@ -1,0 +1,73 @@
+# =============================================================================
+# ARCHIVE INDEX - Preserved Knowledge
+# =============================================================================
+# Nothing is deleted in Stoffy. This index tracks archived content.
+# "Archived" means preserved but no longer active/current.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2026-01-03
+  philosophy: "Knowledge is never lost, only transformed"
+
+# =============================================================================
+# ARCHIVED ENTRIES
+# =============================================================================
+
+entries:
+  legacy_team_management:
+    original_path: "(multiple folders)"
+    archive_path: archive/legacy/
+    archived_on: 2026-01-03
+    reason: "Stoffy rebirth - transition from team management to second brain"
+    contents:
+      - communication/
+      - project_management/
+      - team_development/
+      - tickets/
+      - todos/
+      - reports/
+      - idea_development/
+      - calendar/
+      - sessions/
+
+  legacy_indices:
+    original_path: indices/
+    archive_path: archive/legacy_indices/
+    archived_on: 2026-01-03
+    reason: "Replaced with simpler second-brain indices"
+    contents:
+      - people.yaml
+      - projects.yaml
+      - tickets.yaml
+      - ideas.yaml
+      - organization.yaml
+      - agents_index.yaml
+
+  legacy_templates:
+    original_path: templates/
+    archive_path: archive/legacy_templates/
+    archived_on: 2026-01-03
+    reason: "Replaced with simpler content templates"
+
+# =============================================================================
+# ARCHIVE CATEGORIES
+# =============================================================================
+
+categories:
+  superseded: "Replaced by newer content"
+  historical: "No longer relevant but historically valuable"
+  experimental: "Experiments that didn't pan out"
+  migrated: "Moved from legacy structure"
+
+# =============================================================================
+# LEGACY MIGRATION LOG
+# =============================================================================
+
+legacy_migration:
+  status: "completed"
+  date: 2026-01-03
+  note: |
+    Stoffy was reborn as a second brain. The previous team management
+    structure has been archived. Content is preserved at archive/legacy/
+    and can be reviewed/migrated to knowledge/ as needed.

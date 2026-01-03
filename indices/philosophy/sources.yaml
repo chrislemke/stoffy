@@ -1,0 +1,262 @@
+# =============================================================================
+# SOURCES INDEX - Books, Articles, Lectures Registry
+# =============================================================================
+# Load this index when looking up references or source materials.
+# =============================================================================
+
+meta:
+  version: "1.7"
+  last_updated: 2025-12-27
+  domain: sources
+  purpose: "Track philosophical source materials"
+  count: 20
+
+# =============================================================================
+# SOURCES REGISTRY
+# =============================================================================
+
+sources:
+  the_mind_is_flat:
+    path: sources/books/the_mind_is_flat.md
+    type: book
+    author: nick_chater
+    year: 2018
+    themes: [consciousness, free_will, knowledge]
+    status: read
+    key_takeaways: "The mind has no hidden depths; we improvise our mental life moment by moment. The self is constructed on the fly, not discovered."
+
+  active_inference:
+    path: sources/books/active_inference.md
+    type: book
+    author: thomas_parr, giovanni_pezzulo, karl_friston
+    year: 2022
+    themes: [consciousness, existence, knowledge]
+    status: read
+    key_takeaways: "All living systems minimize free energy. Perception and action are two sides of active inference. Markov blankets define the self as a statistical boundary."
+
+  the_complex_world:
+    path: sources/books/the_complex_world.md
+    type: book
+    author: david_krakauer
+    year: 2024
+    themes: [existence, knowledge]
+    status: read
+    key_takeaways: "Four pillars of complexity: evolution, entropy, dynamics, computation. Emergence creates genuine ontological novelty. Purpose is an emergent property of complex systems."
+
+  fischer_ravizza_responsibility_control:
+    path: sources/books/fischer_ravizza_responsibility_control.md
+    type: book
+    author: john_martin_fischer_mark_ravizza
+    year: 1998
+    themes: [free_will, morality, consciousness]
+    status: reading
+    key_takeaways: "Foundational semicompatibilist work. Moral responsibility requires guidance control (not regulative). Two conditions: moderate reasons-responsiveness (regular receptivity + weak reactivity) and mechanism ownership via taking responsibility. Historical condition rejects snapshot theories."
+
+  sartorio_causation_free_will:
+    path: sources/books/sartorio_causation_free_will.md
+    type: book
+    author: carolina_sartorio
+    year: 2016
+    themes: [free_will, existence]
+    status: reading
+    key_takeaways: "Actual-causal-sequence view (ACS): freedom grounded solely in actual causes. Four features of causation: intransitive, extrinsic, difference-making, absences as causes. Reasons-sensitivity analyzed causally via absence of defeating reasons. Responds to Frankfurt cases, manipulation arguments, and ultimacy arguments. Comparison with Fischer/Ravizza reveals trade-off between theoretical simplicity and metaphysical commitment."
+
+  keil_willensfreiheit:
+    path: sources/books/keil_willensfreiheit.md
+    type: book
+    author: geert_keil
+    year: 2017
+    themes: [free_will]
+    status: to_read
+    key_takeaways: "German standard reference for free will debate. Covers libertarianism, compatibilism, skepticism, and neuroscience interface."
+
+  schurger_readiness_potential:
+    path: sources/articles/schurger_readiness_potential.md
+    type: article
+    author: aaron_schurger
+    year: 2012
+    themes: [free_will, consciousness]
+    status: to_read
+    key_takeaways: "Drift-diffusion reinterpretation of Libet's readiness potential. The signal is stochastic noise crossing threshold, not evidence of predetermined decision."
+
+  tao_te_ching:
+    path: sources/books/tao_te_ching.md
+    type: book
+    author: laozi
+    year: -400
+    themes: [existence, life_meaning, knowledge]
+    status: read
+    key_takeaways: "Foundational Taoist text on naturalness, wu wei (non-action), and harmony with the Tao. Critiques language and convention; advocates return to natural state."
+
+  warum_es_die_welt_nicht_gibt:
+    path: sources/books/warum_es_die_welt_nicht_gibt.md
+    type: book
+    author: markus_gabriel
+    year: 2013
+    themes: [existence, knowledge]
+    status: read
+    key_takeaways: "Die Welt existiert nicht als Totalität. Es gibt nur unendlich viele Sinnfelder. Existenz = Erscheinen in einem Sinnfeld. Ontologischer Pluralismus ohne Relativismus."
+
+  sinn_und_existenz:
+    path: sources/books/sinn_und_existenz.md
+    type: book
+    author: markus_gabriel
+    year: 2016
+    themes: [existence, knowledge]
+    status: read
+    key_takeaways: "Akademisches Hauptwerk der Sinnfeldtheorie. Existieren = Erscheinen in einem Sinnfeld. Hauptsatz der negativen Ontologie: Die Welt existiert nicht. Hauptsatz der positiven Ontologie: Es gibt notwendigerweise unendlich viele Sinnfelder. Kritik an Kant, Frege, Badiou. Ontologischer Pluralismus ohne Relativismus. Neuer Realismus gegen Naturalismus und Konstruktivismus."
+
+  saetze_ueber_saetze:
+    path: sources/books/saetze_ueber_saetze.md
+    type: book
+    author: markus_gabriel
+    year: 2020
+    themes: [knowledge]
+    status: read
+    key_takeaways: "ABC des wachen Denkens. Metareflexion als Methode. Selbstreferentielle Propositionen. Kritisches Denken als Immunsystem gegen Unsinn."
+
+  der_ego_tunnel:
+    path: sources/books/der_ego_tunnel.md
+    type: book
+    author: thomas_metzinger
+    year: 2009
+    themes: [consciousness, free_will, existence]
+    status: read
+    key_takeaways: "Das Ego ist kein Ding, sondern ein transparentes Selbstmodell. Wir leben in einem Ego-Tunnel. Das PSM erklärt die Einheit des Bewusstseins ohne substanzielles Selbst."
+
+  goedel_escher_bach:
+    path: sources/books/goedel_escher_bach.md
+    type: book
+    author: douglas_hofstadter
+    year: 1979
+    themes: [consciousness, knowledge, existence]
+    status: read
+    key_takeaways: "Strange loops create consciousness. Self-reference is the key to understanding mind. Formal systems can model themselves. Consciousness emerges from patterns referring to themselves."
+
+  surfaces_and_essences:
+    path: sources/books/surfaces_and_essences.md
+    type: book
+    author: douglas_hofstadter
+    year: 2013
+    themes: [knowledge, consciousness]
+    status: read
+    key_takeaways: "Analogy is the fuel and fire of thinking. Categorization through analogy is the core of cognition. Every concept is built through analogical abstraction."
+
+  the_case_against_reality:
+    path: sources/books/the_case_against_reality.md
+    type: book
+    author: donald_hoffman
+    year: 2019
+    themes: [consciousness, knowledge, existence]
+    status: read
+    key_takeaways: "Evolution hid truth from us. Fitness beats truth. Perception is an interface, not a window. Spacetime is a user interface. Conscious agents are fundamental."
+
+  the_experience_machine:
+    path: sources/books/the_experience_machine.md
+    type: book
+    author: andy_clark
+    year: 2023
+    themes: [consciousness, knowledge]
+    status: read
+    key_takeaways: "Experience is controlled hallucination. The brain is a prediction machine. Precision weighting shapes attention. Action and perception are unified in prediction."
+
+  computability_and_logic:
+    path: sources/books/computability_and_logic.md
+    type: book
+    author: boolos_burgess_jeffrey
+    year: 2007
+    themes: [knowledge]
+    status: read
+    key_takeaways: "Foundational text on computability theory. Gödel's incompleteness theorems formalized. Church-Turing thesis. Turing machines as universal model of computation."
+
+  the_predictive_mind:
+    path: sources/books/the_predictive_mind.md
+    type: book
+    author: jakob_hohwy
+    year: 2013
+    themes: [consciousness, knowledge]
+    status: read
+    key_takeaways: "First comprehensive philosophical treatment of prediction error minimization. One mechanism explains all mental processes: perception is Bayesian inference, action is active inference."
+
+  being_you:
+    path: sources/books/being_you.md
+    type: book
+    author: anil_seth
+    year: 2021
+    themes: [consciousness]
+    status: read
+    key_takeaways: "Consciousness as controlled hallucination. Beast machine: consciousness grounded in biological self-regulation. Interoceptive inference: self emerges from bodily prediction."
+
+  the_hidden_spring:
+    path: sources/books/the_hidden_spring.md
+    type: book
+    author: mark_solms
+    year: 2021
+    themes: [consciousness, free_will, existence]
+    status: to_read
+    key_takeaways: "Consciousness arises in brainstem, not cortex. Affect is primary form of consciousness. Free energy minimization felt as pleasure/unpleasure. Completing Freud's neuropsychoanalytic project."
+
+# Add source entries here. Example:
+#  mans_search_for_meaning:
+#    path: sources/books/mans_search_for_meaning.md
+#    type: book
+#    author: viktor_frankl
+#    year: 1946
+#    themes: [life_meaning, consciousness]
+#    status: read
+#    key_takeaways: "Meaning is found through work, love, and suffering"
+#
+#  what_is_it_like_to_be_a_bat:
+#    path: sources/articles/what_is_it_like_to_be_a_bat.md
+#    type: article
+#    author: thomas_nagel
+#    year: 1974
+#    themes: [consciousness]
+#    status: read
+#    key_takeaways: "Subjective experience cannot be reduced to physical facts"
+
+# =============================================================================
+# SOURCE TYPES (for reference)
+# =============================================================================
+# book            - Published book
+# article         - Journal or magazine article
+# lecture         - Video/audio lecture
+# essay           - Online essay or blog
+# podcast         - Podcast episode
+# conversation    - Personal conversation with mentor
+
+# =============================================================================
+# STATUS VALUES (for reference)
+# =============================================================================
+# to_read         - On reading list
+# reading         - Currently reading
+# read            - Finished reading
+# revisiting      - Re-reading for deeper understanding
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed from knowledge.yaml for philosophical sources"
+  - date: 2025-12-26
+    change: "Added 3 books: The Mind is Flat, Active Inference, The Complex World"
+  - date: 2025-12-26
+    change: "Added 4 sources for Kompatibilismus 2.0: Fischer & Ravizza, Sartorio, Keil, Schurger"
+  - date: 2025-12-26
+    change: "Added Tao Te Ching (Laozi) with connections to 10 thinkers"
+  - date: 2025-12-26
+    change: "Added 9 books: 3 Gabriel (Sinnfeldontologie), Metzinger (Ego-Tunnel), 2 Hofstadter (GEB, Surfaces), Hoffman (Case Against Reality), Clark (Experience Machine), Boolos (Computability)"
+  - date: 2025-12-26
+    change: "Added The Predictive Mind (Hohwy) with connections to 10 thinkers - ingested via /ingest command"
+  - date: 2025-12-26
+    change: "Added Being You (Anil Seth) - controlled hallucination, beast machine, interoceptive inference"
+  - date: 2025-12-26
+    change: "Added The Hidden Spring (Mark Solms) - brainstem consciousness, affect, FEP collaboration"
+  - date: 2025-12-27
+    change: "Enhanced Fischer & Ravizza (Responsibility and Control) - comprehensive expansion to ~7000 words covering guidance control, reasons-responsiveness spectrum, mechanism ownership, Frankfurt cases, manipulation arguments, and connections to Frankfurt, Strawson, Wolf, Watson, Pereboom, Kane"
+  - date: 2025-12-27
+    change: "Enhanced Sartorio (Causation and Free Will) - comprehensive expansion to ~7000+ words covering ACS, causal metaphysics (intransitivity, extrinsicness, difference-making, absences), reasons-sensitivity, Frankfurt cases, manipulation arguments, comparison with Fischer/Ravizza, connections to Frankfurt, Lewis, Pereboom, Kane"
+  - date: 2025-12-27
+    change: "Enhanced Sinn und Existenz (Markus Gabriel) - comprehensive expansion to ~3800+ words covering Sinnfeldontologie, negative/positive ontology, 7 core concepts with Claim/Evidence/Implication structure, philosophical connections to 11 thinkers (Kant, Frege, Husserl, Heidegger, Sartre, Merleau-Ponty, Jaspers, Badiou, Harman, Meillassoux, Ferraris), 6 major criticisms with counter-arguments, ASCII concept maps, and detailed reading notes"

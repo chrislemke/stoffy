@@ -1,0 +1,113 @@
+# =============================================================================
+# FOLDERS INDEX - Stoffy's Structure
+# =============================================================================
+# Maps the folder structure and their purposes.
+# Structure is emergent - folders appear as needed.
+# =============================================================================
+
+meta:
+  version: "3.0"
+  last_updated: 2026-01-03
+  philosophy: "Folders emerge from use. This index reflects reality."
+
+# =============================================================================
+# CORE FOLDERS
+# =============================================================================
+
+folders:
+  indices:
+    path: indices/
+    purpose: "Nervous system - navigation indices for LLMs"
+    contains: "YAML indices, routing logic"
+    always_present: true
+
+  knowledge:
+    path: knowledge/
+    purpose: "Core knowledge, concepts, learnings"
+    contains: "Markdown files organized by topic"
+    grows_by: "Adding new insights and learnings"
+
+  memory:
+    path: memory/
+    purpose: "Temporal captures - sessions, moments, streams of thought"
+    contains: "Timestamped captures, session logs"
+    grows_by: "Recording moments and interactions"
+    subfolders:
+      quick: "Brief thoughts < 200 chars"
+      moments: "Captured moments and reflections"
+      notes: "Structured notes and reminders"
+      creative: "Narrative and artistic content"
+      inbox: "Unsorted memory captures"
+
+  ideas:
+    path: ideas/
+    purpose: "Seeds and explorations of new concepts"
+    contains: "Ideas at various stages of development"
+    grows_by: "Capturing and developing new concepts"
+    subfolders:
+      seeds: "New, unexplored ideas"
+      explored: "Ideas that have been developed"
+
+  archive:
+    path: archive/
+    purpose: "Preserved but deprecated content"
+    contains: "Old versions, superseded knowledge"
+    grows_by: "Archiving instead of deleting"
+
+  templates:
+    path: templates/
+    purpose: "Templates for creating new content"
+    contains: "Markdown templates for different content types"
+
+# =============================================================================
+# INTAKE PIPELINE FOLDERS
+# =============================================================================
+
+intake_folders:
+  _input:
+    path: _input/
+    purpose: "Drop zone for new files - monitored by Hazel"
+    contains: "Raw input files waiting to be processed"
+    managed_by: "Hazel triggers Claude Code"
+
+  _intake:
+    path: _intake/
+    purpose: "Intake processing pipeline folders"
+    subfolders:
+      processed: "Successfully processed items log"
+      pending: "Items awaiting human review"
+      archive: "Original files after processing"
+
+# =============================================================================
+# CLAUDE FLOW FOLDERS (SYSTEM)
+# =============================================================================
+
+system_folders:
+  claude:
+    path: .claude/
+    purpose: "Claude Code commands, agents, skills"
+    subfolders:
+      agents: "Agent definitions (e.g., intake-processor)"
+      skills: "Skills and commands (e.g., /intake)"
+
+  swarm:
+    path: .swarm/
+    purpose: "Claude Flow state and memory"
+    managed_by: "Claude Flow"
+
+# =============================================================================
+# LEGACY FOLDERS (TO BE ARCHIVED)
+# =============================================================================
+
+legacy:
+  note: "These existed before Stoffy's rebirth. Content should be reviewed and migrated."
+  folders:
+    - communication/
+    - project_management/
+    - team_development/
+    - tickets/
+    - todos/
+    - reports/
+    - idea_development/
+    - calendar/
+    - sessions/

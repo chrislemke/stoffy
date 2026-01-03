@@ -1,0 +1,168 @@
+# =============================================================================
+# THEMES INDEX - Philosophical Categories Registry
+# =============================================================================
+# Load this index when exploring philosophical themes or categorizing thoughts.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-25
+  domain: themes
+  purpose: "Track philosophical thematic categories"
+
+# =============================================================================
+# THEME REGISTRY
+# =============================================================================
+
+themes:
+  life_meaning:
+    path: thoughts/life_meaning/
+    description: "Purpose, fulfillment, what makes life worth living"
+    key_questions:
+      - "What is the meaning of life?"
+      - "What constitutes a good life?"
+      - "How do we find purpose?"
+    related_thinkers:
+      - confucius
+      - laozi
+      - siddhartha_gautama
+      - arthur_schopenhauer
+      - soren_kierkegaard
+      - friedrich_nietzsche
+      - jean_paul_sartre
+      - albert_camus
+      - martha_nussbaum
+    status: active
+
+  consciousness:
+    path: thoughts/consciousness/
+    description: "Mind, awareness, subjective experience, qualia"
+    key_questions:
+      - "What is consciousness?"
+      - "How does subjective experience arise?"
+      - "Is consciousness fundamental or emergent?"
+    related_thinkers:
+      - siddhartha_gautama
+      - rene_descartes
+      - georg_hegel
+      - arthur_schopenhauer
+      - william_james
+      - martin_heidegger
+      - ludwig_wittgenstein
+      - thomas_nagel
+      - daniel_dennett
+    status: active
+
+  free_will:
+    path: thoughts/free_will/
+    description: "Agency, determinism, moral responsibility, choice"
+    key_questions:
+      - "Do we have free will?"
+      - "Is determinism compatible with moral responsibility?"
+      - "What is the nature of choice?"
+    related_thinkers:
+      - augustine
+      - baruch_spinoza
+      - david_hume
+      - immanuel_kant
+      - arthur_schopenhauer
+      - soren_kierkegaard
+      - friedrich_nietzsche
+      - john_stuart_mill
+      - william_james
+      - jean_paul_sartre
+      - simone_de_beauvoir
+      - hannah_arendt
+      - daniel_dennett
+    status: active
+
+  morality:
+    path: thoughts/morality/
+    description: "Ethics, virtue, obligation, right action"
+    key_questions:
+      - "What makes an action right or wrong?"
+      - "Are moral truths objective?"
+      - "What is the foundation of ethics?"
+    related_thinkers:
+      - socrates
+      - plato
+      - aristotle
+      - confucius
+      - siddhartha_gautama
+      - augustine
+      - thomas_aquinas
+      - baruch_spinoza
+      - john_locke
+      - david_hume
+      - immanuel_kant
+      - friedrich_nietzsche
+      - john_stuart_mill
+      - karl_marx
+      - simone_de_beauvoir
+      - hannah_arendt
+      - albert_camus
+      - michel_foucault
+      - john_rawls
+      - thomas_nagel
+      - peter_singer
+      - martha_nussbaum
+    status: active
+
+  existence:
+    path: thoughts/existence/
+    description: "Being, reality, time, metaphysics"
+    key_questions:
+      - "What is the nature of reality?"
+      - "Why is there something rather than nothing?"
+      - "What is the nature of time?"
+    related_thinkers:
+      - plato
+      - aristotle
+      - laozi
+      - augustine
+      - thomas_aquinas
+      - maimonides
+      - nagarjuna
+      - rene_descartes
+      - baruch_spinoza
+      - georg_hegel
+      - soren_kierkegaard
+      - karl_marx
+      - martin_heidegger
+      - jean_paul_sartre
+      - simone_de_beauvoir
+    status: active
+
+  knowledge:
+    path: thoughts/knowledge/
+    description: "Epistemology, truth, belief, justification"
+    key_questions:
+      - "What is knowledge?"
+      - "How can we justify our beliefs?"
+      - "Is certainty possible?"
+    related_thinkers:
+      - socrates
+      - plato
+      - aristotle
+      - thomas_aquinas
+      - maimonides
+      - nagarjuna
+      - rene_descartes
+      - john_locke
+      - david_hume
+      - immanuel_kant
+      - georg_hegel
+      - william_james
+      - ludwig_wittgenstein
+      - michel_foucault
+    status: active
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Initial themes index creation with six philosophical categories"
+  - date: 2025-12-25
+    change: "Populated related_thinkers arrays for all six themes with 34 philosophers"

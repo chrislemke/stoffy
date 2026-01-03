@@ -1,0 +1,56 @@
+# =============================================================================
+# TEMPLATES INDEX - Document Templates Registry
+# =============================================================================
+# Load this index when creating new documents to find the right template.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-25
+  domain: templates
+  purpose: "Document templates for philosophical thought system"
+
+# =============================================================================
+# TEMPLATE REGISTRY
+# =============================================================================
+
+templates:
+  thought:
+    path: templates/thought.md
+    use_for: "Creating new philosophical explorations"
+
+  source:
+    path: templates/source.md
+    use_for: "Documenting books, articles, lectures"
+
+  thinker_profile:
+    path: templates/thinker_profile.md
+    use_for: "Creating philosopher/author profiles"
+
+  thinker_notes:
+    path: templates/thinker_notes.md
+    use_for: "Ongoing notes about a thinker's work"
+
+  thinker_reflections:
+    path: templates/thinker_reflections.md
+    use_for: "Deep engagement with a thinker's ideas"
+
+  thinker_references:
+    path: templates/thinker_references.md
+    use_for: "Tracking references to a thinker"
+
+# =============================================================================
+# USAGE RULE
+# =============================================================================
+# ALWAYS check this registry before creating any new file.
+# If a template exists for the document type, you MUST use it.
+# Templates contain YAML frontmatter for metadata - fill all fields.
+# Use ISO format for dates (YYYY-MM-DD).
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed for philosophical thought system"

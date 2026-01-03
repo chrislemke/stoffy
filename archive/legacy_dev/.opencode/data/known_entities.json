@@ -1,0 +1,389 @@
+{
+  "people": {
+    "alex_kumar": {
+      "full_name": "Alex Kumar",
+      "aliases": [
+        "alex_kumar",
+        "Kumar",
+        "Alex Kumar",
+        "A. Kumar",
+        "Alex"
+      ],
+      "folder": "communication/people/alex_kumar"
+    },
+    "anna_kowalski": {
+      "full_name": "Anna Kowalski",
+      "aliases": [
+        "Anna",
+        "Kowalski",
+        "anna_kowalski",
+        "Anna Kowalski",
+        "A. Kowalski"
+      ],
+      "folder": "communication/people/anna_kowalski"
+    },
+    "chris_lemke": {
+      "full_name": "Christopher Lemke",
+      "aliases": [
+        "C. Lemke",
+        "Christopher",
+        "Lemke",
+        "Christopher Lemke",
+        "chris_lemke"
+      ],
+      "folder": "communication/people/chris_lemke"
+    },
+    "sarah_mueller": {
+      "full_name": "Sarah Mueller",
+      "aliases": [
+        "sarah_mueller",
+        "Mueller",
+        "Sarah Mueller",
+        "Sarah",
+        "S. Mueller"
+      ],
+      "folder": "communication/people/sarah_mueller"
+    },
+    "lisa_weber": {
+      "full_name": "Lisa Weber",
+      "aliases": [
+        "lisa_weber",
+        "Weber",
+        "L. Weber",
+        "Lisa",
+        "Lisa Weber"
+      ],
+      "folder": "communication/people/lisa_weber"
+    },
+    "michael_schmidt": {
+      "full_name": "Michael Schmidt",
+      "aliases": [
+        "Michael",
+        "michael_schmidt",
+        "Michael Schmidt",
+        "M. Schmidt",
+        "Schmidt"
+      ],
+      "folder": "communication/people/michael_schmidt"
+    },
+    "julia_fischer": {
+      "full_name": "Julia Fischer",
+      "aliases": [
+        "Fischer",
+        "Julia Fischer",
+        "Julia",
+        "J. Fischer",
+        "julia_fischer"
+      ],
+      "folder": "communication/people/julia_fischer"
+    },
+    "thomas_bauer": {
+      "full_name": "Thomas Bauer",
+      "aliases": [
+        "T. Bauer",
+        "Thomas Bauer",
+        "thomas_bauer",
+        "Bauer",
+        "Thomas"
+      ],
+      "folder": "communication/people/thomas_bauer"
+    },
+    "stefan_wagner": {
+      "full_name": "Stefan Wagner",
+      "aliases": [
+        "stefan_wagner",
+        "Stefan"
+      ],
+      "folder": "communication/people/stefan_wagner"
+    },
+    "david_hoffmann": {
+      "full_name": "David Hoffmann",
+      "aliases": [
+        "D. Hoffmann",
+        "David Hoffmann",
+        "david_hoffmann",
+        "Hoffmann",
+        "David"
+      ],
+      "folder": "communication/people/david_hoffmann"
+    },
+    "peter_schneider": {
+      "full_name": "Peter Schneider",
+      "aliases": [
+        "Peter Schneider",
+        "P. Schneider",
+        "Schneider",
+        "peter_schneider",
+        "Peter"
+      ],
+      "folder": "communication/people/peter_schneider"
+    },
+    "markus_braun": {
+      "full_name": "Markus Braun",
+      "aliases": [
+        "M. Braun",
+        "markus_braun",
+        "Braun",
+        "Markus Braun",
+        "Markus"
+      ],
+      "folder": "communication/people/markus_braun"
+    },
+    "jan_meyer": {
+      "full_name": "Jan Meyer",
+      "aliases": [
+        "J. Meyer",
+        "Jan Meyer",
+        "Meyer",
+        "jan_meyer",
+        "Jan"
+      ],
+      "folder": "communication/people/jan_meyer"
+    },
+    "frank_schulz": {
+      "full_name": "Frank Schulz",
+      "aliases": [
+        "F. Schulz",
+        "Frank",
+        "Schulz",
+        "frank_schulz",
+        "Frank Schulz"
+      ],
+      "folder": "communication/people/frank_schulz"
+    },
+    "claudia_richter": {
+      "full_name": "Claudia Richter",
+      "aliases": [
+        "Claudia",
+        "C. Richter",
+        "Claudia Richter",
+        "claudia_richter",
+        "Richter"
+      ],
+      "folder": "communication/people/claudia_richter"
+    },
+    "lars_becker": {
+      "full_name": "Lars Becker",
+      "aliases": [
+        "L. Becker",
+        "lars_becker",
+        "Becker",
+        "Lars",
+        "Lars Becker"
+      ],
+      "folder": "communication/people/lars_becker"
+    },
+    "erik_nielsen": {
+      "full_name": "Erik Nielsen",
+      "aliases": [
+        "Nielsen",
+        "E. Nielsen",
+        "Erik Nielsen",
+        "erik_nielsen",
+        "Erik"
+      ],
+      "folder": "communication/people/erik_nielsen"
+    },
+    "marie_klein": {
+      "full_name": "Marie Klein",
+      "aliases": [
+        "Marie",
+        "Klein",
+        "marie_klein",
+        "Marie Klein",
+        "M. Klein"
+      ],
+      "folder": "communication/people/marie_klein"
+    },
+    "sofia_garcia": {
+      "full_name": "Sofia Garcia",
+      "aliases": [
+        "Garcia",
+        "sofia_garcia",
+        "S. Garcia",
+        "Sofia",
+        "Sofia Garcia"
+      ],
+      "folder": "communication/people/sofia_garcia"
+    },
+    "raj_patel": {
+      "full_name": "Raj Patel",
+      "aliases": [
+        "Raj Patel",
+        "Patel",
+        "Raj",
+        "R. Patel",
+        "raj_patel"
+      ],
+      "folder": "communication/people/raj_patel"
+    },
+    "nina_hartmann": {
+      "full_name": "Nina Hartmann",
+      "aliases": [
+        "N. Hartmann",
+        "nina_hartmann",
+        "Hartmann",
+        "Nina Hartmann",
+        "Nina"
+      ],
+      "folder": "communication/people/nina_hartmann"
+    },
+    "petra_berger": {
+      "full_name": "Petra Berger",
+      "aliases": [
+        "Berger",
+        "petra_berger",
+        "Petra",
+        "P. Berger",
+        "Petra Berger"
+      ],
+      "folder": "communication/people/petra_berger"
+    },
+    "hannah_krause": {
+      "full_name": "Hannah Krause",
+      "aliases": [
+        "hannah_krause",
+        "Krause",
+        "Hannah Krause",
+        "Hannah",
+        "H. Krause"
+      ],
+      "folder": "communication/people/hannah_krause"
+    },
+    "milan_novak": {
+      "full_name": "Milan Novak",
+      "aliases": [
+        "M. Novak",
+        "Milan Novak",
+        "Milan",
+        "milan_novak",
+        "Novak"
+      ],
+      "folder": "communication/people/milan_novak"
+    },
+    "max_stein": {
+      "full_name": "Max Stein",
+      "aliases": [
+        "M. Stein",
+        "Stein",
+        "Max",
+        "max_stein",
+        "Max Stein"
+      ],
+      "folder": "communication/people/max_stein"
+    },
+    "paul_lange": {
+      "full_name": "Paul Lange",
+      "aliases": [
+        "Lange",
+        "P. Lange",
+        "paul_lange",
+        "Paul Lange",
+        "Paul"
+      ],
+      "folder": "communication/people/paul_lange"
+    },
+    "felix_wolf": {
+      "full_name": "Felix Wolf",
+      "aliases": [
+        "Wolf",
+        "felix_wolf",
+        "F. Wolf",
+        "Felix Wolf",
+        "Felix"
+      ],
+      "folder": "communication/people/felix_wolf"
+    }
+  },
+  "projects": {
+    "flight_search_optimizer": {
+      "name": "Flight Search Optimizer",
+      "aliases": [
+        "Flight Search Optimizer",
+        "flight_search_optimizer",
+        "flight search optimizer"
+      ],
+      "folder": "project_management/flight_search_optimizer"
+    },
+    "booking_funnel_analytics": {
+      "name": "Booking Funnel Analytics",
+      "aliases": [
+        "Booking Funnel Analytics",
+        "booking_funnel_analytics",
+        "booking funnel analytics"
+      ],
+      "folder": "project_management/booking_funnel_analytics"
+    },
+    "price_prediction_engine": {
+      "name": "Price Prediction Engine",
+      "aliases": [
+        "Price Prediction Engine",
+        "price_prediction_engine",
+        "price prediction engine"
+      ],
+      "folder": "project_management/price_prediction_engine"
+    },
+    "destination_recommender": {
+      "name": "Destination Recommender",
+      "aliases": [
+        "Destination Recommender",
+        "destination_recommender",
+        "destination recommender"
+      ],
+      "folder": "project_management/destination_recommender"
+    },
+    "conversational_ai_bot": {
+      "name": "Conversational AI Bot",
+      "aliases": [
+        "Conversational AI Bot",
+        "conversational_ai_bot",
+        "conversational ai bot",
+        "chatbot"
+      ],
+      "folder": "project_management/conversational_ai_bot"
+    },
+    "service_fee_optimization": {
+      "name": "Service Fee Optimization",
+      "aliases": [
+        "Service Fee Optimization",
+        "service_fee_optimization",
+        "service fee optimization"
+      ],
+      "folder": "project_management/service_fee_optimization"
+    }
+  },
+  "ideas": {
+    "smart_price_alerts": {
+      "name": "Smart Price Alerts",
+      "aliases": [
+        "Smart Price Alerts",
+        "smart_price_alerts"
+      ],
+      "folder": "idea_development/smart_price_alerts"
+    },
+    "ml_powered_search": {
+      "name": "ML Powered Search",
+      "aliases": [
+        "ML Powered Search",
+        "ml_powered_search"
+      ],
+      "folder": "idea_development/ml_powered_search"
+    },
+    "travel_assistant_bot": {
+      "name": "Travel Assistant Bot",
+      "aliases": [
+        "Travel Assistant Bot",
+        "travel_assistant_bot"
+      ],
+      "folder": "idea_development/travel_assistant_bot"
+    }
+  },
+  "ticket_prefixes": [
+    "FLIGHT",
+    "SEARCH",
+    "BOOK",
+    "ML",
+    "DATA"
+  ],
+  "generated_at": "2025-12-13T12:00:00.000000"
+}

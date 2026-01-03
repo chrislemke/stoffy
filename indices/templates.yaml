@@ -1,0 +1,42 @@
+# =============================================================================
+# TEMPLATES INDEX - Content Creation Templates
+# =============================================================================
+# Use these templates when creating new content.
+# Templates ensure consistent structure and metadata.
+# =============================================================================
+
+meta:
+  version: "3.0"
+  last_updated: 2026-01-03
+
+# =============================================================================
+# TEMPLATES
+# =============================================================================
+
+templates:
+  knowledge:
+    path: templates/knowledge.md
+    use_for: "Capturing concepts, learnings, insights"
+    goes_in: "knowledge/"
+
+  memory:
+    path: templates/memory.md
+    use_for: "Recording moments, sessions, streams of thought"
+    goes_in: "memory/"
+
+  idea:
+    path: templates/idea.md
+    use_for: "Capturing ideas that might grow"
+    goes_in: "knowledge/ideas/"
+
+# =============================================================================
+# USAGE
+# =============================================================================
+
+usage:
+  rule: "When creating new content, use the appropriate template"
+  steps:
+    - "Find the template that matches your content type"
+    - "Copy to the appropriate folder"
+    - "Fill in the frontmatter (dates, tags, etc.)"
+    - "Add entry to the relevant index"

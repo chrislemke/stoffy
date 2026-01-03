@@ -1,0 +1,340 @@
+# =============================================================================
+# INTAKE INDEX - Intelligent File Processing Pipeline
+# =============================================================================
+# Configuration for the _input -> processing -> storage pipeline.
+# Hazel monitors _input/ and triggers Claude Code.
+# This index defines how content gets triaged and processed.
+# =============================================================================
+
+meta:
+  version: "2.0"
+  created: 2025-01-03
+  description: "Intake processing rules and routing"
+
+# =============================================================================
+# CORE PHILOSOPHY
+# =============================================================================
+#
+# COMPUTE IS CHEAP. INSIGHT IS VALUABLE.
+#
+# - If 10 swarms would give 10 perspectives, spawn 10 swarms
+# - If deep research requires parallel exploration, do it
+# - Never hustle or cut corners to save compute
+# - The goal is UNDERSTANDING, not efficiency
+# - Simple storage is for truly simple content
+# - When in doubt, process MORE not less
+#
+# Claude decides how to use Claude Flow to reach the goal.
+# Sometimes that means no swarms. Sometimes it means many.
+# =============================================================================
+
+# =============================================================================
+# PIPELINE OVERVIEW
+# =============================================================================
+#
+# _input/           → Hazel monitors this folder
+#     ↓
+# [Claude Code]     → Reads content, runs triage
+#     ↓
+# [Decision Engine] → Determines: simple storage OR complex processing
+#     │
+#     ├─→ SIMPLE: Direct to templates → store in knowledge/memory/ideas
+#     │
+#     └─→ COMPLEX: Claude Flow swarms → enriched processing → storage
+#
+# =============================================================================
+
+folders:
+  input: _input/                    # Hazel monitors this
+  processed: _intake/processed/     # Successfully processed items
+  pending: _intake/pending/         # Items waiting for human review
+  archive: _intake/archive/         # Input files after processing
+
+# =============================================================================
+# CONTENT TYPE DETECTION
+# =============================================================================
+
+content_types:
+  thought:
+    indicators:
+      - short_form: true           # < 500 chars typically
+      - personal_pronouns: [I, my, me, we]
+      - reflective_words: [thinking, wondering, realized, noticed, feel]
+    default_template: memory
+    default_folder: memory/moments/
+    processing: simple
+
+  idea:
+    indicators:
+      - keywords: [idea, concept, what if, could we, maybe, imagine]
+      - future_oriented: true
+      - exploratory_tone: true
+    default_template: idea
+    default_folder: ideas/seeds/
+    processing: evaluate  # May need complex processing if promising
+
+  knowledge:
+    indicators:
+      - factual_tone: true
+      - references: true
+      - structured_content: true
+      - keywords: [definition, explanation, works, means, is]
+    default_template: knowledge
+    default_folder: knowledge/
+    processing: evaluate  # Check for connections to existing knowledge
+
+  note:
+    indicators:
+      - bullet_points: true
+      - short_items: true
+      - reminder_words: [remember, don't forget, note to self, todo]
+    default_template: memory
+    default_folder: memory/notes/
+    processing: simple
+
+  research:
+    indicators:
+      - citations: true
+      - external_sources: true
+      - analytical_language: true
+      - length: "> 1000 chars"
+    default_template: knowledge
+    default_folder: knowledge/research/
+    processing: complex  # Needs synthesis with existing knowledge
+
+  creative:
+    indicators:
+      - narrative_style: true
+      - metaphors: true
+      - artistic_language: true
+    default_template: memory
+    default_folder: memory/creative/
+    processing: evaluate
+
+# =============================================================================
+# COMPLEXITY ASSESSMENT
+# =============================================================================
+
+complexity_triggers:
+  # Triggers for COMPLEX processing (Claude Flow swarms)
+  needs_swarm:
+    - connections_possible: "Content references concepts in existing knowledge"
+    - synthesis_opportunity: "Multiple ideas that could be combined"
+    - research_needed: "Content asks questions or is incomplete"
+    - long_form: "Content exceeds 2000 characters"
+    - multi_topic: "Content covers more than 2 distinct topics"
+    - ambiguous: "Content meaning is unclear or needs interpretation"
+    - actionable: "Content contains potential todos or follow-ups"
+    - philosophical: "Content explores deep or abstract concepts"
+
+  # Indicators for SIMPLE processing (direct storage)
+  simple_storage:
+    - self_contained: "Content is complete and clear on its own"
+    - short_thought: "Quick observation or note < 500 chars"
+    - no_connections: "Doesn't relate to existing knowledge"
+    - ephemeral: "Momentary thought, not meant to be permanent"
+    - clear_category: "Obviously fits one template type"
+
+# =============================================================================
+# SWARM PATTERNS FOR COMPLEX PROCESSING
+# =============================================================================
+
+swarm_patterns:
+  # ---------------------------------------------------------------------------
+  # SINGLE SWARM PATTERNS (for focused tasks)
+  # ---------------------------------------------------------------------------
+
+  connection_finder:
+    purpose: "Find links between new content and existing knowledge"
+    topology: mesh
+    agents:
+      - type: researcher
+        task: "Search existing knowledge/indices for related concepts"
+      - type: analyst
+        task: "Identify connection strength and relevance"
+      - type: scribe
+        task: "Document connections and update related entries"
+    output: "Connection map with suggested links"
+
+  synthesis_engine:
+    purpose: "Combine new content with existing to create insights"
+    topology: hierarchical
+    agents:
+      - type: coordinator
+        task: "Orchestrate synthesis workflow"
+      - type: analyst
+        task: "Break down content into core concepts"
+      - type: researcher
+        task: "Find overlapping patterns in knowledge base"
+      - type: synthesizer
+        task: "Generate new insights from combination"
+    output: "Synthesized knowledge entry with sources"
+
+  deep_explorer:
+    purpose: "Explore a promising idea in depth"
+    topology: star
+    agents:
+      - type: coordinator
+        task: "Guide exploration direction"
+      - type: researcher
+        task: "Expand on implications and possibilities"
+      - type: critic
+        task: "Challenge assumptions and find gaps"
+      - type: documenter
+        task: "Capture exploration as structured knowledge"
+    output: "Expanded idea with pros/cons/next steps"
+
+  question_resolver:
+    purpose: "Answer questions or fill knowledge gaps"
+    topology: mesh
+    agents:
+      - type: researcher
+        task: "Gather relevant information"
+      - type: analyst
+        task: "Synthesize answer from sources"
+      - type: validator
+        task: "Verify accuracy and completeness"
+    output: "Resolved answer as knowledge entry"
+
+  thought_weaver:
+    purpose: "Process philosophical or reflective content"
+    topology: hierarchical
+    agents:
+      - type: philosopher
+        task: "Analyze themes and underlying assumptions"
+      - type: connector
+        task: "Link to philosophical knowledge base"
+      - type: synthesizer
+        task: "Weave into coherent reflection"
+    output: "Enriched philosophical entry"
+
+  # ---------------------------------------------------------------------------
+  # MULTI-SWARM PATTERNS (for complex research)
+  # ---------------------------------------------------------------------------
+  # Use these when content requires multiple perspectives or deep exploration.
+  # DON'T HESITATE to spawn many swarms if the content warrants it.
+  # ---------------------------------------------------------------------------
+
+  perspective_matrix:
+    purpose: "Analyze content from N different perspectives simultaneously"
+    when_to_use: "Content is complex, controversial, or multi-faceted"
+    strategy: "Spawn one swarm per perspective, aggregate insights"
+    example_perspectives:
+      - philosophical: "What does this mean for human understanding?"
+      - practical: "How could this be applied?"
+      - critical: "What are the weaknesses or blind spots?"
+      - historical: "How does this connect to what came before?"
+      - future: "What implications does this have for what comes next?"
+      - personal: "How does this relate to existing knowledge/goals?"
+      - contrarian: "What if the opposite were true?"
+      - systems: "How does this fit into larger patterns?"
+      - emotional: "What feelings or intuitions does this evoke?"
+      - creative: "What new possibilities does this open?"
+    execution: |
+      For each relevant perspective, spawn a dedicated swarm:
+      Task("Philosophical Analyst", "Analyze from philosophical lens...", "analyst")
+      Task("Practical Analyst", "Analyze from practical lens...", "analyst")
+      ... (as many as needed)
+
+  deep_research_cluster:
+    purpose: "Conduct thorough research on a topic requiring depth"
+    when_to_use: "Content opens questions that need real investigation"
+    strategy: "Spawn specialized research swarms for each sub-topic"
+    execution: |
+      1. First swarm: Break down the topic into research questions
+      2. For each question: Spawn a dedicated research swarm
+      3. Synthesis swarm: Combine all findings
+      4. Critic swarm: Challenge and refine
+      Example: Topic "consciousness" might spawn:
+        - Swarm 1: Neuroscience perspective
+        - Swarm 2: Philosophical traditions
+        - Swarm 3: AI/computational theories
+        - Swarm 4: Phenomenological accounts
+        - Swarm 5: Cross-cultural views
+        - Swarm 6: Synthesis and integration
+
+  hive_mind_exploration:
+    purpose: "Massive parallel exploration of an idea space"
+    when_to_use: "A seed idea could branch in many directions"
+    strategy: "Spawn explorer swarms that report back, then spawn more"
+    execution: |
+      Wave 1: Initial exploration swarms (3-5)
+      Wave 2: Follow promising threads (spawn more swarms as needed)
+      Wave 3: Synthesis and documentation
+      No upper limit - let the content dictate how many swarms
+
+  knowledge_archaeology:
+    purpose: "Deep dive into existing knowledge base connections"
+    when_to_use: "New content might connect to many existing entries"
+    strategy: "One swarm per knowledge domain to find connections"
+    execution: |
+      For each index/domain in Stoffy:
+        - Spawn connection-finder swarm
+        - Find all potential links
+      Then: Synthesis swarm to map the connection network
+
+# =============================================================================
+# PROCESSING DECISIONS
+# =============================================================================
+
+decision_tree:
+  - condition: "Content is < 200 chars and clearly a quick note"
+    action: simple_storage
+    template: memory
+    folder: memory/quick/
+
+  - condition: "Content mentions 'idea' or 'what if' and is promising"
+    action: evaluate_then_process
+    questions:
+      - "Is this idea worth exploring further?"
+      - "Does it connect to existing interests or projects?"
+    if_yes: swarm_pattern.deep_explorer
+    if_no: simple_storage
+
+  - condition: "Content is factual and relates to existing knowledge"
+    action: complex_processing
+    swarm_pattern: connection_finder
+    then: knowledge_storage
+
+  - condition: "Content is philosophical or reflective and substantial"
+    action: complex_processing
+    swarm_pattern: thought_weaver
+    folder: knowledge/philosophy/
+
+  - condition: "Content contains questions or incomplete thoughts"
+    action: complex_processing
+    swarm_pattern: question_resolver
+
+  - condition: "Content is long-form (> 2000 chars)"
+    action: complex_processing
+    swarm_pattern: synthesis_engine
+
+  - condition: "Default fallback"
+    action: simple_storage
+    template: memory
+    folder: memory/inbox/
+
+# =============================================================================
+# POST-PROCESSING
+# =============================================================================
+
+post_processing:
+  always:
+    - update_indices: true
+    - move_original: "_intake/archive/"
+    - log_processing: "_intake/processed/log.yaml"
+
+  if_complex:
+    - create_connections: true
+    - update_related_entries: true
+    - generate_summary: true
+
+# =============================================================================
+# HAZEL INTEGRATION
+# =============================================================================
+
+hazel_trigger:
+  command: |
+    cd /Users/chris/Developer/stoffy && claude --dangerously-skip-permissions "Process new file in _input: {file_path}"
+  alternative: |
+    cd /Users/chris/Developer/stoffy && claude "/intake {file_path}"

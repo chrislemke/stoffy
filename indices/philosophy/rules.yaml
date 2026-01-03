@@ -1,0 +1,236 @@
+# =============================================================================
+# RULES INDEX - Global Behavioral Rules
+# =============================================================================
+# Load this index when needing behavioral rules, automation triggers,
+# naming conventions, or auto-detection patterns.
+# =============================================================================
+
+# =============================================================================
+# MEMORY FILE PROCESSING RULE (CRITICAL)
+# =============================================================================
+# This is the most important behavioral rule in the repository.
+# It ensures human feedback persists and takes precedence.
+# =============================================================================
+
+memory_processing:
+  description: |
+    When processing any file xyz.md, ALWAYS check for and process xyz_memory.md.
+    Memory file information has HIGHER WEIGHT than the source file.
+  pattern: "<filename>.md -> <filename>_memory.md"
+  priority: "Memory file overrides/supplements source file"
+  steps:
+    - "1. Read xyz.md (the source file)"
+    - "2. Check if xyz_memory.md exists in the same directory"
+    - "3. If memory file exists, read it and apply its learnings"
+    - "4. Memory file corrections OVERRIDE source file information"
+    - "5. Memory file insights SUPPLEMENT source file context"
+  weight_hierarchy:
+    - "1. xyz_memory.md (highest - human feedback)"
+    - "2. xyz.md (base content)"
+  examples:
+    - source: "thinkers/karl_friston/profile.md"
+      memory: "thinkers/karl_friston/profile_memory.md"
+      behavior: "Apply corrections from profile_memory.md before processing profile.md content"
+    - source: "thoughts/free_will/thought.md"
+      memory: "thoughts/free_will/thought_memory.md"
+      behavior: "Memory insights supplement and correct the thought content"
+
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-25
+  domain: rules
+  purpose: "Behavioral rules for philosophical thought management"
+
+# =============================================================================
+# AUTO-INGESTION RULE
+# =============================================================================
+
+auto_ingestion:
+  pattern: "@<path_to_entity> <information>"
+  description: |
+    If user input matches this pattern, AUTOMATICALLY update the
+    corresponding documentation without asking for confirmation.
+  steps:
+    - "1. Resolve path to most relevant file (thought.md, notes.md, etc.)"
+    - "2. Append information immediately"
+    - "3. Confirm briefly (e.g., 'Added ... to ...')"
+  examples:
+    - input: "@thinkers/aristotle/ key insight about virtue ethics"
+      action: "Add insight to aristotle/notes.md"
+    - input: "@thoughts/life_meaning/meaning_through_creation/ new argument"
+      action: "Add argument to the thought file"
+
+# =============================================================================
+# PHILOSOPHICAL CONTENT DETECTION
+# =============================================================================
+
+thought_detection:
+  description: |
+    When user expresses philosophical thoughts or reflections,
+    offer to capture them in the appropriate theme folder.
+  trigger_phrases:
+    - "I've been thinking about..."
+    - "What if..."
+    - "I wonder whether..."
+    - "It seems to me that..."
+    - "I believe that..."
+    - "My position on..."
+  action: "Suggest creating a thought in thoughts/<theme>/"
+
+source_detection:
+  description: |
+    When user mentions reading or engaging with philosophical works,
+    offer to create a source entry.
+  trigger_phrases:
+    - "I read..."
+    - "According to..."
+    - "In [Book/Article]..."
+    - "[Author] argues..."
+    - "[Author] wrote..."
+  action: "Suggest creating a source entry in sources/<type>/"
+
+thinker_detection:
+  description: |
+    When user discusses a philosopher or author repeatedly,
+    offer to create a thinker profile.
+  trigger_phrases:
+    - "[Philosopher] believed..."
+    - "[Author]'s main argument..."
+    - "I agree/disagree with [Thinker]..."
+  action: "Suggest creating a thinker profile in thinkers/<name>/"
+
+# =============================================================================
+# CROSS-REFERENCING RULES
+# =============================================================================
+
+cross_referencing:
+  - trigger: "thinker name mentioned in thought"
+    action: "Add to thought's related_thinkers field"
+  - trigger: "source referenced in thought"
+    action: "Link source in thought file"
+  - trigger: "theme connection discovered"
+    action: "Add to related_thoughts in both thoughts"
+
+# =============================================================================
+# THEME CATEGORIZATION
+# =============================================================================
+
+theme_keywords:
+  life_meaning:
+    - meaning
+    - purpose
+    - fulfillment
+    - worth
+    - value
+    - significance
+    - happiness
+    - good life
+    - flourishing
+    - eudaimonia
+    - absurd
+  consciousness:
+    - consciousness
+    - mind
+    - awareness
+    - experience
+    - qualia
+    - subjective
+    - mental
+    - perception
+    - thought
+    - self-awareness
+  free_will:
+    - free will
+    - determinism
+    - choice
+    - agency
+    - responsibility
+    - libertarian
+    - compatibilism
+    - causation
+    - decision
+  morality:
+    - moral
+    - ethical
+    - virtue
+    - duty
+    - obligation
+    - right
+    - wrong
+    - good
+    - evil
+    - justice
+    - ought
+    - should
+  existence:
+    - existence
+    - being
+    - reality
+    - metaphysics
+    - ontology
+    - nothing
+    - something
+    - time
+    - space
+    - substance
+    - essence
+  knowledge:
+    - knowledge
+    - epistemology
+    - truth
+    - belief
+    - justification
+    - certainty
+    - doubt
+    - skepticism
+    - rationalism
+    - empiricism
+
+# =============================================================================
+# NAMING CONVENTIONS
+# =============================================================================
+
+naming_conventions:
+  folders: lowercase_with_underscores
+  files: lowercase_with_underscores.md
+  dates: "ISO 8601 (YYYY-MM-DD)"
+  thinker_folders: "<first>_<last>/"
+  thought_files: "YYYY-MM-DD_<topic>.md"
+  source_files: "<short_title>.md"
+
+# =============================================================================
+# TEMPLATE USAGE RULE
+# =============================================================================
+
+template_rule: |
+  ALWAYS check the templates registry (indices/templates.yaml) before creating any new file.
+  If a template exists for the document type, you MUST use it.
+
+# =============================================================================
+# THOUGHT LIFECYCLE
+# =============================================================================
+
+thought_lifecycle:
+  stages:
+    - seed: "Initial spark or question"
+    - exploring: "Actively thinking through, gathering perspectives"
+    - developing: "Building a coherent position"
+    - crystallized: "Clear position formed and articulated"
+    - challenged: "Position under reconsideration"
+    - integrated: "Woven into broader worldview"
+  transitions:
+    seed_to_exploring: "Begin active engagement with the question"
+    exploring_to_developing: "Core insight emerges"
+    developing_to_crystallized: "Position clearly articulated"
+    crystallized_to_challenged: "Encounter strong counterargument"
+    crystallized_to_integrated: "Connected to other positions"
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed for philosophical thought management system"

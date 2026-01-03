@@ -1,0 +1,130 @@
+# =============================================================================
+# ROOT INDEX - Entry Point for Philosophical Thought System
+# =============================================================================
+# Load this file FIRST. It provides routing to domain-specific indices.
+# Only load other indices when needed for the specific task.
+# =============================================================================
+
+meta:
+  version: "2.0"
+  last_updated: 2025-12-25
+  structure: hierarchical
+  documentation: indices/CLAUDE.md
+  purpose: "Central navigation for philosophical thought management"
+
+# =============================================================================
+# AVAILABLE INDICES
+# =============================================================================
+
+indices:
+  thinkers:
+    path: indices/thinkers.yaml
+    purpose: "Philosophers, authors, mentors - influences on thinking"
+    load_when: "Looking up a thinker, analyzing influences, profile access"
+
+  themes:
+    path: indices/themes.yaml
+    purpose: "Philosophical categories - life meaning, consciousness, etc."
+    load_when: "Exploring themes, categorizing thoughts, finding connections"
+
+  thoughts:
+    path: indices/thoughts.yaml
+    purpose: "Active thought explorations and reflections"
+    load_when: "Thought status, developing ideas, tracking progress"
+
+  sources:
+    path: indices/sources.yaml
+    purpose: "Books, articles, lectures - reference materials"
+    load_when: "Looking up references, citations, reading list"
+
+  templates:
+    path: indices/templates.yaml
+    purpose: "Document templates for thoughts, thinkers, sources"
+    load_when: "Creating new files"
+
+  folders:
+    path: indices/folders.yaml
+    purpose: "Repository structure and folder purposes"
+    load_when: "Navigation, understanding structure"
+
+  rules:
+    path: indices/rules.yaml
+    purpose: "Behavioral rules for auto-detection and conventions"
+    load_when: "Auto-ingestion, naming conventions, theme detection"
+
+  skills:
+    path: indices/skills.yaml
+    purpose: "Claude Code skills for philosophical analysis"
+    load_when: "Skill lookup, agent configuration, methodology selection"
+
+  memories:
+    path: indices/memories.yaml
+    purpose: "Human feedback memory files from student agent"
+    load_when: "Viewing learned corrections, retrieving past feedback, memory lookup"
+
+# =============================================================================
+# INTENT -> INDEX ROUTING
+# =============================================================================
+
+intent_mappings:
+  - intent: "information about a philosopher or author"
+    keywords: [philosopher, thinker, author, mentor, who is, influenced by, argued, believed]
+    load_index: indices/thinkers.yaml
+    then: "Look up thinker -> read their profile.md"
+
+  - intent: "explore a philosophical theme"
+    keywords: [meaning, consciousness, free will, morality, existence, knowledge, theme, category]
+    load_index: indices/themes.yaml
+    then: "Find theme -> explore thoughts/ folder"
+
+  - intent: "thought or reflection"
+    keywords: [thought, reflection, idea, wondering, pondering, what if, position, argument]
+    load_index: indices/thoughts.yaml
+    then: "Find or create thought exploration"
+
+  - intent: "source or reference"
+    keywords: [book, article, lecture, read, source, reference, citation, according to]
+    load_index: indices/sources.yaml
+    then: "Look up source -> read reference file"
+
+  - intent: "create new documentation"
+    keywords: [create, new, template, document, start]
+    load_index: indices/templates.yaml
+    then: "Use appropriate template"
+
+  - intent: "navigation or structure"
+    keywords: [where, folder, structure, find, navigate]
+    load_index: indices/folders.yaml
+    then: "Understand repository structure"
+
+  - intent: "skill or methodology"
+    keywords: [skill, method, methodology, dialectic, phenomenology, genealogy, analysis, thought experiment, argument map]
+    load_index: indices/skills.yaml
+    then: "Find skill -> load skill SKILL.md"
+
+  - intent: "feedback or memory"
+    keywords: [memory, feedback, learned, correction, wrong, remember, important, insight, preference]
+    load_index: indices/memories.yaml
+    then: "Look up memory -> view learned feedback"
+
+# =============================================================================
+# QUICK REFERENCE
+# =============================================================================
+
+repository_type: philosophical_thought_management
+owner: chris_lemke
+main_docs:
+  overview: CLAUDE.md
+  index_docs: indices/CLAUDE.md
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-31
+    change: "Added memories index for human feedback learning (student agent)"
+  - date: 2025-12-29
+    change: "Added skills index for 23 Claude Code philosophical skills"
+  - date: 2025-12-25
+    change: "Transformed for philosophical thought management system"

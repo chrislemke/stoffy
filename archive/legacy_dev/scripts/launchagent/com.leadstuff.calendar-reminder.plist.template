@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+    Calendar Reminder LaunchAgent Template
+
+    This template is processed by 'make install-reminder-daemon' which substitutes:
+    - {{PYTHON_PATH}} - Path to Python in the conda environment
+    - {{REPO_ROOT}} - Absolute path to the lead_stuff repository
+
+    The generated plist is installed to ~/Library/LaunchAgents/
+
+    To manually manage:
+    - Load:   launchctl load ~/Library/LaunchAgents/com.leadstuff.calendar-reminder.plist
+    - Unload: launchctl unload ~/Library/LaunchAgents/com.leadstuff.calendar-reminder.plist
+    - Status: launchctl list | grep com.leadstuff.calendar-reminder
+-->
+<plist version="1.0">
+<dict>
+    <!-- Unique identifier for the LaunchAgent -->
+    <key>Label</key>
+    <string>com.leadstuff.calendar-reminder</string>
+
+    <!-- Command to execute -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{PYTHON_PATH}}</string>
+        <string>{{REPO_ROOT}}/scripts/calendar_reminder.py</string>
+        <string>check</string>
+    </array>
+
+    <!-- Run every 5 minutes (300 seconds) -->
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <!-- Start automatically when the LaunchAgent is loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Working directory -->
+    <key>WorkingDirectory</key>
+    <string>{{REPO_ROOT}}</string>
+
+    <!-- Process settings -->
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <!-- Low priority to not interfere with other work -->
+    <key>LowPriorityIO</key>
+    <true/>
+
+    <!-- Nice level for CPU scheduling (positive = lower priority) -->
+    <key>Nice</key>
+    <integer>10</integer>
+</dict>
+</plist>

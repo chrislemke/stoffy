@@ -1,0 +1,352 @@
+# =============================================================================
+# SKILLS INDEX - Claude Code Skills for Philosophical Analysis
+# =============================================================================
+# This index catalogs all philosophical skills available to Claude Code agents.
+# Skills auto-trigger based on keywords in the description field.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-29
+  domain: skills
+  base_path: .claude/skills/
+  documentation: "Each skill has SKILL.md + optional reference files"
+
+# =============================================================================
+# SKILL CATEGORIES
+# =============================================================================
+
+categories:
+  tradition:
+    description: "Skills organized by philosophical tradition/epoch"
+    count: 8
+
+  domain:
+    description: "Skills organized by philosophical domain/subfield"
+    count: 9
+
+  methodology:
+    description: "Skills for specific philosophical methods"
+    count: 6
+
+# =============================================================================
+# TRADITION SKILLS (8)
+# =============================================================================
+
+tradition_skills:
+
+  ancient-greek:
+    path: .claude/skills/ancient-greek/
+    description: "Pre-Socratics through Hellenistic philosophy"
+    triggers: ["Socrates", "Plato", "Aristotle", "Stoic", "Epicurean", "eudaimonia", "virtue ethics", "elenchus", "four causes", "Forms", "Academy", "Lyceum"]
+    key_files:
+      - SKILL.md
+      - methods.md
+      - vocabulary.md
+      - figures.md
+      - debates.md
+      - sources.md
+    preload_for_agents: [philosophical-analyst, symposiarch]
+    related_themes: [morality, knowledge, existence]
+
+  eastern-traditions:
+    path: .claude/skills/eastern-traditions/
+    description: "Buddhist, Daoist, Confucian, Hindu philosophy"
+    triggers: ["Buddhist", "Buddhism", "Tao", "Dao", "Daoist", "wu wei", "sunyata", "emptiness", "Middle Way", "Confucius", "Confucian", "dharma", "karma", "moksha", "Zen", "Chan"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, cross-cultural-bridge]
+    related_themes: [consciousness, existence, morality]
+
+  medieval-scholastic:
+    path: .claude/skills/medieval-scholastic/
+    description: "Aquinas, Augustine, Islamic and Jewish scholasticism"
+    triggers: ["Aquinas", "Scholastic", "quaestio", "faith and reason", "natural law", "Augustine", "Maimonides", "Averroes", "Avicenna", "scholasticism", "summa", "disputatio"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, philosophical-historian]
+    related_themes: [knowledge, existence, morality]
+
+  modern-rationalism-empiricism:
+    path: .claude/skills/modern-rationalism-empiricism/
+    description: "Descartes through Kant - rationalism and empiricism"
+    triggers: ["Cartesian", "cogito", "tabula rasa", "transcendental", "synthetic a priori", "Descartes", "Locke", "Hume", "Leibniz", "Spinoza", "Berkeley", "Kant", "critique", "categories"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [knowledge, existence, consciousness]
+
+  german-idealism-existentialism:
+    path: .claude/skills/german-idealism-existentialism/
+    description: "Hegel through Sartre - idealism and existentialism"
+    triggers: ["Hegelian", "dialectic", "Aufhebung", "Dasein", "existentialism", "authenticity", "Hegel", "Kierkegaard", "Nietzsche", "Heidegger", "Sartre", "being-in-the-world", "phenomenology", "Geist", "absolute"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, symposiarch]
+    related_themes: [existence, consciousness, free_will]
+
+  analytic-philosophy:
+    path: .claude/skills/analytic-philosophy/
+    description: "Frege through contemporary analytic tradition"
+    triggers: ["analytic", "Wittgenstein", "possible worlds", "qualia", "functionalism", "Frege", "Russell", "Carnap", "Quine", "Kripke", "Lewis", "language games", "logical positivism", "ordinary language"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, devils-advocate]
+    related_themes: [knowledge, consciousness, language]
+
+  continental-critical:
+    path: .claude/skills/continental-critical/
+    description: "Post-structuralism, Critical Theory, Frankfurt School"
+    triggers: ["Foucault", "deconstruction", "Derrida", "critical theory", "genealogy", "Frankfurt School", "Adorno", "Habermas", "Deleuze", "power/knowledge", "différance", "poststructuralism"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, philosophical-historian]
+    related_themes: [knowledge, morality, existence]
+
+  african-ubuntu:
+    path: .claude/skills/african-ubuntu/
+    description: "Ubuntu ethics, sage philosophy, postcolonial thought"
+    triggers: ["Ubuntu", "African philosophy", "communitarian", "postcolonial", "Africana", "sage philosophy", "Wiredu", "Mbembe", "Appiah", "decolonization", "motho ke motho"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, cross-cultural-bridge]
+    related_themes: [morality, existence, knowledge]
+
+# =============================================================================
+# DOMAIN SKILLS (9)
+# =============================================================================
+
+domain_skills:
+
+  metaphysics-ontology:
+    path: .claude/skills/metaphysics-ontology/
+    description: "Being, existence, causation, identity, modality"
+    triggers: ["ontological", "metaphysical", "what exists", "substance", "essence", "being", "existence", "causation", "identity", "modality", "possible worlds", "necessity", "particulars", "universals"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [existence]
+
+  epistemology:
+    path: .claude/skills/epistemology/
+    description: "Knowledge, justification, skepticism"
+    triggers: ["knowledge", "justification", "Gettier", "skepticism", "certainty", "belief", "truth", "evidence", "epistemic", "rationalism", "empiricism", "foundationalism", "coherentism"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, devils-advocate]
+    related_themes: [knowledge]
+
+  ethics:
+    path: .claude/skills/ethics/
+    description: "Metaethics, normative ethics, applied ethics"
+    triggers: ["moral", "ethical", "right", "wrong", "virtue", "duty", "consequences", "deontology", "utilitarianism", "virtue ethics", "metaethics", "normative", "ought", "good", "evil"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, symposiarch]
+    related_themes: [morality]
+
+  philosophy-of-mind:
+    path: .claude/skills/philosophy-of-mind/
+    description: "Consciousness, qualia, mental causation, personal identity, FEP"
+    triggers: ["consciousness", "qualia", "hard problem", "Chalmers", "Friston", "Seth", "mind-body", "mental causation", "intentionality", "phenomenal", "zombies", "free energy principle", "predictive processing"]
+    key_files:
+      - SKILL.md
+      - consciousness_theories.md
+      - thought_experiments.md
+      - fep_consciousness.md
+    preload_for_agents: [philosophical-analyst, thought-experimenter]
+    related_themes: [consciousness, free_will]
+
+  logic:
+    path: .claude/skills/logic/
+    description: "Formal/informal logic, fallacies, paradoxes"
+    triggers: ["valid", "fallacy", "premise", "modus ponens", "paradox", "syllogism", "deductive", "inductive", "logical", "argument form", "soundness", "validity", "contradiction"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, devils-advocate]
+    related_themes: [knowledge]
+
+  aesthetics:
+    path: .claude/skills/aesthetics/
+    description: "Beauty, art, taste, sublime, creativity"
+    triggers: ["beauty", "aesthetic", "art", "sublime", "creativity", "taste", "artistic", "beautiful", "judgment of taste", "expression", "representation"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [existence, consciousness]
+
+  political-philosophy:
+    path: .claude/skills/political-philosophy/
+    description: "Justice, rights, liberty, democracy"
+    triggers: ["justice", "political", "rights", "liberty", "Rawls", "democracy", "social contract", "state", "legitimacy", "authority", "equality", "freedom"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst, symposiarch]
+    related_themes: [morality]
+
+  philosophy-of-science:
+    path: .claude/skills/philosophy-of-science/
+    description: "Scientific method, explanation, realism"
+    triggers: ["scientific method", "falsification", "Kuhn", "paradigm", "realism", "anti-realism", "explanation", "theory change", "Popper", "Lakatos", "demarcation", "induction"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [knowledge]
+
+  philosophy-of-language:
+    path: .claude/skills/philosophy-of-language/
+    description: "Meaning, reference, truth, speech acts"
+    triggers: ["meaning", "reference", "Frege", "sense", "Kripke", "speech act", "semantics", "pragmatics", "truth conditions", "propositions", "names", "descriptions", "rigid designator"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [knowledge, consciousness]
+
+# =============================================================================
+# METHODOLOGY SKILLS (6)
+# =============================================================================
+
+methodology_skills:
+
+  thought-experiments:
+    path: .claude/skills/thought-experiments/
+    description: "Design and evaluate thought experiments"
+    triggers: ["thought experiment", "hypothetical", "intuition pump", "imagine", "suppose", "what if", "trolley", "Chinese room", "Mary's room", "twin earth", "swamp man"]
+    key_files:
+      - SKILL.md
+      - classics.md
+      - design_templates.md
+    preload_for_agents: [thought-experimenter, philosophical-generator]
+    related_themes: [consciousness, morality, knowledge]
+
+  argument-mapping:
+    path: .claude/skills/argument-mapping/
+    description: "Argument reconstruction and diagramming"
+    triggers: ["argument structure", "premises", "Toulmin", "reconstruct", "argument map", "premises and conclusions", "logical structure", "inference"]
+    key_files:
+      - SKILL.md
+      - patterns.md
+      - diagramming.md
+    preload_for_agents: [philosophical-analyst, concept-mapper, symposiarch]
+    related_themes: [knowledge]
+
+  conceptual-analysis:
+    path: .claude/skills/conceptual-analysis/
+    description: "Necessary and sufficient conditions, counterexamples"
+    triggers: ["what is X", "define", "definition", "necessary conditions", "sufficient conditions", "counterexample", "conceptual analysis", "analysis", "concept", "essence", "iff"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [knowledge]
+
+  phenomenological-method:
+    path: .claude/skills/phenomenological-method/
+    description: "Epoche, reduction, eidetic variation"
+    triggers: ["phenomenology", "phenomenological", "epoche", "bracketing", "Husserl", "lived experience", "intentionality", "eidetic", "reduction", "life-world", "Lebenswelt", "noesis", "noema"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-analyst]
+    related_themes: [consciousness, existence]
+
+  dialectical-method:
+    path: .claude/skills/dialectical-method/
+    description: "Socratic, Hegelian, Marxist dialectics"
+    triggers: ["dialectic", "dialectical", "thesis antithesis", "Aufhebung", "sublation", "Socratic", "Hegelian", "contradiction", "synthesis", "negation", "development", "elenchus"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [symposiarch, philosophical-analyst]
+    related_themes: [knowledge, existence]
+
+  genealogical-method:
+    path: .claude/skills/genealogical-method/
+    description: "Nietzschean and Foucauldian genealogy"
+    triggers: ["genealogy", "genealogical", "Nietzsche genealogy", "Foucault", "archaeology", "power knowledge", "origin of", "history of", "emergence", "descent", "Entstehung", "Herkunft"]
+    key_files:
+      - SKILL.md
+    preload_for_agents: [philosophical-historian]
+    related_themes: [morality, knowledge]
+
+# =============================================================================
+# SKILL-TO-AGENT MAPPING
+# =============================================================================
+
+agent_skill_map:
+  philosophical-analyst:
+    primary: [logic, argument-mapping, conceptual-analysis]
+    secondary: [epistemology, ethics, philosophy-of-mind, ancient-greek, analytic-philosophy]
+
+  philosophical-generator:
+    primary: [thought-experiments]
+    secondary: [philosophy-of-mind]
+
+  symposiarch:
+    primary: [dialectical-method, argument-mapping]
+    secondary: [ethics, political-philosophy]
+
+  thought-experimenter:
+    primary: [thought-experiments, philosophy-of-mind]
+    secondary: [ethics, consciousness]
+
+  devils-advocate:
+    primary: [logic, epistemology]
+    secondary: [argument-mapping]
+
+  philosophical-historian:
+    primary: [genealogical-method]
+    secondary: [continental-critical, medieval-scholastic]
+
+  concept-mapper:
+    primary: [argument-mapping]
+    secondary: [logic]
+
+  cross-cultural-bridge:
+    primary: [eastern-traditions, african-ubuntu]
+    secondary: [ancient-greek, analytic-philosophy]
+
+  radical-innovator:
+    primary: []  # Deliberately unanchored
+    secondary: []
+
+# =============================================================================
+# QUICK LOOKUP
+# =============================================================================
+
+by_theme:
+  consciousness:
+    - philosophy-of-mind
+    - phenomenological-method
+    - eastern-traditions
+    - german-idealism-existentialism
+
+  free_will:
+    - philosophy-of-mind
+    - german-idealism-existentialism
+    - ancient-greek
+
+  morality:
+    - ethics
+    - ancient-greek
+    - african-ubuntu
+    - political-philosophy
+    - genealogical-method
+
+  knowledge:
+    - epistemology
+    - logic
+    - conceptual-analysis
+    - philosophy-of-science
+    - analytic-philosophy
+
+  existence:
+    - metaphysics-ontology
+    - phenomenological-method
+    - german-idealism-existentialism
+    - eastern-traditions
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-29
+    change: "Initial creation of skills index with 23 skills across 3 categories"

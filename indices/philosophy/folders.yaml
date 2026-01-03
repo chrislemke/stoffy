@@ -1,0 +1,80 @@
+# =============================================================================
+# FOLDERS INDEX - Repository Structure Registry
+# =============================================================================
+# Load this index when navigating the repo or understanding folder purposes.
+# =============================================================================
+
+meta:
+  version: "1.1"
+  last_updated: 2025-12-30
+  domain: folders
+  purpose: "Navigate repository structure for philosophical thought system"
+
+# =============================================================================
+# FOLDER REGISTRY
+# =============================================================================
+
+folders:
+  - path: thoughts/
+    purpose: Main folder for philosophical explorations
+    subfolders:
+      - life_meaning/
+      - consciousness/
+      - free_will/
+      - morality/
+      - existence/
+      - knowledge/
+      - computational_philosophy/
+    key_files: [thought.md]
+    template: templates/thought.md
+    claude_md: true
+
+  - path: thinkers/
+    purpose: Profiles of philosophers, authors, and mentors
+    key_files: [profile.md, notes.md, reflections.md, references.md]
+    template: templates/thinker_profile.md
+    claude_md: false
+
+  - path: sources/
+    purpose: Reference materials - books, articles, lectures
+    subfolders:
+      - books/
+      - articles/
+      - lectures/
+    key_files: [source.md]
+    template: templates/source.md
+    claude_md: false
+
+  - path: texts/
+    purpose: Ingested texts for philosophical analysis
+    key_files: []
+    template: null
+    claude_md: false
+
+  - path: templates/
+    purpose: Document templates for all file types
+    key_files: [thought.md, source.md, thinker_profile.md]
+    template: null
+    claude_md: false
+
+  - path: scripts/
+    purpose: Automation scripts (Python)
+    key_files: [ingest.py]
+    template: null
+    claude_md: false
+
+  - path: indices/
+    purpose: Hierarchical index system for efficient navigation
+    key_files: [root.yaml, themes.yaml, thinkers.yaml, thoughts.yaml, sources.yaml]
+    template: null
+    claude_md: true
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed for philosophical thought management system"
+  - date: 2025-12-30
+    change: "Added computational_philosophy/ subfolder to thoughts/ - meta-philosophical exploration of software patterns for thought management"

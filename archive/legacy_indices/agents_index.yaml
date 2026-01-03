@@ -1,0 +1,363 @@
+# =============================================================================
+# DEPRECATED - USE indices/root.yaml INSTEAD
+# =============================================================================
+#
+# This monolithic index has been replaced by a HIERARCHICAL INDEX SYSTEM
+# for better token efficiency. The new system uses lazy loading - you only
+# load the indices you need for a given task.
+#
+# NEW WORKFLOW:
+#   1. Read indices/root.yaml FIRST (routing + intent mappings)
+#   2. Load domain-specific index as needed:
+#      - indices/people.yaml     (person lookups)
+#      - indices/projects.yaml   (project status)
+#      - indices/tickets.yaml    (ticket resolution)
+#      - indices/templates.yaml  (creating new files)
+#      - indices/rules.yaml      (behavioral rules)
+#      - indices/folders.yaml    (navigation)
+#      - indices/ideas.yaml      (POCs, research)
+#      - indices/organization.yaml (company context)
+#      - indices/knowledge.yaml  (knowledge base)
+#
+# DOCUMENTATION: indices/AGENTS.md
+#
+# This file is kept for backwards compatibility but will be removed in future.
+# =============================================================================
+#
+# LEGACY CONTENT BELOW (deprecated)
+# =============================================================================
+# AGENTS INDEX - Central Navigation Hub for LLM Agents
+# =============================================================================
+# This file provides fast lookups for navigating the lead_stuff repository.
+# It complements (not replaces) per-folder AGENTS.md files which contain
+# folder-specific behavioral rules.
+#
+# READ THIS FILE FIRST before exploring the filesystem.
+# =============================================================================
+
+meta:
+  version: "1.2"
+  last_updated: 2025-12-11
+  owner: chris_lemke
+  repository_type: team_management
+  purpose: |
+    Central navigation hub for LLM agents working with this repository.
+    Provides fast lookups for entities, templates, and task routing.
+    Eliminates redundant instructions across distributed AGENTS.md files.
+
+# =============================================================================
+# SECTION 1: FOLDER REGISTRY
+# =============================================================================
+
+folders:
+# Add more folder entries here; Example:
+#  - path: communication/people/
+#    purpose: Per-person profiles, notes, and meeting history
+#    key_files: [profile.md, notes.md, thoughts.md, references.md]
+#    template: templates/person_profile.md
+#    auto_ingest_target: profile.md
+#    agents_md: true
+#
+#  - path: project_management/flight_search_optimizer/
+#    purpose: Flight search algorithm optimization project
+#    key_files: [project.md, daily_updates.md]
+#    template: templates/project_progress_report.md
+#    auto_ingest_target: null
+#    agents_md: true
+
+# =============================================================================
+# SECTION 2: PEOPLE REGISTRY
+# =============================================================================
+
+people:
+# Add more people entries here; Example:
+#  chris_lemke:
+#    path: communication/people/chris_lemke/
+#    role: IT Team Lead - Machine Learning & AI
+#    relationship: self
+#    github: null
+#    notes: Repository owner; writing style guide at writing_style.md
+#
+#  max_mustermann:
+#    path: communication/people/max_mustermann/
+#    role: Software Engineer
+#    relationship: collaborator
+#    github: maxmustermann
+#    notes: Works on flight search backend
+#
+# RELATIONSHIP TYPES (for reference):
+# self            - Repository owner
+# direct_report   - Team members reporting to owner
+# manager         - Owner's manager
+# peer_lead       - Same level leads of other teams
+# executive       - C-level executives
+# stakeholder     - Key stakeholders (Product, Legal, etc.)
+# collaborator    - Cross-team collaborators
+# external_consultant - External contractors/consultants
+
+# =============================================================================
+# SECTION 3: PROJECT REGISTRY
+# =============================================================================
+
+projects:
+# Add more project entries here; Example:
+#  flight_search_optimizer:
+#    path: project_management/flight_search_optimizer/
+#    codename: SEARCHBOOST
+#    repository: flight-search-optimizer
+#    status: active
+#    contributors: [chris_lemke, max_mustermann]
+#    related_tickets: ["FLIGHT-*"]
+#    description: ML-based flight search result ranking optimization
+#
+# STATUS VALUES (for reference):
+# active           - Currently in development
+# active_ab_testing - In A/B testing phase
+# maintenance      - No active development, bug fixes only
+# paused           - Development paused
+# completed        - Project finished
+# unknown          - Status needs to be determined
+
+# =============================================================================
+# SECTION 4: IDEA REGISTRY
+# =============================================================================
+
+ideas:
+# Add more idea entries here; Example:
+#  smart_price_alerts:
+#    path: idea_development/smart_price_alerts/
+#    status: poc
+#    owner: chris_lemke
+#    next_step: Validate user interest through survey
+#
+# STATUS VALUES (for reference):
+# capture         - Initial idea capture, needs refinement
+# poc             - Proof of concept in progress
+# prototype_done  - Prototype completed, awaiting next phase
+# ab_testing      - In A/B testing
+# pitched         - Pitched to stakeholders, awaiting decision
+# approved        - Approved for development
+# rejected        - Idea rejected or deprioritized
+# unknown         - Status needs to be determined
+
+# =============================================================================
+# SECTION 4B: KNOWLEDGE BASE FILES
+# =============================================================================
+
+knowledge_base:
+# Add more knowledge base entries here; Example:
+#  flight_booking_api_reference:
+#    path: project_management/data_resources/flight_booking_api_reference.md
+#    last_updated: 2025-01-15
+#    description: Flight booking API schema and endpoint documentation
+#    topics: [api, booking, flights, integration]
+
+# =============================================================================
+# SECTION 5: TICKET PREFIX REGISTRY
+# =============================================================================
+
+ticket_prefixes:
+# Add more ticket prefix entries here; Example:
+#  FLIGHT:
+#    system: Jira
+#    team: Flight Booking Team
+#    pattern: "FLIGHT-\\d{4}"
+#    example: FLIGHT-1234
+#    folder: tickets/
+#
+#  SEARCH:
+#    system: Jira
+#    team: Search & Discovery Team
+#    pattern: "SEARCH-\\d{3}"
+#    example: SEARCH-456
+#    folder: tickets/
+
+# =============================================================================
+# SECTION 6: INTENT -> PATH MAPPINGS (Task Routing)
+# =============================================================================
+
+intent_mappings:
+# Add more intent mappings here; Example:
+#  - intent: "information about a person"
+#    keywords: [person, who is, about, profile, contact, team member]
+#    action: "Look up person in `people` registry -> read their profile.md"
+#
+#  - intent: "ticket status or context"
+#    keywords: [ticket, JIRA, issue, bug, story, FLIGHT-, SEARCH-]
+#    action: "Check tickets/<TICKET-ID>.md first, then Jira API if not found"
+#
+#  - intent: "project status"
+#    keywords: [project, status, progress, flight search, booking]
+#    action: "Look up project in `projects` registry -> read latest progress_report_*.md or daily_updates.md"
+
+# =============================================================================
+# SECTION 7: TEMPLATES REGISTRY
+# =============================================================================
+
+templates:
+# Add more template entries here; Example:
+#  person_profile: templates/person_profile.md
+#  person_notes: templates/person_notes.md
+#  meeting: templates/meeting_template.md
+#  ticket: templates/ticket.md
+#  project_idea: templates/project_idea.md
+#  project_progress: templates/project_progress_report.md
+
+# =============================================================================
+# SECTION 8: GLOBAL RULES
+# =============================================================================
+
+global_rules:
+  # ---------------------------------------------------------------------------
+  # Auto-Ingestion Rule
+  # ---------------------------------------------------------------------------
+  auto_ingestion:
+  # Add auto-ingestion rules here; Example:
+  #  pattern: "@<path_to_entity> <information>"
+  #  description: |
+  #    If user input matches this pattern, AUTOMATICALLY update the
+  #    corresponding documentation without asking for confirmation.
+  #  examples:
+  #    - input: "@communication/people/chris_lemke/ prefers morning meetings"
+  #      action: "Add 'Prefers morning meetings' to chris_lemke/profile.md"
+
+  # ---------------------------------------------------------------------------
+  # Cross-Referencing Rules
+  # ---------------------------------------------------------------------------
+  cross_referencing:
+  # Add cross-referencing rules here; Example:
+  #  - trigger: "person name mentioned in new content"
+  #    action: "Update their references.md with link to new content"
+  #  - trigger: "ticket ID mentioned (matches ticket_prefixes patterns)"
+  #    action: "Create/update tickets/<TICKET-ID>.md"
+
+  # ---------------------------------------------------------------------------
+  # Profile Structure Rules
+  # ---------------------------------------------------------------------------
+  profile_rules:
+  # Add profile rules here; Example:
+  #  tickets_involved: |
+  #    Every profile.md MUST include a `## Tickets Involved` section with a
+  #    date indicating when the list was last validated:
+  #    `## Tickets Involved (as of YYYY-MM-DD)`
+
+  # ---------------------------------------------------------------------------
+  # Naming Conventions
+  # ---------------------------------------------------------------------------
+  naming_conventions:
+  # Add naming conventions here; Example:
+  #  folders: lowercase_with_underscores
+  #  files: lowercase_with_underscores.md
+  #  dates: "ISO 8601 (YYYY-MM-DD)"
+  #  people_folders: "<first>_<last>/"
+  #  meeting_files: "YYYY-MM-DD_<topic>.md"
+
+  # ---------------------------------------------------------------------------
+  # Template Usage Rule
+  # ---------------------------------------------------------------------------
+  template_rule:
+  # Add template usage rule here; Example:
+  #  ALWAYS check the templates registry before creating any new file.
+  #  If a template exists for the document type, you MUST use it.
+
+  # ---------------------------------------------------------------------------
+  # Todo Auto-Detection Rule
+  # ---------------------------------------------------------------------------
+  todo_detection:
+  # Add todo detection rules here; Example:
+  #  description: |
+  #    CRITICAL: When user mentions something they need to do, AUTOMATICALLY
+  #    create a new todo file without asking for confirmation.
+  #  trigger_phrases:
+  #    - "I need to"
+  #    - "I should"
+  #    - "remind me to"
+
+  # ---------------------------------------------------------------------------
+  # Calendar Auto-Detection Rule
+  # ---------------------------------------------------------------------------
+  calendar_detection:
+  # Add calendar detection rules here; Example:
+  #  description: |
+  #    CRITICAL: When user mentions dates, appointments, meetings, or scheduling,
+  #    AUTOMATICALLY create a calendar event without asking for confirmation.
+  #  trigger_phrases:
+  #    - "on [date]"
+  #    - "tomorrow"
+  #    - "meeting with"
+
+  # ---------------------------------------------------------------------------
+  # Activity Log Detection Rule
+  # ---------------------------------------------------------------------------
+  activity_log_detection:
+  # Add activity log detection rules here; Example:
+  #  description: |
+  #    CRITICAL: When user shares notable accomplishments, events, or activities
+  #    (e.g., deployments, releases, decisions), AUTOMATICALLY create a calendar
+  #    event to record WHEN it happened.
+  #  trigger_phrases:
+  #    - "I just deployed"
+  #    - "we released"
+  #    - "I finished"
+
+  # ---------------------------------------------------------------------------
+  # Calendar on Content Creation Rule
+  # ---------------------------------------------------------------------------
+  calendar_on_content_creation:
+  # Add calendar on content creation rules here; Example:
+  #  description: |
+  #    CRITICAL: When CREATING or UPDATING content that contains a specific date,
+  #    ALSO create/update a corresponding calendar event.
+  #  triggers:
+  #    - "Meeting file created/updated with date in filename or frontmatter"
+  #    - "Ticket created/updated with deadline or due_date field"
+
+  # ---------------------------------------------------------------------------
+  # Writing Style Reference
+  # ---------------------------------------------------------------------------
+  writing_style:
+  # Add writing style reference here; Example:
+  #  reference: communication/people/chris_lemke/writing_style.md
+  #  note: "Consult this file when generating text in repository owner's voice"
+
+# =============================================================================
+# SECTION 9: COMPANY & ORGANIZATIONAL CONTEXT
+# =============================================================================
+
+organization:
+# Add organization context here; Example:
+#  company: fluege.de
+#  domain: fluege.de
+#  description: Online flight booking platform
+#
+#  reporting_structure:
+#    your_role: Team Lead - Example Department
+#    reports_to: Department Director
+#    direct_reports:
+#      - Team Member A (Software Engineer)
+#      - Team Member B (Data Scientist)
+#
+#  peer_teams:
+#    - team: QA & Testing
+#      lead: QA Lead Name
+#      collaboration_focus: Test strategy, quality risks, automation
+#
+#  methodology:
+#    name: ShapeUp
+#    cycle_length: "6 weeks"
+#    cooldown: "2 weeks"
+#    philosophy: "You build it, you run it"
+#
+#  cultural_values:
+#    - Initiative & Ownership
+#    - Teamwork
+#    - Problem Solving
+
+# =============================================================================
+# SECTION 10: CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Added new flight pricing optimization project."

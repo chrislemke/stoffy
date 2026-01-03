@@ -1,0 +1,52 @@
+# =============================================================================
+# PEOPLE INDEX - Person Registry
+# =============================================================================
+# Load this index when looking up people, @mentions, or profile access.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-12
+  domain: people
+  source_section: "agents_index.yaml Section 2"
+
+# =============================================================================
+# PEOPLE REGISTRY
+# =============================================================================
+
+people:
+# Add more people entries here; Example:
+#  max_mustermann:
+#    path: communication/people/max_mustermann/
+#    role: Software Engineer
+#    relationship: collaborator
+#    github: maxmustermann
+#    notes: Works on flight search backend
+#
+#  erika_musterfrau:
+#    path: communication/people/erika_musterfrau/
+#    role: Product Manager
+#    relationship: stakeholder
+#    github: null
+#    notes: Responsible for booking flow features
+
+# =============================================================================
+# RELATIONSHIP TYPES (for reference)
+# =============================================================================
+# self            - Repository owner
+# direct_report   - Team members reporting to owner
+# manager         - Owner's manager
+# peer_lead       - Same level leads of other teams
+# executive       - C-level executives
+# stakeholder     - Key stakeholders (Product, Legal, etc.)
+# collaborator    - Cross-team collaborators
+# external_consultant - External contractors/consultants
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Added max_mustermann to people registry."

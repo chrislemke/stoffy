@@ -1,0 +1,105 @@
+# =============================================================================
+# INTAKE PROCESSING LOG
+# =============================================================================
+# Records all processed intake items for audit and learning.
+# =============================================================================
+
+meta:
+  created: 2025-01-03
+  description: "Log of all intake processing operations"
+
+# =============================================================================
+# LOG ENTRIES
+# =============================================================================
+# Format:
+#   - timestamp: ISO datetime
+#     input_file: original file path
+#     content_preview: first 100 chars
+#     processing_type: simple | complex | pending
+#     swarm_used: null | connection_finder | synthesis_engine | etc
+#     decision_reason: why this processing was chosen
+#     output_files: list of created files
+#     connections_made: list of linked entries
+#     archive_path: where original was moved
+#     duration_seconds: processing time
+# =============================================================================
+
+entries:
+  - timestamp: 2025-01-04T12:00:00Z
+    input_file: _input/attention-consciousness.txt
+    content_preview: "The relationship between attention and consciousness fascinates me. When I focus deeply on something, time disappears..."
+    processing_type: complex
+    swarms_used:
+      - philosophical-analyst (FEP/Predictive Processing perspective)
+      - philosophical-analyst (Global Workspace Theory perspective)
+      - philosophical-analyst (Phenomenological perspective - Husserl/Heidegger)
+      - philosophical-analyst (Eastern Philosophy perspective - Buddhist/Daoist)
+      - researcher (Cognitive Science perspective)
+      - researcher (Flow States analysis)
+      - Explore (Knowledge Archaeology - connections)
+      - synthesizer (Multi-perspective integration)
+    decision_reason: "ALL 5 decision heuristics answered YES: Depth (consciousness/time relationship), Connection (extensive existing knowledge base), Perspective (6+ frameworks apply), Research (open empirical questions), Exploration (branches to flow, meditation, temporal experience)"
+    output_files:
+      - knowledge/philosophy/thoughts/consciousness/2025-01-04_attention_consciousness_gateway/thought.md
+    connections_made:
+      - knowledge/philosophy/thoughts/existence/2025-12-26_wu_wei_free_energy.md
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_computational_phenomenology/thought.md
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_interoceptive_embodied_self/thought.md
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_improvised_self.md
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_fep_hard_problem/thought.md
+      - knowledge/philosophy/thinkers/karl_friston/
+      - knowledge/philosophy/thinkers/anil_seth/
+      - knowledge/philosophy/thinkers/laozi/
+      - knowledge/philosophy/thinkers/siddhartha_gautama/
+    archive_path: _intake/archive/2025-01-04_attention-consciousness.txt
+    insights_generated:
+      - "Attention is precision-weighting, not gateway or spotlight"
+      - "Time-consciousness is constructed, not given - we stop generating it in flow"
+      - "Self and time are coupled constructions that dissolve together"
+      - "Flow = Wu Wei = optimal free energy minimization"
+      - "Consciousness has multiple modes, not a single phenomenon"
+
+  - timestamp: 2025-01-04T13:00:00Z
+    input_file: _input/xxx.md
+    content_preview: "This is an interesting start point. Let's think about what is thinking of thinking, and let's think about the structure of structures of structures..."
+    processing_type: complex
+    swarms_used:
+      - philosophical-analyst (Metacognition research - Hofstadter/Metzinger/Friston)
+      - philosophical-analyst (Strange loops and self-reference - Gödel/Russell/tangled hierarchies)
+      - philosophical-analyst (Phenomenological perspective - Husserl/Sartre/Metzinger)
+      - philosophical-analyst (Eastern philosophy - Nagarjuna/Zen/Daoism/Vipassana)
+      - philosophical-analyst (Formal systems - category theory/type theory/Gödel numbering)
+      - researcher (Computational cognition - Bach/Friston/predictive processing)
+      - philosophical-generator (Novel concept generation)
+      - devils-advocate (Critical objections analysis)
+    decision_reason: "ALL 5 decision heuristics answered YES: Depth (meta-cognition, recursion, self-reference), Connection (Hofstadter, Metzinger, Friston, Wittgenstein, Nagarjuna), Perspective (6+ frameworks apply), Research (open questions about metacognition, infinite regress), Exploration (branches to AI consciousness, formal systems, phenomenology)"
+    output_files:
+      - knowledge/philosophy/thoughts/consciousness/2025-01-04_metastructure_strange_loops/thought.md
+    connections_made:
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_strange_loops_computational_self/main.md
+      - knowledge/philosophy/thoughts/consciousness/2025-12-26_fep_hard_problem/thought.md
+      - knowledge/philosophy/thoughts/knowledge/2025-12-26_self_reference_computation_truth/thought.md
+      - knowledge/philosophy/thoughts/existence/2025-12-26_wu_wei_free_energy.md
+      - knowledge/philosophy/thoughts/computational_philosophy/thought.md
+      - knowledge/philosophy/thinkers/douglas_hofstadter/
+      - knowledge/philosophy/thinkers/thomas_metzinger/
+      - knowledge/philosophy/thinkers/karl_friston/
+      - knowledge/philosophy/thinkers/nagarjuna/
+      - knowledge/philosophy/thinkers/ludwig_wittgenstein/
+      - knowledge/philosophy/thinkers/joscha_bach/
+    archive_path: _intake/archive/2025-01-04_xxx.md
+    insights_generated:
+      - "The structure of structures is not infinite regress but strange loop"
+      - "Hierarchy does not terminate in foundation - meta-levels circle back"
+      - "Strange loop constitutes rather than observes the self"
+      - "Every attempt to totalize structure creates a new level that escapes totalization"
+      - "Sunyata is itself empty - meta-levels don't provide escape velocity from dependent origination"
+      - "Meta-cognition is recursive closure, not infinite towers"
+      - "The Klein Bottle Mind: inside/outside of thought become indistinguishable"
+    novel_concepts:
+      - name: "Topological Meta-Cognition"
+        definition: "Meta-levels as topological transformations of single cognitive surface rather than stacked hierarchy"
+      - name: "Cognitive Renormalization"
+        definition: "Meta-cognition as information-destroying coarse-graining analogous to physics renormalization"
+      - name: "The Stranger Loop"
+        definition: "Self-reference producing alterity rather than identity - encountering uncanny self"

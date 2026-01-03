@@ -1,0 +1,199 @@
+# =============================================================================
+# ROOT INDEX - Entry Point for Stoffy's Nervous System
+# =============================================================================
+# Load this file FIRST. It routes you to domain-specific knowledge.
+# Only load what you need - preserve context, save tokens.
+# =============================================================================
+
+meta:
+  version: "3.0"
+  last_updated: 2026-01-03
+  philosophy: |
+    Stoffy is a second brain. This index system is its nervous system.
+    Navigate lazily - load only what's needed for the current thought.
+
+# =============================================================================
+# AVAILABLE INDICES
+# =============================================================================
+
+indices:
+  knowledge:
+    path: indices/knowledge.yaml
+    purpose: Core knowledge, concepts, learnings, insights
+    load_when: "Looking up ideas, concepts, 'what do I know about...'"
+
+  folders:
+    path: indices/folders.yaml
+    purpose: Folder structure and purposes
+    load_when: "Where is something, navigation, 'where should I put...'"
+
+  templates:
+    path: indices/templates.yaml
+    purpose: Templates for creating new content
+    load_when: "Creating new files, 'how do I structure a...'"
+
+  rules:
+    path: indices/rules.yaml
+    purpose: Behavioral rules and conventions
+    load_when: "How should I behave, naming conventions, auto-actions"
+
+  archive:
+    path: indices/archive.yaml
+    purpose: Deprecated/archived content that's preserved
+    load_when: "Looking for old versions, historical context"
+
+  tags:
+    path: indices/tags.yaml
+    purpose: Reverse tag lookup for cross-domain discovery
+    load_when: "What's tagged with X, cross-domain search, find related content"
+
+  intake:
+    path: indices/intake.yaml
+    purpose: Intelligent file intake processing pipeline
+    load_when: "Processing new input, file arrived in _input/, /intake command"
+
+  # Philosophy Domain (imported)
+  philosophy_thinkers:
+    path: indices/philosophy/thinkers.yaml
+    purpose: Philosophers, authors, mentors - 54 profiles
+    load_when: "Looking up a philosopher, analyzing influences"
+
+  philosophy_thoughts:
+    path: indices/philosophy/thoughts.yaml
+    purpose: Philosophical thought explorations
+    load_when: "Thought status, developing philosophical ideas"
+
+  philosophy_themes:
+    path: indices/philosophy/themes.yaml
+    purpose: Philosophical categories - consciousness, free will, etc.
+    load_when: "Exploring philosophical themes, categorizing thoughts"
+
+  philosophy_sources:
+    path: indices/philosophy/sources.yaml
+    purpose: Books, articles, lectures on philosophy
+    load_when: "Looking up references, philosophical citations"
+
+# =============================================================================
+# INTENT -> INDEX ROUTING
+# =============================================================================
+
+intent_mappings:
+  # Knowledge Operations
+  - intent: "store new knowledge"
+    keywords: [store, save, capture, record, add, note, remember this]
+    load_index: indices/templates.yaml
+    then: "Use template -> create in knowledge/ or memory/"
+    worker: scribe
+
+  - intent: "retrieve existing knowledge"
+    keywords: [know, understand, concept, idea, learn, insight, about, what, find]
+    load_index: indices/knowledge.yaml
+    then: "Search entries -> navigate to content"
+    worker: archaeologist
+
+  - intent: "connect related concepts"
+    keywords: [connect, link, relate, bridge, similar, like, between]
+    load_index: indices/knowledge.yaml
+    then: "Find entries -> create connections"
+    worker: bridge
+
+  - intent: "synthesize patterns"
+    keywords: [pattern, synthesize, combine, insight, emerge, across, theme]
+    load_index: indices/knowledge.yaml
+    then: "Analyze entries -> generate synthesis"
+    worker: synthesizer
+
+  - intent: "remember past moments"
+    keywords: [remember, recall, when, past, before, session, thought]
+    load_index: indices/archive.yaml
+    then: "Search temporal -> resurface relevant"
+    worker: archaeologist
+
+  - intent: "evolve structure"
+    keywords: [reorganize, restructure, evolve, improve, clean, prune]
+    load_index: indices/folders.yaml
+    then: "Analyze structure -> propose changes"
+    worker: gardener
+
+  # Navigation Operations
+  - intent: "locate or navigate"
+    keywords: [where, folder, path, location, put, structure, navigate]
+    load_index: indices/folders.yaml
+    then: "Find folder purpose -> navigate there"
+    worker: curator
+
+  - intent: "create something new"
+    keywords: [create, new, template, add, make, start]
+    load_index: indices/templates.yaml
+    then: "Find template -> use it to create"
+    worker: scribe
+
+  - intent: "understand rules or conventions"
+    keywords: [rule, convention, how should, naming, format, behavior]
+    load_index: indices/rules.yaml
+    then: "Read rules -> apply them"
+
+  - intent: "find old or archived content"
+    keywords: [old, archive, previous, history, deprecated, was]
+    load_index: indices/archive.yaml
+    then: "Look up archived path -> read preserved content"
+    worker: archivist
+
+  - intent: "cross-domain tag search"
+    keywords: [tagged, tag, across, all, everything about, related to, cross-domain]
+    load_index: indices/tags.yaml
+    then: "Find tag -> get all entries -> explore across domains"
+    worker: bridge
+
+  # Intake Processing
+  - intent: "process new input"
+    keywords: [intake, process, new file, input, ingest, arrived, _input]
+    load_index: indices/intake.yaml
+    then: "Triage content -> simple storage OR Claude Flow swarms"
+    worker: intake-processor
+
+  # Philosophy Domain Intents
+  - intent: "philosopher or thinker lookup"
+    keywords: [philosopher, thinker, friston, nietzsche, sartre, heidegger, bach, who is, argued, believed]
+    load_index: indices/philosophy/thinkers.yaml
+    then: "Find thinker -> read profile.md"
+    worker: archaeologist
+
+  - intent: "philosophical thought or reflection"
+    keywords: [consciousness, free will, existence, meaning, metaphysics, phenomenology, epistemology]
+    load_index: indices/philosophy/thoughts.yaml
+    then: "Find thought -> explore or create"
+    worker: synthesizer
+
+  - intent: "philosophical source or reference"
+    keywords: [book, article, lecture, active inference, fep, free energy, complexity]
+    load_index: indices/philosophy/sources.yaml
+    then: "Find source -> read reference"
+    worker: archaeologist
+
+# =============================================================================
+# CORE PRINCIPLES
+# =============================================================================
+
+principles:
+  - name: "Never delete"
+    description: "Archive instead. All knowledge is preserved."
+
+  - name: "Index everything"
+    description: "If it exists, it should be findable through indices."
+
+  - name: "Evolve naturally"
+    description: "Structure emerges from use, not design."
+
+# =============================================================================
+# QUICK REFERENCE
+# =============================================================================
+
+repository_type: second_brain
+main_docs:
+  philosophy: AGENTS.md
+  index_system: indices/AGENTS.md
+claude_flow:
+  commands: .claude/commands/
+  agents: .claude/agents/
+  skills: .claude/skills/

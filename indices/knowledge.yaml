@@ -1,0 +1,146 @@
+# =============================================================================
+# KNOWLEDGE INDEX - What Stoffy Knows
+# =============================================================================
+# Registry of concepts, ideas, learnings, and insights.
+# This grows organically as knowledge is added.
+# =============================================================================
+
+meta:
+  version: "3.0"
+  last_updated: 2026-01-03
+  description: "Index of all knowledge stored in Stoffy"
+
+# =============================================================================
+# KNOWLEDGE ENTRIES
+# =============================================================================
+# Add entries as knowledge accumulates. Format:
+#
+#   topic_slug:
+#     title: "Human readable title"
+#     path: knowledge/path/to/content.md
+#     tags: [tag1, tag2]
+#     summary: "Brief description"
+#     related: [other_topic_slug]
+#
+# =============================================================================
+
+entries:
+  genesis:
+    title: "Genesis: The Philosophy of Stoffy"
+    path: knowledge/genesis.md
+    tags: [philosophy, meta, founding]
+    summary: "The founding philosophy - Stoffy as a living knowledge organism"
+
+  philosophy_patterns:
+    title: "Patterns from Philosophy Repository"
+    path: knowledge/patterns/philosophy-repo-patterns.md
+    tags: [patterns, ingested, philosophy, meta]
+    summary: "Key patterns learned from private philosophy repo - memory files, thought lifecycle, bidirectional linking"
+    source: github:chrislemke/philosophy
+    related: [genesis]
+
+  indexing_system_research:
+    title: "Indexing System Research: Optimal Format for LLM Agent Access"
+    path: knowledge/patterns/indexing-system-research.md
+    tags: [patterns, architecture, llm, indexing, yaml, meta]
+    summary: "8M+ token research: Keep YAML. Current system is excellent. 62-92% token savings. Fix duplication, add tags index."
+    research_date: 2026-01-03
+    related: [genesis, philosophy_patterns]
+
+# =============================================================================
+# PHILOSOPHY DOMAIN (imported from chrislemke/philosophy)
+# =============================================================================
+
+  philosophy:
+    title: "Philosophy Knowledge Domain"
+    path: knowledge/philosophy/
+    tags: [philosophy, domain, imported]
+    summary: "Complete philosophical thought system with 54 thinkers, thoughts across 6 themes"
+    indices:
+      thinkers: indices/philosophy/thinkers.yaml
+      thoughts: indices/philosophy/thoughts.yaml
+      themes: indices/philosophy/themes.yaml
+      sources: indices/philosophy/sources.yaml
+    themes:
+      - consciousness
+      - free_will
+      - existence
+      - knowledge
+      - computational_philosophy
+    related: [genesis, philosophy_patterns]
+
+  thinkers:
+    title: "Philosophers & Thinkers"
+    path: knowledge/philosophy/thinkers/
+    tags: [philosophy, thinkers, profiles]
+    summary: "54 thinker profiles - Friston, Bach, Nietzsche, Sartre, Heidegger, etc."
+    count: 54
+    index: indices/philosophy/thinkers.yaml
+
+  thoughts_consciousness:
+    title: "Consciousness Explorations"
+    path: knowledge/philosophy/thoughts/consciousness/
+    tags: [philosophy, consciousness, thoughts]
+    summary: "Thoughts on mind, awareness, qualia, computational phenomenology"
+    entries:
+      - attention_consciousness_gateway:
+          title: "Attention as Gateway or Spotlight"
+          path: knowledge/philosophy/thoughts/consciousness/2025-01-04_attention_consciousness_gateway/thought.md
+          date: 2025-01-04
+          tags: [attention, consciousness, time-perception, flow, predictive-processing]
+          summary: "Multi-perspective analysis: Is attention constitutive of consciousness or merely revelatory? Why does time disappear during deep focus?"
+          processing: perspective_matrix (8 swarms)
+          related_thinkers: [karl_friston, anil_seth, laozi, siddhartha_gautama]
+          related_thoughts: [wu_wei_free_energy, computational_phenomenology, improvised_self]
+      - metastructure_strange_loops:
+          title: "Meta-Structure and the Strange Loop of Self-Reference"
+          path: knowledge/philosophy/thoughts/consciousness/2025-01-04_metastructure_strange_loops/thought.md
+          date: 2025-01-04
+          tags: [metacognition, strange-loops, self-reference, recursion, structure, gödel]
+          summary: "Multi-perspective analysis: The structure of structures is not infinite regress but strange loop. Convergence of Hofstadter, Metzinger, Friston, Nagarjuna, Wittgenstein on self-referential closure."
+          processing: deep_research_cluster (8 swarms)
+          related_thinkers: [douglas_hofstadter, thomas_metzinger, karl_friston, nagarjuna, ludwig_wittgenstein, joscha_bach]
+          related_thoughts: [strange_loops_computational_self, fep_hard_problem, self_reference_computation_truth, wu_wei_free_energy]
+          novel_concepts:
+            - topological_meta_cognition: "Meta-levels as topological transformations of single cognitive surface"
+            - cognitive_renormalization: "Meta-cognition as information-destroying coarse-graining"
+            - stranger_loop: "Self-reference producing alterity rather than identity"
+
+  thoughts_free_will:
+    title: "Free Will Explorations"
+    path: knowledge/philosophy/thoughts/free_will/
+    tags: [philosophy, free-will, thoughts]
+    summary: "Thoughts on agency, determinism, choice"
+
+  thoughts_existence:
+    title: "Existence Explorations"
+    path: knowledge/philosophy/thoughts/existence/
+    tags: [philosophy, existence, metaphysics, thoughts]
+    summary: "Thoughts on being, reality, metaphysics"
+
+  philosophy_sources:
+    title: "Philosophical Sources"
+    path: knowledge/philosophy/sources/
+    tags: [philosophy, sources, references]
+    summary: "Books and articles on philosophy, neuroscience, complexity"
+    index: indices/philosophy/sources.yaml
+
+# =============================================================================
+# TAG CLUSTERS
+# =============================================================================
+# Group related tags for discovery
+
+tag_clusters:
+  technical: [code, programming, ml, ai, data, engineering]
+  creative: [ideas, writing, design, art]
+  personal: [thoughts, reflections, journal]
+  meta: [process, system, organization]
+
+# =============================================================================
+# NAVIGATION HINTS
+# =============================================================================
+
+navigation:
+  by_recency: "Sort entries by last_updated for recent knowledge"
+  by_tags: "Filter by tag_clusters for themed exploration"
+  by_relation: "Follow 'related' links for connected concepts"

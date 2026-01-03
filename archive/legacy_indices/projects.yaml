@@ -1,0 +1,59 @@
+# =============================================================================
+# PROJECTS INDEX - Project Registry
+# =============================================================================
+# Load this index when checking project status, progress, or contributors.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-12
+  domain: projects
+  source_section: "agents_index.yaml Section 3"
+
+# =============================================================================
+# PROJECT REGISTRY
+# =============================================================================
+
+projects:
+# Add more project entries here; Example:
+#  flight_search_optimizer:
+#    path: project_management/flight_search_optimizer/
+#    codename: SEARCHBOOST
+#    repository: flight-search-optimizer
+#    status: active
+#    contributors: [max_mustermann, erika_musterfrau]
+#    related_tickets: ["EXAMPLE-*"]
+#    description: ML-based flight search result ranking optimization
+#    key_files:
+#      - daily_updates.md
+#      - project.md
+#
+#  booking_funnel_analytics:
+#    path: project_management/booking_funnel_analytics/
+#    codename: null
+#    repository: null
+#    status: active_ab_testing
+#    contributors: [team_member_a]
+#    related_tickets: [EXAMPLE-789]
+#    description: Analytics dashboard for booking conversion tracking
+#    key_files:
+#      - progress_notes.md
+
+# =============================================================================
+# STATUS VALUES (for reference)
+# =============================================================================
+# active           - Currently in development
+# active_ab_testing - In A/B testing phase
+# maintenance      - No active development, bug fixes only
+# paused           - Development paused
+# completed        - Project finished
+# unknown          - Status needs to be determined
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Added flight_search_optimizer project."

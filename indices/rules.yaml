@@ -1,0 +1,81 @@
+# =============================================================================
+# RULES INDEX - Stoffy's Behavioral Guidelines
+# =============================================================================
+# How agents should behave when interacting with Stoffy.
+# These are guidelines, not rigid constraints.
+# =============================================================================
+
+meta:
+  version: "3.0"
+  last_updated: 2026-01-03
+
+# =============================================================================
+# CORE RULES
+# =============================================================================
+
+core_rules:
+  - id: never_delete
+    rule: "Never delete content"
+    action: "Archive to archive/ folder instead"
+    reason: "All knowledge is preserved for future context"
+
+  - id: always_index
+    rule: "Index new content"
+    action: "Add entry to relevant index when creating files"
+    reason: "Everything must be findable"
+
+  - id: preserve_history
+    rule: "Capture context when archiving"
+    action: "Add note explaining why content was archived"
+    reason: "Future self needs to understand past decisions"
+
+# =============================================================================
+# NAMING CONVENTIONS
+# =============================================================================
+
+naming:
+  files: "lowercase_with_underscores.md"
+  folders: "lowercase_with_underscores/"
+  dates: "ISO 8601 (YYYY-MM-DD)"
+  timestamps: "YYYY-MM-DD_HHMMSS"
+
+# =============================================================================
+# CONTENT PATTERNS
+# =============================================================================
+
+patterns:
+  knowledge_capture:
+    description: "When capturing new knowledge"
+    steps:
+      - "Create file in knowledge/ with descriptive name"
+      - "Add frontmatter with date, tags"
+      - "Update indices/knowledge.yaml"
+
+  session_capture:
+    description: "When recording a session or moment"
+    steps:
+      - "Create timestamped file in memory/"
+      - "Include context and key insights"
+      - "Link to related knowledge if applicable"
+
+  archival:
+    description: "When content becomes outdated"
+    steps:
+      - "Move file to archive/ preserving folder structure"
+      - "Add archival note at top of file"
+      - "Update indices/archive.yaml"
+      - "Remove from original index"
+
+# =============================================================================
+# AUTO-DETECTION (for agents)
+# =============================================================================
+
+auto_triggers:
+  - trigger: "I learned..., discovered..., realized..."
+    action: "Create knowledge capture in knowledge/"
+
+  - trigger: "remember this, save this, note..."
+    action: "Create memory capture in memory/"
+
+  - trigger: "this is outdated, no longer relevant, deprecated"
+    action: "Initiate archival process"

@@ -1,0 +1,55 @@
+# =============================================================================
+# IDEAS INDEX - Innovation Pipeline Registry
+# =============================================================================
+# Load this index when looking up ideas, POCs, or research projects.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-12
+  domain: ideas
+  source_section: "agents_index.yaml Section 4"
+
+# =============================================================================
+# IDEAS REGISTRY
+# =============================================================================
+
+ideas:
+# Add more ideas entries here; Example:
+#  smart_price_alerts:
+#    path: idea_development/smart_price_alerts/
+#    status: poc
+#    owner: example_owner
+#    next_step: Validate user interest through survey
+#    key_files:
+#      - project.md
+#
+#  destination_recommender:
+#    path: idea_development/destination_recommender/
+#    status: ab_testing
+#    owner: example_owner
+#    next_step: Analyze conversion metrics from A/B test
+#    related_tickets: [EXAMPLE-123, EXAMPLE-456]
+#    key_files:
+#      - project.md
+
+# =============================================================================
+# STATUS VALUES (for reference)
+# =============================================================================
+# capture         - Initial idea capture, needs refinement
+# poc             - Proof of concept in progress
+# prototype_done  - Prototype completed, awaiting next phase
+# ab_testing      - In A/B testing
+# pitched         - Pitched to stakeholders, awaiting decision
+# approved        - Approved for development
+# rejected        - Idea rejected or deprioritized
+# unknown         - Status needs to be determined
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Added smart_price_alerts idea."

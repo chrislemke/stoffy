@@ -1,0 +1,557 @@
+# =============================================================================
+# THINKERS INDEX - Philosophers, Authors, Mentors Registry
+# =============================================================================
+# Load this index when looking up thinkers, influences, or profile access.
+# =============================================================================
+
+meta:
+  version: "1.7"
+  last_updated: 2025-12-30
+  domain: thinkers
+  purpose: "Track philosophers, authors, and intellectual influences"
+  count: 53
+
+# =============================================================================
+# THINKERS REGISTRY
+# =============================================================================
+
+thinkers:
+  # ---------------------------------------------------------------------------
+  # ANCIENT ERA
+  # ---------------------------------------------------------------------------
+  socrates:
+    path: thinkers/socrates/
+    type: philosopher
+    era: ancient
+    traditions: [socratic_method, virtue_ethics]
+    key_works: ["Apology", "Crito", "Phaedo"]
+    themes: [morality, knowledge]
+    notes: "Father of Western philosophy; dialectic method"
+
+  plato:
+    path: thinkers/plato/
+    type: philosopher
+    era: ancient
+    traditions: [platonism, idealism]
+    key_works: ["Republic", "Symposium", "Phaedrus"]
+    themes: [existence, knowledge, morality]
+    notes: "Theory of Forms; founder of the Academy"
+
+  aristotle:
+    path: thinkers/aristotle/
+    type: philosopher
+    era: ancient
+    traditions: [virtue_ethics, logic, metaphysics]
+    key_works: ["Nicomachean Ethics", "Metaphysics", "Politics"]
+    themes: [morality, existence, knowledge]
+    notes: "Foundation of Western philosophy; systematizer of logic"
+
+  confucius:
+    path: thinkers/confucius/
+    type: philosopher
+    era: ancient
+    traditions: [confucianism]
+    key_works: ["Analects", "Five Classics"]
+    themes: [morality, life_meaning]
+    notes: "Chinese sage; ritual, virtue, and social harmony"
+
+  laozi:
+    path: thinkers/laozi/
+    type: philosopher
+    era: ancient
+    traditions: [taoism]
+    key_works: ["Tao Te Ching"]
+    themes: [existence, life_meaning, morality, knowledge]
+    notes: "Semi-legendary founder of Taoism; wu wei and the Tao; deified as Laojun"
+
+  siddhartha_gautama:
+    path: thinkers/siddhartha_gautama/
+    type: philosopher
+    era: ancient
+    traditions: [buddhism]
+    key_works: ["Dhammapada", "Sutta Pitaka", "Vinaya Pitaka"]
+    themes: [consciousness, life_meaning, morality]
+    notes: "The Buddha; Four Noble Truths and Eightfold Path"
+
+  # ---------------------------------------------------------------------------
+  # MEDIEVAL ERA
+  # ---------------------------------------------------------------------------
+  augustine:
+    path: thinkers/augustine/
+    type: philosopher
+    era: medieval
+    traditions: [christian_philosophy, neoplatonism, augustinianism]
+    key_works: ["Confessions", "City of God", "On the Trinity"]
+    themes: [free_will, morality, existence]
+    notes: "Church Father; original sin and divine grace"
+
+  thomas_aquinas:
+    path: thinkers/thomas_aquinas/
+    type: philosopher
+    era: medieval
+    traditions: [thomism, scholasticism, aristotelianism]
+    key_works: ["Summa Theologica", "Summa contra Gentiles"]
+    themes: [existence, morality, knowledge]
+    notes: "Five Ways; natural law; faith and reason synthesis"
+
+  maimonides:
+    path: thinkers/maimonides/
+    type: philosopher
+    era: medieval
+    traditions: [jewish_philosophy, rationalism, aristotelianism]
+    key_works: ["Guide for the Perplexed", "Mishneh Torah"]
+    themes: [existence, knowledge]
+    notes: "Rambam; negative theology; reconciliation of faith and reason"
+
+  nagarjuna:
+    path: thinkers/nagarjuna/
+    type: philosopher
+    era: medieval
+    traditions: [madhyamaka_buddhism, mahayana]
+    key_works: ["Mulamadhyamakakarika", "Vigrahavyavartani"]
+    themes: [existence, knowledge]
+    notes: "Founder of Madhyamaka; sunyata (emptiness)"
+
+  # ---------------------------------------------------------------------------
+  # MODERN ERA
+  # ---------------------------------------------------------------------------
+  rene_descartes:
+    path: thinkers/rene_descartes/
+    type: philosopher
+    era: modern
+    traditions: [rationalism, dualism]
+    key_works: ["Meditations on First Philosophy", "Discourse on Method"]
+    themes: [consciousness, knowledge, existence]
+    notes: "Cogito ergo sum; father of modern philosophy"
+
+  baruch_spinoza:
+    path: thinkers/baruch_spinoza/
+    type: philosopher
+    era: modern
+    traditions: [rationalism, pantheism]
+    key_works: ["Ethics", "Theological-Political Treatise"]
+    themes: [existence, free_will, morality]
+    notes: "Substance monism; God/Nature; determinism"
+
+  john_locke:
+    path: thinkers/john_locke/
+    type: philosopher
+    era: modern
+    traditions: [empiricism, liberalism]
+    key_works: ["Essay Concerning Human Understanding", "Two Treatises of Government"]
+    themes: [knowledge, morality]
+    notes: "Tabula rasa; natural rights; social contract"
+
+  david_hume:
+    path: thinkers/david_hume/
+    type: philosopher
+    era: modern
+    traditions: [empiricism, skepticism]
+    key_works: ["Treatise of Human Nature", "Enquiry Concerning Human Understanding"]
+    themes: [knowledge, free_will, morality]
+    notes: "Problem of induction; is-ought distinction; bundle theory"
+
+  immanuel_kant:
+    path: thinkers/immanuel_kant/
+    type: philosopher
+    era: modern
+    traditions: [transcendental_idealism, deontology]
+    key_works: ["Critique of Pure Reason", "Groundwork of the Metaphysics of Morals"]
+    themes: [knowledge, morality, free_will]
+    notes: "Categorical imperative; synthetic a priori; Copernican revolution"
+
+  georg_hegel:
+    path: thinkers/georg_hegel/
+    type: philosopher
+    era: modern
+    traditions: [idealism, dialectics]
+    key_works: ["Phenomenology of Spirit", "Science of Logic"]
+    themes: [existence, knowledge, consciousness]
+    notes: "Dialectical method; absolute idealism; Geist"
+
+  arthur_schopenhauer:
+    path: thinkers/arthur_schopenhauer/
+    type: philosopher
+    era: modern
+    traditions: [pessimism, voluntarism]
+    key_works: ["The World as Will and Representation"]
+    themes: [life_meaning, free_will, consciousness]
+    notes: "Will as fundamental reality; aesthetic salvation"
+
+  soren_kierkegaard:
+    path: thinkers/soren_kierkegaard/
+    type: philosopher
+    era: modern
+    traditions: [existentialism, christian_existentialism]
+    key_works: ["Fear and Trembling", "Either/Or", "The Sickness Unto Death"]
+    themes: [life_meaning, free_will, existence]
+    notes: "Father of existentialism; leap of faith; subjective truth"
+
+  friedrich_nietzsche:
+    path: thinkers/friedrich_nietzsche/
+    type: philosopher
+    era: modern
+    traditions: [existentialism, perspectivism, nihilism]
+    key_works: ["Thus Spoke Zarathustra", "Beyond Good and Evil", "Genealogy of Morals"]
+    themes: [morality, life_meaning, free_will]
+    notes: "Will to power; death of God; eternal recurrence; Ubermensch"
+
+  john_stuart_mill:
+    path: thinkers/john_stuart_mill/
+    type: philosopher
+    era: modern
+    traditions: [utilitarianism, liberalism]
+    key_works: ["Utilitarianism", "On Liberty", "The Subjection of Women"]
+    themes: [morality, free_will]
+    notes: "Higher pleasures; harm principle; refined utilitarianism"
+
+  william_james:
+    path: thinkers/william_james/
+    type: philosopher
+    era: modern
+    traditions: [pragmatism, radical_empiricism]
+    key_works: ["Pragmatism", "The Varieties of Religious Experience", "Principles of Psychology"]
+    themes: [consciousness, knowledge, free_will]
+    notes: "Stream of consciousness; will to believe; cash value of truth"
+
+  hermann_von_helmholtz:
+    path: thinkers/hermann_von_helmholtz/
+    type: physicist_physiologist_philosopher
+    era: modern
+    birth_year: 1821
+    death_year: 1894
+    traditions: [empiricism, physiological_psychology, neo_kantianism]
+    key_works: ["Handbook of Physiological Optics", "On the Conservation of Force", "On the Sensations of Tone"]
+    themes: [consciousness, knowledge, existence]
+    influence: "FRS 1860; Copley Medal 1873; trained Max Planck, Heinrich Hertz, Wilhelm Wundt"
+    notes: "Unconscious inference (Unbewusste Schlusse); direct intellectual ancestor of Friston/FEP; conservation of energy; ophthalmoscope inventor"
+
+  karl_marx:
+    path: thinkers/karl_marx/
+    type: philosopher
+    era: modern
+    traditions: [marxism, materialism, dialectical_materialism]
+    key_works: ["Das Kapital", "The Communist Manifesto", "Economic and Philosophic Manuscripts"]
+    themes: [morality, existence]
+    notes: "Historical materialism; alienation; class struggle"
+
+  # ---------------------------------------------------------------------------
+  # CONTEMPORARY ERA
+  # ---------------------------------------------------------------------------
+  martin_heidegger:
+    path: thinkers/martin_heidegger/
+    type: philosopher
+    era: contemporary
+    traditions: [phenomenology, existentialism, hermeneutics]
+    key_works: ["Being and Time", "What Is Metaphysics?"]
+    themes: [existence, consciousness]
+    notes: "Dasein; being-toward-death; fundamental ontology"
+
+  ludwig_wittgenstein:
+    path: thinkers/ludwig_wittgenstein/
+    type: philosopher
+    era: contemporary
+    traditions: [analytic_philosophy, ordinary_language_philosophy]
+    key_works: ["Tractatus Logico-Philosophicus", "Philosophical Investigations"]
+    themes: [knowledge, consciousness]
+    notes: "Picture theory; language games; private language argument"
+
+  jean_paul_sartre:
+    path: thinkers/jean_paul_sartre/
+    type: philosopher
+    era: contemporary
+    traditions: [existentialism, phenomenology]
+    key_works: ["Being and Nothingness", "Existentialism Is a Humanism", "Nausea"]
+    themes: [free_will, existence, life_meaning]
+    notes: "Existence precedes essence; radical freedom; bad faith"
+
+  simone_de_beauvoir:
+    path: thinkers/simone_de_beauvoir/
+    type: philosopher
+    era: contemporary
+    traditions: [existentialism, feminism]
+    key_works: ["The Second Sex", "The Ethics of Ambiguity"]
+    themes: [free_will, morality, existence]
+    notes: "One is not born, but becomes, a woman; ethics of ambiguity"
+
+  albert_camus:
+    path: thinkers/albert_camus/
+    type: philosopher
+    era: contemporary
+    traditions: [absurdism]
+    key_works: ["The Myth of Sisyphus", "The Stranger", "The Rebel"]
+    themes: [life_meaning, morality]
+    notes: "Absurd; revolt; philosophical suicide rejected"
+
+  hannah_arendt:
+    path: thinkers/hannah_arendt/
+    type: philosopher
+    era: contemporary
+    traditions: [political_philosophy, phenomenology]
+    key_works: ["The Human Condition", "The Origins of Totalitarianism", "Eichmann in Jerusalem"]
+    themes: [morality, free_will]
+    notes: "Banality of evil; vita activa; public realm"
+
+  michel_foucault:
+    path: thinkers/michel_foucault/
+    type: philosopher
+    era: contemporary
+    traditions: [post-structuralism, genealogy]
+    key_works: ["Discipline and Punish", "The History of Sexuality", "Madness and Civilization"]
+    themes: [knowledge, morality]
+    notes: "Power/knowledge; discourse; biopower; genealogical method"
+
+  john_rawls:
+    path: thinkers/john_rawls/
+    type: philosopher
+    era: contemporary
+    traditions: [liberalism, contractarianism]
+    key_works: ["A Theory of Justice", "Political Liberalism"]
+    themes: [morality]
+    notes: "Veil of ignorance; justice as fairness; difference principle"
+
+  thomas_nagel:
+    path: thinkers/thomas_nagel/
+    type: philosopher
+    era: contemporary
+    traditions: [analytic_philosophy]
+    key_works: ["What Is It Like to Be a Bat?", "Mortal Questions", "The View from Nowhere"]
+    themes: [consciousness, morality]
+    notes: "Subjective character of experience; anti-reductionism"
+
+  daniel_dennett:
+    path: thinkers/daniel_dennett/
+    type: philosopher
+    era: contemporary
+    traditions: [functionalism, naturalism]
+    key_works: ["Consciousness Explained", "Darwin's Dangerous Idea", "Freedom Evolves"]
+    themes: [consciousness, free_will]
+    notes: "Heterophenomenology; intentional stance; compatibilism"
+
+  peter_singer:
+    path: thinkers/peter_singer/
+    type: philosopher
+    era: contemporary
+    traditions: [utilitarianism, effective_altruism]
+    key_works: ["Animal Liberation", "Practical Ethics", "The Life You Can Save"]
+    themes: [morality]
+    notes: "Speciesism; expanding moral circle; effective altruism"
+
+  martha_nussbaum:
+    path: thinkers/martha_nussbaum/
+    type: philosopher
+    era: contemporary
+    traditions: [capabilities_approach, virtue_ethics, liberalism]
+    key_works: ["The Fragility of Goodness", "Creating Capabilities", "Upheavals of Thought"]
+    themes: [morality, life_meaning]
+    notes: "Capabilities approach; emotions and ethics; human flourishing"
+
+  nick_chater:
+    path: thinkers/nick_chater/
+    type: cognitive_scientist
+    era: contemporary
+    traditions: [cognitive_science, behavioral_science, anti_depth_psychology]
+    key_works: ["The Mind is Flat", "The Language Game"]
+    themes: [consciousness, free_will, knowledge]
+    notes: "Flat mind thesis; improvised cognition; rejection of hidden mental depths"
+
+  karl_friston:
+    path: thinkers/karl_friston/
+    type: neuroscientist
+    era: contemporary
+    birth_year: 1959
+    traditions: [theoretical_neuroscience, computational_neuroscience, bayesian_brain, predictive_processing]
+    key_works: ["Active Inference", "The Free Energy Principle", "Dynamic Causal Modelling", "Statistical Parametric Mapping"]
+    themes: [consciousness, existence, knowledge, free_will]
+    influence: "Most cited neuroscientist; h-index 291; FRS 2006; >90% of neuroimaging uses SPM"
+    notes: "Free energy principle; active inference; Markov blankets; DCM; VBM; SPM; direct heir of Helmholtz"
+
+  david_krakauer:
+    path: thinkers/david_krakauer/
+    type: complexity_scientist
+    era: contemporary
+    traditions: [complexity_science, evolutionary_biology, information_theory]
+    key_works: ["The Complex World", "Foundational Papers in Complexity Science"]
+    themes: [existence, knowledge]
+    notes: "Four pillars of complexity; emergence; problem-solving matter"
+
+  thomas_parr:
+    path: thinkers/thomas_parr/
+    type: neuroscientist
+    era: contemporary
+    traditions: [computational_neuroscience, predictive_processing]
+    key_works: ["Active Inference"]
+    themes: [consciousness, knowledge]
+    notes: "Co-author of Active Inference; clinical applications of FEP"
+
+  giovanni_pezzulo:
+    path: thinkers/giovanni_pezzulo/
+    type: cognitive_scientist
+    era: contemporary
+    traditions: [cognitive_science, embodied_cognition, active_inference]
+    key_works: ["Active Inference"]
+    themes: [consciousness, knowledge]
+    notes: "Co-author of Active Inference; embodied cognition perspective"
+
+  markus_gabriel:
+    path: thinkers/markus_gabriel/
+    type: philosopher
+    era: contemporary
+    traditions: [new_realism, german_idealism, phenomenology]
+    key_works: ["Warum es die Welt nicht gibt", "Sinn und Existenz", "Sätze über Sätze"]
+    themes: [existence, knowledge]
+    notes: "Sinnfeldontologie; no world exists as totality; ontological pluralism"
+
+  douglas_hofstadter:
+    path: thinkers/douglas_hofstadter/
+    type: cognitive_scientist
+    era: contemporary
+    traditions: [cognitive_science, analogy_theory, consciousness_studies]
+    key_works: ["Gödel, Escher, Bach", "I Am a Strange Loop", "Surfaces and Essences"]
+    themes: [consciousness, knowledge, existence]
+    notes: "Strange loops; self-reference; analogy as core of cognition"
+
+  thomas_metzinger:
+    path: thinkers/thomas_metzinger/
+    type: philosopher
+    era: contemporary
+    traditions: [philosophy_of_mind, phenomenology, neuroethics]
+    key_works: ["Der Ego-Tunnel", "Being No One"]
+    themes: [consciousness, free_will, existence]
+    notes: "Phenomenal Self Model; ego as transparent self-model; no-self"
+
+  donald_hoffman:
+    path: thinkers/donald_hoffman/
+    type: cognitive_scientist
+    era: contemporary
+    traditions: [perception_psychology, evolutionary_psychology, conscious_realism]
+    key_works: ["The Case Against Reality", "Visual Intelligence"]
+    themes: [consciousness, knowledge, existence]
+    notes: "Interface Theory of Perception; fitness beats truth; spacetime as interface"
+
+  andy_clark:
+    path: thinkers/andy_clark/
+    type: philosopher
+    era: contemporary
+    traditions: [philosophy_of_mind, extended_mind, predictive_processing]
+    key_works: ["The Experience Machine", "Surfing Uncertainty", "Being There"]
+    themes: [consciousness, knowledge]
+    notes: "Predictive processing; experience as controlled hallucination; extended mind"
+
+  joscha_bach:
+    path: thinkers/joscha_bach/
+    type: cognitive_scientist
+    era: contemporary
+    traditions: [computationalism, functionalism, agi_research, philosophy_of_mind]
+    key_works: ["Principles of Synthetic Intelligence", "From Computation to Consciousness", "Machine Consciousness and Beyond"]
+    themes: [consciousness, knowledge, existence, free_will]
+    notes: "Computational consciousness; CIMC founder; 'only simulations can be conscious'; syntax=semantics in constructive systems; cyber-animism"
+
+  jakob_hohwy:
+    path: thinkers/jakob_hohwy/
+    type: philosopher
+    era: contemporary
+    traditions: [philosophy_of_mind, philosophy_of_neuroscience, predictive_processing, bayesian_brain]
+    key_works: ["The Predictive Mind", "The Self-Evidencing Brain"]
+    themes: [consciousness, knowledge]
+    notes: "Prediction Error Minimization; first comprehensive philosophical treatment of predictive processing"
+
+  anil_seth:
+    path: thinkers/anil_seth/
+    type: neuroscientist
+    era: contemporary
+    traditions: [cognitive_neuroscience, predictive_processing, consciousness_science]
+    key_works: ["Being You: A New Science of Consciousness"]
+    themes: [consciousness]
+    notes: "Controlled hallucination; beast machine; interoceptive inference and embodied selfhood"
+
+  mark_solms:
+    path: thinkers/mark_solms/
+    type: neuropsychologist
+    era: contemporary
+    traditions: [neuropsychoanalysis, affective_neuroscience, free_energy_principle]
+    key_works: ["The Hidden Spring", "The Brain and the Inner World"]
+    themes: [consciousness, free_will, existence]
+    notes: "Brainstem consciousness; affect as primary; Friston collaborator on FEP and consciousness"
+
+  maxwell_ramstead:
+    path: thinkers/maxwell_ramstead/
+    type: computational_neuroscientist
+    era: contemporary
+    traditions: [active_inference, computational_phenomenology, enactivism, bayesian_mechanics]
+    key_works: ["A tale of two densities", "From Generative Models to Generative Passages"]
+    themes: [consciousness, knowledge, existence]
+    notes: "Director at VERSES AI; computational phenomenology; enactive interpretation of FEP"
+
+  chris_fields:
+    path: thinkers/chris_fields/
+    type: physicist
+    era: contemporary
+    traditions: [quantum_information_theory, free_energy_principle, physics_of_observation]
+    key_works: ["A free energy principle for generic quantum systems", "Physics as Information Processing"]
+    themes: [consciousness, knowledge, existence]
+    notes: "Quantum FEP formulation; holographic screens; physics as information processing; inner screen hypothesis"
+
+  evan_thompson:
+    path: thinkers/evan_thompson/
+    type: philosopher
+    era: contemporary
+    traditions: [enactivism, phenomenology, philosophy_of_mind, contemplative_studies]
+    key_works: ["Mind in Life", "The Embodied Mind", "Waking, Dreaming, Being"]
+    themes: [consciousness, knowledge, existence, life_meaning]
+    notes: "Enactivism founder (with Varela); life-mind continuity; neurophenomenology; Buddhist philosophy"
+
+  robert_sapolsky:
+    path: thinkers/robert_sapolsky/
+    type: neuroscientist
+    era: contemporary
+    traditions: [neuroscience, behavioral_biology, hard_incompatibilism, neuroendocrinology]
+    key_works: ["Determined: A Science of Life Without Free Will", "Behave", "Why Zebras Don't Get Ulcers"]
+    themes: [free_will, consciousness, morality]
+    notes: "Hard incompatibilist; cascade of causes; one-second-before argument; compassion through determinism"
+
+# =============================================================================
+# THINKER TYPES (for reference)
+# =============================================================================
+# philosopher       - Professional philosopher
+# author            - Writer/essayist with philosophical depth
+# psychologist      - Psychologist with philosophical contributions
+# scientist         - Scientist with philosophical implications
+# mentor            - Personal intellectual influence
+# contemporary      - Living thinker engaged with
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+  - date: 2025-12-25
+    change: "Transformed from people.yaml for philosophical focus"
+  - date: 2025-12-25
+    change: "Added 34 philosopher profiles covering ancient through contemporary eras"
+  - date: 2025-12-26
+    change: "Added 5 contemporary scientists: Nick Chater, Karl Friston, David Krakauer, Thomas Parr, Giovanni Pezzulo"
+  - date: 2025-12-26
+    change: "Enhanced Laozi profile with Wikipedia source: historical-critical context, manuscript traditions, religious significance, contemporary interpretations"
+  - date: 2025-12-26
+    change: "Added 6 thinkers: Markus Gabriel, Douglas Hofstadter, Thomas Metzinger, Donald Hoffman, Andy Clark, Joscha Bach"
+  - date: 2025-12-26
+    change: "Added Jakob Hohwy (philosopher) - prediction error minimization, philosophy of predictive processing"
+  - date: 2025-12-26
+    change: "Added Anil Seth (neuroscientist) - controlled hallucination, interoceptive inference"
+  - date: 2025-12-26
+    change: "Added Mark Solms (neuropsychologist) - brainstem consciousness, neuropsychoanalysis, FEP"
+  - date: 2025-12-26
+    change: "Added Maxwell Ramstead (computational neuroscientist) - computational phenomenology, enactive inference"
+  - date: 2025-12-26
+    change: "Added Chris Fields (physicist) - quantum FEP, holographic screens, physics as information"
+  - date: 2025-12-27
+    change: "Added Robert Sapolsky (neuroscientist) - hard incompatibilism, Determined, cascade of causes, behavioral biology"
+  - date: 2025-12-26
+    change: "Added Evan Thompson (philosopher) - enactivism, neurophenomenology, life-mind continuity"
+  - date: 2025-12-30
+    change: "Extended Joscha Bach entry: CIMC founder, computational consciousness thesis, cyber-animism; created full thinker profile"
+  - date: 2025-12-30
+    change: "Major enhancement of Karl Friston profile: biography, awards, technical contributions (SPM/VBM/DCM), philosophical lineage, criticisms, recent 2024-2025 developments"
+  - date: 2025-12-30
+    change: "Added Hermann von Helmholtz (1821-1894): physicist/physiologist/philosopher; unconscious inference (direct FEP ancestor); conservation of energy; inventor of ophthalmoscope"

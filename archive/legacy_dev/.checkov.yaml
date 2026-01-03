@@ -1,0 +1,5 @@
+# Checkov Security Scanning Configuration
+# https://www.checkov.io/2.Basics/CLI%20Command%20Reference.html
+
+quiet: true
+compact: true

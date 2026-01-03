@@ -1,0 +1,89 @@
+# =============================================================================
+# ORGANIZATION INDEX - Company Context
+# =============================================================================
+# Load this index when needing company context, org structure, or methodology.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-12
+  domain: organization
+  source_section: "agents_index.yaml Section 9"
+
+# =============================================================================
+# COMPANY CONTEXT
+# =============================================================================
+
+organization:
+# Add company context here; Example:
+#  company: fluege.de
+#  legal_name: Example Flights GmbH
+#  domain: fluege.de
+#  description: Online flight booking platform
+
+# =============================================================================
+# REPORTING STRUCTURE
+# =============================================================================
+
+reporting_structure:
+# Add reporting structure here; Example:
+#  your_role: Team Lead - Example Department
+#  reports_to: Department Director
+#  direct_reports:
+#    - name: Team Member A
+#      role: Software Engineer
+#    - name: Team Member B
+#      role: Data Scientist
+
+# =============================================================================
+# PEER TEAMS
+# =============================================================================
+
+peer_teams:
+# Add peer teams here; Example:
+#  - team: QA & Testing
+#    lead: QA Lead Name
+#    collaboration_focus: Test strategy, quality risks, automation
+#  - team: Backend Development
+#    lead: Backend Lead Name
+#    collaboration_focus: APIs, data flows, integrations
+
+# =============================================================================
+# METHODOLOGY
+# =============================================================================
+
+methodology:
+# Add methodology here; Example:
+#  name: ShapeUp
+#  cycle_length: "6 weeks"
+#  cooldown: "2 weeks"
+#  philosophy: "You build it, you run it"
+
+# =============================================================================
+# CULTURAL VALUES
+# =============================================================================
+
+cultural_values:
+# Add cultural values here; Example:
+#  - Initiative & Ownership
+#  - Teamwork
+#  - Problem Solving
+
+# =============================================================================
+# KEY STAKEHOLDERS (quick reference)
+# =============================================================================
+
+key_stakeholders:
+# Add key stakeholders here; Example:
+#  ceo: CEO Name
+#  director_it: IT Director Name
+#  head_of_product: Product Head Name
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Updated reporting structure."

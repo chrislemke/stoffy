@@ -1,0 +1,57 @@
+# =============================================================================
+# TICKETS INDEX - Ticket Prefix Registry
+# =============================================================================
+# Load this index when resolving ticket IDs (FML-, FPRO-, DS-, etc.)
+# =============================================================================
+
+meta:
+  version: "1.0"
+  last_updated: 2025-12-12
+  domain: tickets
+  source_section: "agents_index.yaml Section 5"
+
+# =============================================================================
+# TICKET PREFIX REGISTRY
+# =============================================================================
+# Maps ticket prefixes to their Jira projects and patterns
+
+ticket_prefixes:
+# Add more ticket prefix entries here; Example:
+#  FLIGHT:
+#    system: Jira
+#    team: Flight Booking Team
+#    pattern: "FLIGHT-\\d{4}"
+#    example: FLIGHT-1234
+#    folder: tickets/
+#
+#  SEARCH:
+#    system: Jira
+#    team: Search & Discovery Team
+#    pattern: "SEARCH-\\d{3}"
+#    example: SEARCH-456
+#    folder: tickets/
+#
+#  BOOK:
+#    system: Jira
+#    team: Booking Flow Team
+#    pattern: "BOOK-\\d{4}"
+#    example: BOOK-7890
+#    folder: tickets/
+
+# =============================================================================
+# RESOLUTION WORKFLOW
+# =============================================================================
+# When encountering a ticket ID:
+# 1. Match prefix to ticket_prefixes above
+# 2. Check if tickets/<TICKET-ID>.md exists locally
+# 3. If not found locally, query Jira API
+# 4. Optionally create local ticket file for future reference
+
+# =============================================================================
+# CHANGELOG
+# =============================================================================
+
+changelog:
+# Add more changelog entries here; Example:
+#  - date: 2025-01-15
+#    change: "Added PAYMENT prefix for payment integration tickets."
