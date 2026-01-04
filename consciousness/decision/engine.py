@@ -1,9 +1,11 @@
 """
-Decision Engine
+Autonomous Decision Engine
 
-Main orchestrator for the decision-making process.
-Coordinates categorization, action matching, and LLM evaluation
-to produce final decisions about what actions to take.
+Main orchestrator for fully autonomous decision-making.
+The LLM has complete freedom to generate any action that makes sense.
+Templates serve only as few-shot examples, not constraints.
+
+OBSERVE -> THINK -> DECIDE -> ACT
 """
 
 import asyncio
@@ -11,10 +13,10 @@ import logging
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from consciousness.thinker import ConsciousnessThinker
+    from consciousness.thinker import ConsciousnessThinker, Decision, Action
     from consciousness.watcher import FileChange
 
 from .categories import (
@@ -48,6 +50,8 @@ class DecisionContext:
     evaluation: Optional[MultiActionEvaluation] = None
     file_contents: dict[str, str] = field(default_factory=dict)
     metadata: dict = field(default_factory=dict)
+    git_status: str = ""
+    learned_patterns: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -57,32 +61,41 @@ class DecisionContext:
             "matched_actions": [m.template.name for m in self.matches],
             "evaluation": self.evaluation.to_dict() if self.evaluation else None,
             "has_file_contents": len(self.file_contents) > 0,
+            "has_git_status": bool(self.git_status),
+            "learned_pattern_count": len(self.learned_patterns),
             "metadata": self.metadata,
         }
 
 
 @dataclass
 class EngineDecision:
-    """Final decision from the engine."""
+    """Final decision from the engine - fully autonomous."""
 
     should_act: bool
-    action: Optional[ActionTemplate] = None
-    action_match: Optional[ActionMatch] = None
+    action: Optional["Action"] = None  # Now uses thinker.Action, not templates
     prompt: str = ""
     confidence: float = 0.0
     reasoning: str = ""
+    observation_summary: str = ""
+    expected_outcome: str = ""
     context: Optional[DecisionContext] = None
     executor_type: str = "claude_code"
     priority: int = 5
     timestamp: float = field(default_factory=time.time)
 
+    # For backward compatibility with template-based system
+    action_match: Optional[ActionMatch] = None
+    action_template: Optional[ActionTemplate] = None
+
     def to_dict(self) -> dict:
         return {
             "should_act": self.should_act,
-            "action_name": self.action.name if self.action else None,
+            "action": self.action.to_dict() if self.action else None,
             "prompt": self.prompt[:500] + "..." if len(self.prompt) > 500 else self.prompt,
             "confidence": self.confidence,
             "reasoning": self.reasoning,
+            "observation_summary": self.observation_summary,
+            "expected_outcome": self.expected_outcome,
             "executor_type": self.executor_type,
             "priority": self.priority,
             "timestamp": self.timestamp,
@@ -99,15 +112,175 @@ class EngineDecision:
         )
 
 
+class AutonomousEngine:
+    """
+    Fully autonomous decision engine.
+
+    The LLM is given complete freedom to decide what actions to take.
+    Templates are used only as few-shot examples to inspire the LLM,
+    not as constraints on what actions are possible.
+
+    Flow:
+    1. Gather all observations (file changes, git status, etc.)
+    2. Retrieve learned patterns from past successes
+    3. Let LLM reason freely about what to do
+    4. Return the decision for execution
+    """
+
+    def __init__(
+        self,
+        thinker: "ConsciousnessThinker",
+        confidence_threshold: float = 0.5,  # Lower threshold for autonomous mode
+        working_dir: Optional[Path] = None,
+        enable_learning: bool = True,
+    ):
+        """
+        Initialize the autonomous decision engine.
+
+        Args:
+            thinker: ConsciousnessThinker for LLM reasoning
+            confidence_threshold: Minimum confidence to execute
+            working_dir: Working directory for file operations
+            enable_learning: Whether to use learned patterns
+        """
+        self.thinker = thinker
+        self.confidence_threshold = confidence_threshold
+        self.working_dir = working_dir or Path.cwd()
+        self.enable_learning = enable_learning
+
+        # For building few-shot examples
+        self.example_templates = BUILT_IN_ACTIONS[:3]  # Just a few examples
+
+        # Statistics
+        self._decisions_made = 0
+        self._actions_taken = 0
+
+    async def decide(
+        self,
+        observations: str,
+        git_status: Optional[str] = None,
+        learned_patterns: Optional[list[str]] = None,
+        additional_context: Optional[dict] = None,
+    ) -> EngineDecision:
+        """
+        Make a fully autonomous decision about what to do.
+
+        No template matching - the LLM decides freely.
+
+        Args:
+            observations: Formatted string of file changes and observations
+            git_status: Current git status output
+            learned_patterns: Patterns learned from successful past actions
+            additional_context: Any additional context
+
+        Returns:
+            EngineDecision with freely-generated action
+        """
+        self._decisions_made += 1
+        start_time = time.time()
+
+        # Build context for the decision
+        context = {
+            "working_dir": str(self.working_dir),
+            "decision_number": self._decisions_made,
+            "actions_taken_so_far": self._actions_taken,
+            **(additional_context or {})
+        }
+
+        # Let the LLM think autonomously
+        logger.debug("Autonomous thinking about observations...")
+
+        decision = await self.thinker.think_autonomous(
+            observations=observations,
+            git_status=git_status,
+            learned_patterns=learned_patterns or [],
+            context=context,
+        )
+
+        # Convert thinker Decision to EngineDecision
+        from consciousness.thinker import DecisionType, ActionType
+
+        should_act = (
+            decision.decision == DecisionType.ACT
+            and decision.confidence >= self.confidence_threshold
+        )
+
+        if should_act:
+            self._actions_taken += 1
+
+        # Determine executor type from action
+        executor_type = "claude_code"
+        priority = 5
+        prompt = ""
+
+        if decision.action:
+            action_type = decision.action.type
+
+            # Map action types to executors
+            if action_type == ActionType.CLAUDE_FLOW:
+                executor_type = "claude_flow"
+                prompt = decision.action.prompt or decision.action.description
+            elif action_type == ActionType.CLAUDE_CODE:
+                executor_type = "claude_code"
+                prompt = decision.action.prompt or decision.action.description
+            elif action_type in (ActionType.WRITE_FILE, ActionType.RUN_PYTHON, ActionType.RUN_BASH):
+                executor_type = "direct"
+                prompt = decision.action.description
+            elif action_type in (ActionType.THINK, ActionType.DEBATE, ActionType.RESEARCH):
+                executor_type = "cognitive"
+                prompt = decision.action.description
+            else:
+                executor_type = "custom"
+                prompt = decision.action.description
+
+            # Map priority
+            from consciousness.thinker import Priority
+            priority_map = {
+                Priority.CRITICAL: 1,
+                Priority.HIGH: 3,
+                Priority.MEDIUM: 5,
+                Priority.LOW: 7,
+            }
+            priority = priority_map.get(decision.action.priority, 5)
+
+        duration = time.time() - start_time
+
+        logger.info(
+            f"Autonomous decision: {'ACT' if should_act else 'WAIT'} "
+            f"(confidence: {decision.confidence:.2f}, duration: {duration:.2f}s)"
+        )
+
+        return EngineDecision(
+            should_act=should_act,
+            action=decision.action,
+            prompt=prompt,
+            confidence=decision.confidence,
+            reasoning=decision.reasoning,
+            observation_summary=decision.observation_summary,
+            expected_outcome=decision.expected_outcome,
+            executor_type=executor_type,
+            priority=priority,
+        )
+
+    def get_statistics(self) -> dict:
+        """Get engine statistics."""
+        return {
+            "decisions_made": self._decisions_made,
+            "actions_taken": self._actions_taken,
+            "action_rate": self._actions_taken / max(self._decisions_made, 1),
+            "confidence_threshold": self.confidence_threshold,
+            "learning_enabled": self.enable_learning,
+        }
+
+
 class DecisionEngine:
     """
-    Main decision engine for the consciousness daemon.
+    Hybrid decision engine supporting both autonomous and template-based modes.
 
-    Orchestrates the flow from observation to action decision:
-    1. Categorize file changes
-    2. Match against action templates
-    3. Evaluate with LLM (if matches found)
-    4. Return final decision with prompt
+    Can operate in:
+    1. AUTONOMOUS mode: LLM decides freely (recommended)
+    2. TEMPLATE mode: Match against templates (legacy)
+    3. HYBRID mode: Templates inform but don't constrain
     """
 
     def __init__(
@@ -119,18 +292,20 @@ class DecisionEngine:
         max_actions_to_evaluate: int = 5,
         read_file_contents: bool = True,
         working_dir: Optional[Path] = None,
+        mode: str = "autonomous",  # "autonomous", "template", "hybrid"
     ):
         """
         Initialize the decision engine.
 
         Args:
             thinker: ConsciousnessThinker for LLM evaluation
-            actions: List of action templates (uses BUILT_IN_ACTIONS if None)
+            actions: List of action templates (for template/hybrid modes)
             confidence_threshold: Minimum confidence to execute
             enable_quick_mode: Use heuristics for obvious cases
             max_actions_to_evaluate: Limit actions sent to LLM
             read_file_contents: Whether to read file contents for prompts
             working_dir: Working directory for file operations
+            mode: Operating mode ("autonomous", "template", "hybrid")
         """
         self.thinker = thinker
         self.actions = actions or BUILT_IN_ACTIONS
@@ -139,7 +314,16 @@ class DecisionEngine:
         self.max_actions_to_evaluate = max_actions_to_evaluate
         self.read_file_contents = read_file_contents
         self.working_dir = working_dir or Path.cwd()
+        self.mode = mode
 
+        # Autonomous engine for autonomous/hybrid modes
+        self.autonomous_engine = AutonomousEngine(
+            thinker=thinker,
+            confidence_threshold=confidence_threshold,
+            working_dir=working_dir,
+        )
+
+        # Template evaluator for template/hybrid modes
         self.evaluator = ActionEvaluator(thinker, confidence_threshold)
 
         # Track action cooldowns
@@ -167,9 +351,8 @@ class DecisionEngine:
         try:
             full_path = self.working_dir / path
             if full_path.exists() and full_path.is_file():
-                # Limit file size to avoid token explosion
                 size = full_path.stat().st_size
-                if size > 50000:  # 50KB limit
+                if size > 50000:
                     return f"[File too large: {size} bytes]"
                 return full_path.read_text(encoding="utf-8", errors="replace")
         except Exception as e:
@@ -202,7 +385,6 @@ class DecisionEngine:
         template = match.template
         context = match.get_prompt_context()
 
-        # Add file content if available and required
         if template.requires_content and match.matched_files:
             primary_file = match.matched_files[0]
             if primary_file in file_contents:
@@ -210,7 +392,6 @@ class DecisionEngine:
             else:
                 context["file_content"] = "[Content not available]"
 
-        # Add multiple file contents if available
         if len(match.matched_files) > 1:
             content_parts = []
             for f in match.matched_files[:template.max_files]:
@@ -225,21 +406,53 @@ class DecisionEngine:
         self,
         changes: list["FileChange"],
         additional_context: Optional[dict] = None,
+        git_status: Optional[str] = None,
+        learned_patterns: Optional[list[str]] = None,
     ) -> EngineDecision:
         """
         Process file changes and produce a decision.
 
         This is the main entry point for the decision engine.
+        Behavior depends on the operating mode.
 
         Args:
             changes: List of file changes to process
             additional_context: Optional additional context for evaluation
+            git_status: Current git status (for autonomous mode)
+            learned_patterns: Learned patterns (for autonomous mode)
 
         Returns:
             EngineDecision with action recommendation
         """
-        logger.debug(f"Processing {len(changes)} file changes")
+        logger.debug(f"Processing {len(changes)} file changes in {self.mode} mode")
 
+        # Autonomous mode: bypass templates entirely
+        if self.mode == "autonomous":
+            # Format changes for LLM
+            from consciousness.watcher import ConsciousnessWatcher
+            watcher = ConsciousnessWatcher(root_path=self.working_dir)
+            observations = watcher.format_for_llm(changes)
+
+            return await self.autonomous_engine.decide(
+                observations=observations,
+                git_status=git_status,
+                learned_patterns=learned_patterns,
+                additional_context=additional_context,
+            )
+
+        # Template or Hybrid mode: use template matching
+        return await self._process_template_mode(
+            changes, additional_context, git_status, learned_patterns
+        )
+
+    async def _process_template_mode(
+        self,
+        changes: list["FileChange"],
+        additional_context: Optional[dict] = None,
+        git_status: Optional[str] = None,
+        learned_patterns: Optional[list[str]] = None,
+    ) -> EngineDecision:
+        """Process using template matching (legacy mode)."""
         # Step 1: Categorize changes
         categorized = categorize_changes(changes)
 
@@ -252,14 +465,25 @@ class DecisionEngine:
 
         # Step 2: Match against action templates
         all_matches = match_actions(changes, self.actions)
-
-        # Filter out actions on cooldown
         matches = self._filter_cooldown_actions(all_matches)
 
         if not matches:
             reason = "No action templates match the observed changes"
             if len(all_matches) > len(matches):
                 reason = f"Matched actions are on cooldown ({len(all_matches)} matches filtered)"
+
+            # In hybrid mode, fall back to autonomous
+            if self.mode == "hybrid":
+                from consciousness.watcher import ConsciousnessWatcher
+                watcher = ConsciousnessWatcher(root_path=self.working_dir)
+                observations = watcher.format_for_llm(changes)
+
+                return await self.autonomous_engine.decide(
+                    observations=observations,
+                    git_status=git_status,
+                    learned_patterns=learned_patterns,
+                    additional_context=additional_context,
+                )
 
             return EngineDecision.no_action(
                 reason,
@@ -280,6 +504,8 @@ class DecisionEngine:
             matches=matches,
             file_contents=file_contents,
             metadata=additional_context or {},
+            git_status=git_status or "",
+            learned_patterns=learned_patterns or [],
         )
 
         # Step 4: Quick mode for obvious cases
@@ -293,7 +519,7 @@ class DecisionEngine:
 
                 return EngineDecision(
                     should_act=True,
-                    action=match.template,
+                    action_template=match.template,
                     action_match=match,
                     prompt=prompt,
                     confidence=quick_conf,
@@ -304,7 +530,6 @@ class DecisionEngine:
                 )
 
         # Step 5: Full LLM evaluation
-        # Limit number of actions to evaluate
         matches_to_evaluate = matches[:self.max_actions_to_evaluate]
 
         evaluation = await self.evaluator.evaluate_multiple(
@@ -324,8 +549,6 @@ class DecisionEngine:
 
         # Step 6: Build final decision
         recommended = evaluation.recommended_action
-
-        # Find the matching ActionMatch
         action_match = None
         for match in matches:
             if match.template.name == recommended.action_name:
@@ -338,26 +561,22 @@ class DecisionEngine:
                 context,
             )
 
-        # Render the prompt
         prompt = self._render_action_prompt(action_match, file_contents)
-
-        # Use modified prompt if provided
         if recommended.modified_prompt:
             prompt = recommended.modified_prompt
 
-        # Calculate final priority with adjustment
         final_priority = action_match.template.priority + recommended.priority_adjustment
 
         return EngineDecision(
             should_act=True,
-            action=action_match.template,
+            action_template=action_match.template,
             action_match=action_match,
             prompt=prompt,
             confidence=recommended.confidence,
             reasoning=recommended.reasoning,
             context=context,
             executor_type=action_match.template.executor_type,
-            priority=max(1, final_priority),  # Minimum priority of 1
+            priority=max(1, final_priority),
         )
 
     async def process_batch(
@@ -370,21 +589,12 @@ class DecisionEngine:
 
         Useful when changes span multiple unrelated areas that
         can be handled in parallel.
-
-        Args:
-            changes: List of file changes
-            max_decisions: Maximum number of decisions to return
-
-        Returns:
-            List of EngineDecisions
         """
-        # Categorize changes
         categorized = categorize_changes(changes)
 
         if categorized.is_empty():
             return []
 
-        # Group changes by primary category
         category_groups: dict[ObservationCategory, list["FileChange"]] = {}
         for category in ObservationCategory:
             if category != ObservationCategory.NOISE:
@@ -392,7 +602,6 @@ class DecisionEngine:
                 if cat_changes:
                     category_groups[category] = cat_changes
 
-        # Process each group
         decisions = []
         for category, cat_changes in category_groups.items():
             if len(decisions) >= max_decisions:
@@ -406,7 +615,6 @@ class DecisionEngine:
 
     def add_action(self, action: ActionTemplate) -> None:
         """Add a new action template."""
-        # Remove existing action with same name
         self.actions = [a for a in self.actions if a.name != action.name]
         self.actions.append(action)
 
@@ -447,6 +655,7 @@ class DecisionEngine:
 async def create_engine(
     thinker: "ConsciousnessThinker",
     custom_actions: Optional[list[ActionTemplate]] = None,
+    mode: str = "autonomous",
     **kwargs,
 ) -> DecisionEngine:
     """
@@ -455,6 +664,7 @@ async def create_engine(
     Args:
         thinker: ConsciousnessThinker instance
         custom_actions: Optional custom actions to add
+        mode: Operating mode ("autonomous", "template", "hybrid")
         **kwargs: Additional DecisionEngine parameters
 
     Returns:
@@ -467,5 +677,6 @@ async def create_engine(
     return DecisionEngine(
         thinker=thinker,
         actions=actions,
+        mode=mode,
         **kwargs,
     )

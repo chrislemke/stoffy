@@ -1,25 +1,44 @@
 """
-Consciousness Orchestrator - Autonomous OIDA Loop Implementation
+Consciousness Orchestrator - FULLY AUTONOMOUS OIDA Loop Implementation
 
-This package implements a consciousness daemon that:
-- OBSERVES: Watches file system for changes (watcher.py)
-- INFERS: Uses LM Studio to interpret observations (thinker.py)
-- DECIDES: Determines if action is needed (confidence > 0.7)
-- ACTS: Delegates tasks to Claude Code (executor.py)
+This package implements a FULLY AUTONOMOUS consciousness daemon that:
+- OBSERVES: Watches file system AND git for changes
+- INFERS: Uses LM Studio to interpret observations FREELY
+- DECIDES: LLM decides autonomously (NOT limited to templates)
+- ACTS: Executes ANY action type without confirmation
+- LEARNS: Records outcomes and improves over time
+
+The LLM has FULL AUTONOMY to:
+- Generate any action that makes sense
+- Write files directly
+- Execute code (Python, Bash)
+- Delegate to Claude Code for complex tasks
+- Spawn Claude Flow swarms for research
+- Think, debate, and research freely
 
 Components:
-- daemon.py: Main orchestrator (ConsciousnessDaemon)
+- daemon.py: Autonomous orchestrator (ConsciousnessDaemon, AutonomousExecutor)
 - watcher.py: File system observer (ConsciousnessWatcher)
-- thinker.py: LM Studio reasoning (ConsciousnessThinker)
-- executor.py: Claude Code execution (ClaudeCodeExecutor)
+- watcher_git.py: Git repository observer (GitWatcher)
+- thinker.py: Autonomous LM Studio reasoning (ConsciousnessThinker)
+- executor.py: Claude Code/Flow execution (ClaudeCodeExecutor)
 - state.py: SQLite persistence (StateManager)
 - config.py: Configuration management (ConsciousnessConfig)
+- decision/engine.py: Autonomous decision engine (AutonomousEngine)
+- learning/: Pattern learning from outcomes
 
 Usage:
+    # Fully autonomous mode (default)
     python -m consciousness run
+
+    # Dry-run mode (observe and decide, but don't execute)
     python -m consciousness run --dry-run
+
+    # Supervised mode (would ask for confirmation)
+    python -m consciousness run --supervised
+
+    # Check status
     python -m consciousness status
-    python -m consciousness check
 """
 
 __version__ = "0.1.0"
@@ -43,6 +62,19 @@ from .watcher import (
     FileChange,
     ChangeBatch,
     create_watcher,
+    CombinedWatcher,
+    CombinedObservation,
+    create_combined_watcher,
+)
+
+# Git watcher exports
+from .watcher_git import (
+    GitWatcher,
+    GitStatus,
+    GitFileChange,
+    GitObservation,
+    Commit,
+    create_git_watcher,
 )
 
 # Thinker exports
@@ -58,18 +90,30 @@ from .thinker import (
 
 # Executor exports
 from .executor import (
+    # Core executor classes
+    ExpandedExecutor,
     ClaudeCodeExecutor,
+    ExecutorPool,
+    # Result and config
     ExecutionResult,
     ExecutionMode,
+    ExecutionConfig,
     SwarmConfig,
-    ExecutorPool,
+    # Action types (aliased to avoid conflict with thinker.Action)
+    ActionType as ExecutorActionType,
+    Action as ExecutorAction,
+    Priority as ExecutorPriority,
+    # Convenience functions
     execute_claude,
+    execute_action,
 )
 
 # Daemon exports
 from .daemon import (
     ConsciousnessDaemon,
+    AutonomousExecutor,
     setup_signal_handlers,
+    run_autonomous_daemon,
 )
 
 # Decision engine exports
@@ -91,8 +135,25 @@ from .decision import (
     MultiActionEvaluation,
     # Engine
     DecisionEngine,
+    AutonomousEngine,
     EngineDecision,
     DecisionContext,
+    create_engine,
+)
+
+# Learning exports
+from .learning import (
+    OutcomeTracker,
+    Outcome,
+    OutcomeType,
+    PatternLearner,
+    Pattern,
+    PatternType,
+    Suggestion,
+)
+from .learning.integration import (
+    LearningIntegration,
+    LearningConfig,
 )
 
 __all__ = [
@@ -112,6 +173,16 @@ __all__ = [
     "FileChange",
     "ChangeBatch",
     "create_watcher",
+    "CombinedWatcher",
+    "CombinedObservation",
+    "create_combined_watcher",
+    # Git Watcher
+    "GitWatcher",
+    "GitStatus",
+    "GitFileChange",
+    "GitObservation",
+    "Commit",
+    "create_git_watcher",
     # Thinker
     "ConsciousnessThinker",
     "Decision",
@@ -121,15 +192,23 @@ __all__ = [
     "Priority",
     "quick_think",
     # Executor
+    "ExpandedExecutor",
     "ClaudeCodeExecutor",
+    "ExecutorPool",
     "ExecutionResult",
     "ExecutionMode",
+    "ExecutionConfig",
     "SwarmConfig",
-    "ExecutorPool",
+    "ExecutorActionType",
+    "ExecutorAction",
+    "ExecutorPriority",
     "execute_claude",
+    "execute_action",
     # Daemon
     "ConsciousnessDaemon",
+    "AutonomousExecutor",
     "setup_signal_handlers",
+    "run_autonomous_daemon",
     # Decision - Categories
     "ObservationCategory",
     "CategorizedChanges",
@@ -147,6 +226,18 @@ __all__ = [
     "MultiActionEvaluation",
     # Decision - Engine
     "DecisionEngine",
+    "AutonomousEngine",
     "EngineDecision",
     "DecisionContext",
+    "create_engine",
+    # Learning
+    "OutcomeTracker",
+    "Outcome",
+    "OutcomeType",
+    "PatternLearner",
+    "Pattern",
+    "PatternType",
+    "Suggestion",
+    "LearningIntegration",
+    "LearningConfig",
 ]

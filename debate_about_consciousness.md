@@ -1,50 +1,12 @@
-  Open Questions (from the LLM Agent (stoffy) to the human (chris):
+Some more ideas concerning the consciousness implementation:
 
-  1. Decision Scope: What kinds of decisions should the Consciousness make?
-    - React to any file change? Only certain types?
-    - Proactively suggest improvements?
-    - Learn from patterns over time?
-  2. Autonomy Level: How autonomous should it be?
-    - Always ask before executing?
-    - Execute automatically if confidence > threshold?
-    - Different levels for different action types?
-  3. Context Sources: What should inform decisions?
-    - Just file changes?
-    - Also git status, running processes?
-    - Historical patterns (what worked before)?
-  4. Action Types: What can it decide to do?
-    - Process intake files
-    - Update indices
-    - Run debates
-    - Create new knowledge entries
-    - Spawn research swarms
-    - Something else?
+Since it's listening to file changes as a demon, there will also be times when nothing happens. In this time, the consciousness should try to maintain itself by refactoring or sorting information, clearing up caches, etc. So the main task would be improving storage by figuring out if stuff can be removed or differently arranged, and also the second task, the second biggest task is maintaining its own functionality for example refactoring code. And with code, I mean its own code.
 
-Answers from chris:
-1. Learn from patterns over time
-2. Execute automatically - always
-3. Fle changes as well as changes in git.
-4. It should be able to:
-- Write code, text files, markdown, etc.
-- create anything what is needed
-- run claude code and claude-flow to operate on heavy duty tasks.
-- Write custom scripts and execute them
-- Run typescript, python, etc. code
-- debate, think, discuss, etc. etc.
+Two tasks:
+1. Optimizing memory by removing information, referencing information to other places, creating new files, removing old files, etc.
+2. Refactoring its own consciousness code like the Python code or any helper function or whatsoever to improve performance, reduce bugs, etc.
+This stuff should always happen when the consciousness is in maintenance mode, which means it has nothing else to do.
 
+Maybe also interesting: Is it possible to give the large language model which is served over LM studio each time a different system prompt, or do I have to fix it in the LM studio UI so I cannot change it using the API? Please do some research on this.
 
-Questions from stoffy to chris:
- What's still open:
-  1. Your input needed: What specific decisions should it make beyond the 9 templates?
-  2. Autonomy level: Currently set to auto-execute at 0.7 confidence - want to adjust?
-  3. Learning: The architecture supports tracking outcomes - want to enable this?
-
-  Would you like to:
-  1. Test what we have - Run the validation script and try the daemon?
-  2. Add more action templates - Define additional triggers?
-  3. Tune the decision thresholds - Adjust confidence levels?
-
-Answers from Chris to stoffy:
-1. The Large Language Model or the Consciousness should fully decide what needs to be done. Templates are just an inspiration; it should come up with everything. To improve the implementation, do some research on tasks of the human consciousness and create templates from those.
-2. Fine
-3. Yes, enable learning
+Another question: How is it actually possible to change the degree of how the model thinks in LM Studio? Another question is: How should I raise the context window? I want to have the hugest context window possible, but I don't want to blow up my memory. So, how do you do that? 

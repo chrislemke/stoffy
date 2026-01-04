@@ -41,8 +41,10 @@ from .evaluator import (
 
 from .engine import (
     DecisionEngine,
+    AutonomousEngine,
     EngineDecision,
     DecisionContext,
+    create_engine,
 )
 
 __all__ = [
@@ -63,6 +65,8 @@ __all__ = [
     "MultiActionEvaluation",
     # Engine
     "DecisionEngine",
+    "AutonomousEngine",
     "EngineDecision",
     "DecisionContext",
+    "create_engine",
 ]
