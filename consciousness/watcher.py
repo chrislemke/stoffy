@@ -125,6 +125,7 @@ class ConsciousnessWatcher:
         self.ignore_patterns = ignore_patterns or DEFAULT_IGNORE_PATTERNS.copy()
         self.debounce_ms = debounce_ms
         self._running = False
+        self._stop_event = asyncio.Event()
 
     def _should_ignore(self, path: Path) -> bool:
         """Check if a path should be ignored based on patterns."""
@@ -196,12 +197,14 @@ class ConsciousnessWatcher:
             List of FileChange objects representing changes in the batch
         """
         self._running = True
+        self._stop_event.clear()  # Reset for potential restart
 
         async for changes in awatch(
             self.root_path,
             debounce=self.debounce_ms,
             recursive=True,
             force_polling=False,
+            stop_event=self._stop_event,
         ):
             if not self._running:
                 break
@@ -218,6 +221,7 @@ class ConsciousnessWatcher:
     def stop(self):
         """Stop the watcher."""
         self._running = False
+        self._stop_event.set()
 
     def format_for_llm(self, changes: list[FileChange]) -> str:
         """

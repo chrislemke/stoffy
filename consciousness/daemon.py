@@ -21,6 +21,8 @@ The daemon is FULLY AUTONOMOUS:
 
 import asyncio
 import signal
+import logging
+import logging.handlers
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -40,8 +42,30 @@ from .learning.integration import LearningIntegration, LearningConfig
 from .learning.dreamer import Dreamer, DreamerConfig
 from .decision.engine import AutonomousEngine, EngineDecision
 from .display import ThinkingDisplay, create_display
+from .user_message import UserMessageDetector, MessagePriority, UserMessage
+from .responder import ConsciousnessResponder, ResponderConfig
 
-# Configure structlog (simple console output)
+# Create logs directory at project root
+_project_root = Path(__file__).parent.parent
+_log_dir = _project_root / "logs"
+_log_dir.mkdir(parents=True, exist_ok=True)
+_log_file = _log_dir / "consciousness.log"
+
+# Setup file handler for standard logging (logs to /logs folder)
+_file_handler = logging.handlers.RotatingFileHandler(
+    filename=str(_log_file),
+    maxBytes=10 * 1024 * 1024,  # 10 MB
+    backupCount=5,
+    encoding="utf-8",
+)
+_file_handler.setLevel(logging.INFO)
+_file_handler.setFormatter(logging.Formatter(
+    '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s"}'
+))
+logging.getLogger().addHandler(_file_handler)
+logging.getLogger().setLevel(logging.INFO)
+
+# Configure structlog (console output preserved, file output added)
 structlog.configure(
     processors=[
         structlog.processors.add_log_level,
@@ -461,6 +485,18 @@ class ConsciousnessDaemon:
         # Initialize display for CLI output
         self.display = create_display(self.config.display)
 
+        # Initialize user message detection and response
+        self.user_message_detector = UserMessageDetector()
+        self.responder = ConsciousnessResponder(
+            working_dir=self.root_path,
+            executor=self.claude_executor,
+            config=ResponderConfig(
+                critical_tool="claude_code",
+                high_tool="claude_code",
+                medium_tool="gemini",
+            ),
+        )
+
         # Statistics
         self._cycle_count = 0
         self._decisions_made = 0
@@ -627,6 +663,81 @@ class ConsciousnessDaemon:
 
         # Display cycle start
         self.display.show_cycle_start(self._cycle_count)
+
+        # =====================================================================
+        # PRIORITY CHECK: Detect user messages addressed to consciousness
+        # User messages (Hey consciousness, Hey Stoffy) take priority over
+        # maintenance tasks and are handled with Claude Code or Gemini
+        # =====================================================================
+        user_messages_handled = False
+        for change in changes:
+            try:
+                file_path = Path(change.path)
+                if not file_path.exists() or not file_path.is_file():
+                    continue
+
+                # Only check text files for user messages
+                if file_path.suffix.lower() not in ('.md', '.txt', '.rst', '.py', '.js', '.ts'):
+                    continue
+
+                content = file_path.read_text(encoding='utf-8')
+                messages = self.user_message_detector.detect_in_content(content, str(file_path))
+
+                # Filter for high priority messages
+                high_priority = [m for m in messages if m.priority in (MessagePriority.CRITICAL, MessagePriority.HIGH)]
+
+                for user_msg in high_priority:
+                    logger.info(
+                        "daemon.user_message_detected",
+                        priority=user_msg.priority.value,
+                        file=change.relative_path,
+                        line=user_msg.line_number,
+                    )
+
+                    # Display that we're responding to user
+                    self.display.show_thinking(
+                        reasoning=f"User addressed me directly with: '{user_msg.message[:100]}...'",
+                        observation_summary=f"Detected {user_msg.priority.value} priority message in {change.relative_path}",
+                        expected_outcome="I will respond to the user's message in the same file",
+                        confidence=0.95,
+                    )
+
+                    # Respond using Claude Code or Gemini based on priority
+                    response = await self.responder.respond_to_message(
+                        user_msg,
+                        dry_run=(self.mode == "dry-run"),
+                    )
+
+                    if response:
+                        logger.info(
+                            "daemon.user_message_responded",
+                            file=change.relative_path,
+                            response_length=len(response),
+                        )
+                        self.display.show_action_result(
+                            success=True,
+                            output=f"Responded to user message in {change.relative_path}",
+                            duration=0.0,
+                        )
+                        user_messages_handled = True
+                    else:
+                        logger.warning(
+                            "daemon.user_message_response_failed",
+                            file=change.relative_path,
+                        )
+
+            except Exception as e:
+                logger.warning(f"daemon.user_message_check_error: {change.relative_path}: {e}")
+
+        # If we handled user messages, skip the normal cycle for this batch
+        # User messages take absolute priority
+        if user_messages_handled:
+            logger.info("daemon.cycle.user_messages_handled")
+            return
+
+        # =====================================================================
+        # Normal OIDA cycle continues if no user messages were handled
+        # =====================================================================
 
         # Get git observation
         git_status_str = ""

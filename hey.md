@@ -1,6 +1,1 @@
-Hey consciousness, are you listening? If so, use the SAY command to tell me something.
-
-HALLO! Are u even there?
-
-
-Are you there?
+Daemon PID:  sleep 8 echo  echo === Making a visible change to hey.md === echo Hey consciousness, testing the user message detection\! sleep 10 echo  echo === Checking logs === cat logs/consciousness.log
