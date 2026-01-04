@@ -1,58 +1,84 @@
-project_management/*/repo
-.DS_Store
-.env
-__pycache__
-reports/sagemaker/*/*.html
-reports/sagemaker/*/data.json
-.setup_markers/
-# Calendar reminder daemon state
-calendar/events/.reminder_state.json
-.claude/data
-logs
-
-# Claude Flow generated files
-.claude/settings.local.json
-.mcp.json
-claude-flow.config.json
-.swarm/
-.hive-mind/
-.claude-flow/
-memory/
-coordination/
-memory/claude-flow-data.json
-memory/sessions/*
-!memory/sessions/README.md
-memory/agents/*
-!memory/agents/README.md
-coordination/memory_bank/*
-coordination/subtasks/*
-coordination/orchestration/*
-*.db
-*.db-journal
-*.db-wal
-*.sqlite
-*.sqlite-journal
-*.sqlite-wal
-claude-flow
-# Removed Windows wrapper files per user request
-hive-mind-prompt-*.txt
-
-# Consciousness daemon
-consciousness.db
-consciousness.db-*
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 .venv/
+venv/
+ENV/
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
-# SQLite journal files
+*.egg-info/
+dist/
+build/
+
+# ======================
+# SQLite Databases
+# ======================
+*.db
 *.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
 
-# Internal consciousness state directory (runtime data)
-.consciousness/
-
-# Python cache files
-__pycache__/
-*.pyc
-
-# macOS Finder artifacts
+# ======================
+# macOS
+# ======================
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ======================
+# IDE / Editor
+# ======================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ======================
+# Environment & Secrets
+# ======================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ======================
+# Claude Flow / AI Tooling
+# ======================
+.claude/data/
+.claude/settings.local.json
+.claude-flow/
+.swarm/
+.hive-mind/
+.consciousness/
+memory/
+coordination/
+claude-flow
+claude-flow.config.json
+hive-mind-prompt-*.txt
+
+# ======================
+# Logs & Runtime State
+# ======================
+logs/
+*.log
+.setup_markers/
+
+# ======================
+# Project-Specific
+# ======================
+project_management/*/repo
+reports/sagemaker/*/*.html
+reports/sagemaker/*/data.json
+calendar/events/.reminder_state.json
