@@ -80,6 +80,9 @@ class ActionType(Enum):
     CLAUDE_CODE = "claude_code"
     CLAUDE_FLOW = "claude_flow"
 
+    # Gemini delegation (Tier 4 - Librarian)
+    GEMINI_ANALYZE = "gemini_analyze"
+
     # Thinking and discussion
     THINK = "think"             # Internal reasoning
     DEBATE = "debate"           # Spawn a debate between thinkers
@@ -239,6 +242,48 @@ class Action:
             priority=priority
         )
 
+    @classmethod
+    def gemini_analyze(
+        cls,
+        prompt: str,
+        files: Optional[List[str]] = None,
+        context: Optional[str] = None,
+        model: str = "gemini-1.5-pro",
+        priority: Priority = Priority.MEDIUM
+    ) -> "Action":
+        """
+        Create a Gemini analysis action (Tier 4 - Librarian).
+
+        Gemini excels at analyzing massive context (2M+ tokens) for:
+        - Document summarization
+        - Log analysis
+        - Pattern finding in large datasets
+        - Historical data analysis
+
+        WARNING: Medium/Low trust - verify code output with Claude.
+
+        Args:
+            prompt: Analysis prompt
+            files: Optional list of file paths to include as context
+            context: Optional large text context
+            model: Gemini model (gemini-1.5-pro, gemini-1.5-flash, etc.)
+            priority: Action priority
+
+        Returns:
+            Action configured for Gemini analysis
+        """
+        return cls(
+            type=ActionType.GEMINI_ANALYZE,
+            details={
+                "prompt": prompt,
+                "files": files or [],
+                "context": context,
+                "model": model,
+            },
+            priority=priority,
+            timeout=900  # 15 minutes for large context processing
+        )
+
 
 @dataclass
 class SwarmConfig:
@@ -257,6 +302,7 @@ class ExecutionConfig:
     file_operation_timeout: int = 30
     code_execution_timeout: int = 120
     claude_timeout: int = 600
+    gemini_timeout: int = 900  # 15 minutes for large context processing
 
     # Limits
     max_output_size: int = 1_000_000  # 1MB
@@ -450,6 +496,9 @@ class ExpandedExecutor:
             # Claude delegation
             ActionType.CLAUDE_CODE: self._claude_code,
             ActionType.CLAUDE_FLOW: self._claude_flow,
+
+            # Gemini delegation (Tier 4)
+            ActionType.GEMINI_ANALYZE: self._execute_gemini,
 
             # Thinking
             ActionType.THINK: self._think,
@@ -1137,6 +1186,351 @@ class ExpandedExecutor:
         )
 
     # =========================================================================
+    # GEMINI DELEGATION (TIER 4 - LIBRARIAN)
+    # =========================================================================
+
+    async def _execute_gemini(self, action: Action) -> ExecutionResult:
+        """
+        Execute a Gemini analysis action (Tier 4).
+
+        Gemini is the "Librarian" tier with MASSIVE context window (2M+ tokens).
+        Ideal for:
+        - "Read these 50 documentation files and summarize the API"
+        - "Analyze the entire git log history for the last year"
+        - "Find the needle in the haystack of 10,000 log lines"
+
+        CRITICAL: Medium/Low trust - prone to hallucination on specific logic.
+        Use for analysis, summarization, and retrieval. Code output MUST be
+        verified with Claude.
+
+        Details:
+            - prompt: Analysis prompt
+            - files: Optional list of file paths to include as context
+            - context: Optional large text context
+            - model: Gemini model to use (default: gemini-1.5-pro)
+
+        Warning: High context, lower trust. Verify code output with Claude.
+        """
+        details = action.details
+        prompt = details.get("prompt", "")
+        files = details.get("files", [])
+        context = details.get("context", "")
+        model = details.get("model", "gemini-1.5-pro")
+
+        if not prompt:
+            return ExecutionResult.failure(
+                "Prompt is required for Gemini analysis",
+                ActionType.GEMINI_ANALYZE
+            )
+
+        # Check if Gemini is available
+        if not self._check_gemini_available():
+            return ExecutionResult.failure(
+                "Gemini API not available. Set GOOGLE_API_KEY environment variable "
+                "or install google-generativeai package.",
+                ActionType.GEMINI_ANALYZE
+            )
+
+        # Build full context from files
+        file_contexts = []
+        files_loaded = []
+
+        for file_path in files:
+            try:
+                path = self._validate_path(file_path)
+                if path.exists() and path.is_file():
+                    content = path.read_text(encoding='utf-8', errors='replace')
+                    file_contexts.append(f"--- FILE: {path.name} ---\n{content}\n--- END FILE ---")
+                    files_loaded.append(str(path))
+                else:
+                    logger.warning(f"Gemini: File not found or not a file: {path}")
+            except ValueError as e:
+                logger.warning(f"Gemini: Path validation failed for {file_path}: {e}")
+            except Exception as e:
+                logger.warning(f"Gemini: Failed to read file {file_path}: {e}")
+
+        # Combine all context
+        full_context = ""
+        if file_contexts:
+            full_context += "=== FILE CONTEXT ===\n"
+            full_context += "\n\n".join(file_contexts)
+            full_context += "\n=== END FILE CONTEXT ===\n\n"
+
+        if context:
+            full_context += "=== ADDITIONAL CONTEXT ===\n"
+            full_context += context
+            full_context += "\n=== END ADDITIONAL CONTEXT ===\n\n"
+
+        # Build the full prompt
+        full_prompt = full_context + prompt
+
+        # Log context size for monitoring
+        context_size = len(full_prompt)
+        logger.info(
+            f"Gemini analysis: model={model}, context_size={context_size} chars, "
+            f"files={len(files_loaded)}"
+        )
+
+        # Try Python SDK first, fall back to CLI
+        result = await self._execute_gemini_sdk(full_prompt, model, action.timeout)
+
+        if result is None:
+            # SDK failed, try CLI wrapper
+            result = await self._execute_gemini_cli(full_prompt, model, action.timeout)
+
+        if result is None:
+            return ExecutionResult.failure(
+                "Gemini execution failed - both SDK and CLI methods unavailable",
+                ActionType.GEMINI_ANALYZE
+            )
+
+        # Add Tier 4 trust level metadata
+        result.metadata["tier"] = 4
+        result.metadata["trust_level"] = "verify"
+        result.metadata["warning"] = "Gemini output - verify code with Claude before using"
+        result.metadata["model"] = model
+        result.metadata["context_size"] = context_size
+        result.metadata["files_loaded"] = files_loaded
+
+        return result
+
+    async def _execute_gemini_sdk(
+        self,
+        prompt: str,
+        model: str,
+        timeout: Optional[int]
+    ) -> Optional[ExecutionResult]:
+        """
+        Execute Gemini using the google-generativeai Python SDK.
+
+        Returns None if SDK is not available or fails to initialize.
+        """
+        try:
+            import google.generativeai as genai
+        except ImportError:
+            logger.debug("google-generativeai package not installed")
+            return None
+
+        api_key = os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            logger.debug("GOOGLE_API_KEY not set for SDK")
+            return None
+
+        try:
+            # Configure the SDK
+            genai.configure(api_key=api_key)
+
+            # Get the model
+            gemini_model = genai.GenerativeModel(model)
+
+            # Generate content with timeout
+            timeout_seconds = timeout or self.config.gemini_timeout
+
+            # Run in executor to avoid blocking
+            loop = asyncio.get_event_loop()
+
+            def generate():
+                response = gemini_model.generate_content(
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        max_output_tokens=8192,
+                        temperature=0.3,  # Lower temperature for analysis
+                    ),
+                    safety_settings={
+                        "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+                        "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+                        "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
+                        "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
+                    }
+                )
+                return response
+
+            try:
+                response = await asyncio.wait_for(
+                    loop.run_in_executor(None, generate),
+                    timeout=timeout_seconds
+                )
+
+                # Extract text from response
+                output = response.text if hasattr(response, 'text') else str(response)
+
+                return ExecutionResult(
+                    success=True,
+                    output=output,
+                    action_type=ActionType.GEMINI_ANALYZE,
+                    mode=ExecutionMode.SIMPLE,
+                    metadata={"method": "sdk"}
+                )
+
+            except asyncio.TimeoutError:
+                return ExecutionResult.failure(
+                    f"Gemini SDK timed out after {timeout_seconds}s",
+                    ActionType.GEMINI_ANALYZE
+                )
+
+        except Exception as e:
+            logger.warning(f"Gemini SDK execution failed: {e}")
+            return ExecutionResult.failure(
+                f"Gemini SDK error: {str(e)}",
+                ActionType.GEMINI_ANALYZE
+            )
+
+    async def _execute_gemini_cli(
+        self,
+        prompt: str,
+        model: str,
+        timeout: Optional[int]
+    ) -> Optional[ExecutionResult]:
+        """
+        Execute Gemini using a CLI wrapper (gemini-cli or custom script).
+
+        Falls back to using curl with the Gemini API directly.
+        """
+        api_key = os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            logger.debug("GOOGLE_API_KEY not set for CLI")
+            return None
+
+        # Try gemini CLI if available
+        gemini_cli = shutil.which("gemini")
+        if gemini_cli:
+            # Write prompt to temp file for large context
+            temp_file = self.config.temp_dir / f"gemini_prompt_{int(time.time())}.txt"
+            temp_file.write_text(prompt)
+
+            try:
+                cmd = [gemini_cli, "--model", model, "--file", str(temp_file)]
+                result = await self._run_subprocess(
+                    cmd,
+                    timeout=timeout or self.config.gemini_timeout,
+                    env={"GOOGLE_API_KEY": api_key}
+                )
+
+                return ExecutionResult(
+                    success=result["returncode"] == 0,
+                    output=result["stdout"],
+                    error=result["stderr"] if result["returncode"] != 0 else None,
+                    action_type=ActionType.GEMINI_ANALYZE,
+                    return_code=result["returncode"],
+                    mode=ExecutionMode.SIMPLE,
+                    metadata={"method": "cli"}
+                )
+            finally:
+                if temp_file.exists():
+                    temp_file.unlink()
+
+        # Fall back to curl API call
+        try:
+            import json as json_module
+
+            # Prepare API request
+            api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+            request_body = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "maxOutputTokens": 8192,
+                    "temperature": 0.3
+                }
+            }
+
+            # Write request body to temp file
+            temp_request = self.config.temp_dir / f"gemini_request_{int(time.time())}.json"
+            temp_request.write_text(json_module.dumps(request_body))
+
+            try:
+                cmd = [
+                    "curl", "-s", "-X", "POST",
+                    f"{api_url}?key={api_key}",
+                    "-H", "Content-Type: application/json",
+                    "-d", f"@{temp_request}"
+                ]
+
+                result = await self._run_subprocess(
+                    cmd,
+                    timeout=timeout or self.config.gemini_timeout
+                )
+
+                if result["returncode"] == 0:
+                    try:
+                        response_data = json_module.loads(result["stdout"])
+                        # Extract text from Gemini API response
+                        if "candidates" in response_data:
+                            text_parts = []
+                            for candidate in response_data["candidates"]:
+                                if "content" in candidate and "parts" in candidate["content"]:
+                                    for part in candidate["content"]["parts"]:
+                                        if "text" in part:
+                                            text_parts.append(part["text"])
+                            output = "\n".join(text_parts)
+                        elif "error" in response_data:
+                            return ExecutionResult.failure(
+                                f"Gemini API error: {response_data['error'].get('message', 'Unknown error')}",
+                                ActionType.GEMINI_ANALYZE
+                            )
+                        else:
+                            output = result["stdout"]
+
+                        return ExecutionResult(
+                            success=True,
+                            output=output,
+                            action_type=ActionType.GEMINI_ANALYZE,
+                            mode=ExecutionMode.SIMPLE,
+                            metadata={"method": "curl"}
+                        )
+                    except json_module.JSONDecodeError:
+                        return ExecutionResult.failure(
+                            f"Failed to parse Gemini response: {result['stdout'][:500]}",
+                            ActionType.GEMINI_ANALYZE
+                        )
+                else:
+                    return ExecutionResult.failure(
+                        f"Gemini curl request failed: {result['stderr']}",
+                        ActionType.GEMINI_ANALYZE
+                    )
+
+            finally:
+                if temp_request.exists():
+                    temp_request.unlink()
+
+        except Exception as e:
+            logger.warning(f"Gemini CLI/curl execution failed: {e}")
+            return None
+
+    def _check_gemini_available(self) -> bool:
+        """
+        Check if Gemini is available.
+
+        Checks for:
+        1. GOOGLE_API_KEY environment variable
+        2. google-generativeai SDK (preferred)
+        3. gemini CLI tool
+        4. curl for API fallback
+
+        Returns True if at least one method is available.
+        """
+        api_key = os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            return False
+
+        # Check for SDK
+        try:
+            import google.generativeai
+            return True
+        except ImportError:
+            pass
+
+        # Check for CLI
+        if shutil.which("gemini"):
+            return True
+
+        # Check for curl (fallback)
+        if shutil.which("curl"):
+            return True
+
+        return False
+
+    # =========================================================================
     # THINKING AND DISCUSSION
     # =========================================================================
 
@@ -1492,6 +1886,7 @@ Conclude with a synthesis that integrates insights from all perspectives.
         return {
             "claude_code": self.is_available(),
             "claude_flow": self.is_swarm_available(),
+            "gemini": self._check_gemini_available(),
             "python": self.python_path is not None,
             "node": self.node_path is not None,
             "typescript": self.ts_node_path is not None or self.npx_path is not None,
@@ -1801,6 +2196,23 @@ if __name__ == "__main__":
             print(f"Output: {result.output[:200] if result.output else 'No output'}")
         else:
             print("\n--- Test 4: Claude Code (SKIPPED - not available) ---")
+
+        # Test 5: Gemini Analyze (if available)
+        if executor._check_gemini_available():
+            print("\n--- Test 5: Gemini Analyze (Tier 4) ---")
+            result = await executor.execute(Action.gemini_analyze(
+                prompt="Say 'Hello from Gemini!' and nothing else.",
+                model="gemini-1.5-flash"  # Use flash for quick test
+            ))
+            print(f"Success: {result.success}")
+            print(f"Output: {result.output[:200] if result.output else 'No output'}")
+            print(f"Trust Level: {result.metadata.get('trust_level', 'N/A')}")
+            print(f"Tier: {result.metadata.get('tier', 'N/A')}")
+            if result.metadata.get('warning'):
+                print(f"Warning: {result.metadata['warning']}")
+        else:
+            print("\n--- Test 5: Gemini Analyze (SKIPPED - not available) ---")
+            print("  Set GOOGLE_API_KEY to enable Gemini integration.")
 
         print("\n" + "=" * 60)
         print("Tests complete!")

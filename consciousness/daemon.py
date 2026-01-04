@@ -37,7 +37,9 @@ from .executor import ClaudeCodeExecutor, ExecutionResult, ExecutionMode
 from .state import StateManager, Event, EventType, ThoughtRecord, ActionRecord
 from .learning import PatternLearner
 from .learning.integration import LearningIntegration, LearningConfig
+from .learning.dreamer import Dreamer, DreamerConfig
 from .decision.engine import AutonomousEngine, EngineDecision
+from .display import ThinkingDisplay, create_display
 
 # Configure structlog (simple console output)
 structlog.configure(
@@ -441,12 +443,34 @@ class ConsciousnessDaemon:
             ),
         )
 
+        # Initialize Dreamer for maintenance cycles
+        # Share the OutcomeTracker from learning to ensure schema migration runs once
+        self.dreamer = Dreamer(
+            db_path=self.config.state.database_path,
+            project_root=self.root_path,
+            config=DreamerConfig(
+                inactivity_minutes=60,
+                action_threshold=100,
+                knowledge_base_path=str(self.root_path / "knowledge"),
+                templates_path=str(self.root_path / ".hive-mind" / "templates"),
+            ),
+            outcome_tracker=self.learning.outcome_tracker,  # Share tracker
+            pattern_learner=self.learning.pattern_learner,  # Share learner
+        )
+
+        # Initialize display for CLI output
+        self.display = create_display(self.config.display)
+
         # Statistics
         self._cycle_count = 0
         self._decisions_made = 0
         self._actions_executed = 0
         self._last_decision: Optional[EngineDecision] = None
         self._last_git_observation: Optional[GitObservation] = None
+
+        # Dream cycle tracking
+        self._last_activity_time: datetime = datetime.now(timezone.utc)
+        self._dream_action_count: int = 0
 
         # Background watcher queue
         self._change_queue: asyncio.Queue[list[FileChange]] = asyncio.Queue()
@@ -465,6 +489,39 @@ class ConsciousnessDaemon:
             logger.info("daemon.watcher.cancelled")
         except Exception as e:
             logger.exception("daemon.watcher.error", error=str(e))
+
+    async def _should_dream(self) -> bool:
+        """Check if it's time for a Dream Cycle."""
+        # Check inactivity (60 minutes)
+        inactivity = (datetime.now(timezone.utc) - self._last_activity_time).total_seconds()
+        if inactivity >= 60 * 60:  # 60 minutes
+            return True
+
+        # Check action count
+        if self._dream_action_count >= 100:
+            return True
+
+        return False
+
+    async def _execute_dream_cycle(self) -> None:
+        """Execute a Dream Cycle for maintenance and consolidation."""
+        logger.info("daemon.dream_cycle.starting")
+
+        try:
+            result = await self.dreamer.dream()
+
+            # Reset counters
+            self._dream_action_count = 0
+            self._last_activity_time = datetime.now(timezone.utc)
+
+            logger.info(
+                "daemon.dream_cycle.complete",
+                insights=len(result.insights) if result else 0,
+                rules_updated=result.rules_updated if result else 0,
+                templates_created=result.templates_created if result else 0,
+            )
+        except Exception as e:
+            logger.exception("daemon.dream_cycle.error", error=str(e))
 
     def request_shutdown(self) -> None:
         """Request graceful shutdown."""
@@ -556,10 +613,20 @@ class ConsciousnessDaemon:
             logger.warning("daemon.cycle.queue_error", error=str(e))
 
         if not changes:
+            # No changes - check if we should dream
+            if await self._should_dream():
+                self.display.show_dream_cycle("starting", 0)
+                await self._execute_dream_cycle()
             logger.debug("daemon.cycle.no_changes")
             return
 
+        # Update activity time when changes are detected
+        self._last_activity_time = datetime.now(timezone.utc)
+
         logger.info("daemon.cycle.changes_detected", count=len(changes))
+
+        # Display cycle start
+        self.display.show_cycle_start(self._cycle_count)
 
         # Get git observation
         git_status_str = ""
@@ -592,6 +659,9 @@ class ConsciousnessDaemon:
         if learned_patterns:
             logger.debug("daemon.cycle.learned_patterns", count=len(learned_patterns))
 
+        # Display observations
+        self.display.show_observations(observations, change_count=len(changes))
+
         # 3. INFER & DECIDE: Autonomous thinking
         decision = await self.engine.decide(
             observations=observations,
@@ -615,6 +685,26 @@ class ConsciousnessDaemon:
             reasoning_preview=decision.reasoning[:100] if decision.reasoning else "",
         )
 
+        # Display the thinking/reasoning process
+        self.display.show_thinking(
+            reasoning=decision.reasoning,
+            observation_summary=decision.observation_summary,
+            expected_outcome=decision.expected_outcome,
+            confidence=decision.confidence,
+        )
+
+        # Display the decision
+        action_type = decision.action.type.value if decision.action else ""
+        action_description = decision.action.description if decision.action else ""
+        priority = decision.action.priority.value if decision.action else "medium"
+
+        self.display.show_decision(
+            should_act=decision.should_act,
+            action_type=action_type,
+            action_description=action_description,
+            priority=priority,
+        )
+
         # Record thought
         await self.state.record_thought(ThoughtRecord(
             prompt=observations,
@@ -624,8 +714,15 @@ class ConsciousnessDaemon:
 
         # 4. ACT: Execute if decided
         result: Optional[ExecutionResult] = None
+        action_start = datetime.now(timezone.utc)
 
         if decision.should_act:
+            # Display action start
+            self.display.show_action_start(
+                action_type=action_type,
+                description=action_description,
+            )
+
             if self.mode == "dry-run":
                 # Dry run - log but don't execute
                 logger.info(
@@ -655,14 +752,25 @@ class ConsciousnessDaemon:
                 )
                 result = await self.executor.execute(decision)
                 self._actions_executed += 1
+                self._dream_action_count += 1
 
-            # Log result
+            # Log result and display
             if result:
+                action_duration = (datetime.now(timezone.utc) - action_start).total_seconds()
+
                 logger.info(
                     "daemon.cycle.executed",
                     success=result.success,
                     output_preview=result.output[:200] if result.output else "",
                     error=result.error,
+                )
+
+                # Display action result
+                self.display.show_action_result(
+                    success=result.success,
+                    output=result.output,
+                    error=result.error or "",
+                    duration=action_duration,
                 )
 
                 # Record action
@@ -715,6 +823,7 @@ class ConsciousnessDaemon:
             except asyncio.CancelledError:
                 pass
 
+        await self.dreamer.close()
         await self.learning.close()
         await self.state.close()
 
@@ -746,6 +855,12 @@ class ConsciousnessDaemon:
                 self.git_watcher.format_for_llm_compact(self._last_git_observation)
                 if self._last_git_observation else None
             ),
+            "dream_status": {
+                "actions_since_dream": self._dream_action_count,
+                "last_activity": self._last_activity_time.isoformat(),
+                "minutes_inactive": (datetime.now(timezone.utc) - self._last_activity_time).total_seconds() / 60,
+                "dreamer_status": self.dreamer.get_status(),
+            },
             "database_stats": stats,
             "learning_status": learning_status,
             "engine_stats": engine_stats,

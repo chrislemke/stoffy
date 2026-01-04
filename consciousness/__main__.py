@@ -51,6 +51,21 @@ if HAS_TYPER:
             "--interval", "-i",
             help="Seconds between thinking cycles",
         ),
+        show_thinking: bool = typer.Option(
+            True,
+            "--show-thinking/--hide-thinking",
+            help="Show or hide the LLM's thinking/reasoning process",
+        ),
+        thinking_style: str = typer.Option(
+            "full",
+            "--thinking-style",
+            help="Thinking display style: full, summary, or minimal",
+        ),
+        show_observations: bool = typer.Option(
+            True,
+            "--show-observations/--hide-observations",
+            help="Show or hide file change observations",
+        ),
     ) -> None:
         """
         Start the Consciousness Orchestrator.
@@ -60,6 +75,8 @@ if HAS_TYPER:
         - INFER: Use LM Studio to interpret observations
         - DECIDE: Determine if action is needed (confidence > 0.7)
         - ACT: Delegate tasks to Claude Code
+
+        Use --show-thinking to see the LLM's reasoning process in real-time.
         """
         console.print("[bold blue]═══ CONSCIOUSNESS ORCHESTRATOR ═══[/bold blue]")
         console.print("[dim]OIDA Loop: Observe → Infer → Decide → Act[/dim]\n")
@@ -70,8 +87,15 @@ if HAS_TYPER:
         # Override config settings from CLI
         config.decision.thinking_interval_seconds = int(thinking_interval)
 
+        # Override display settings from CLI
+        config.display.show_thinking = show_thinking
+        config.display.show_observations = show_observations
+        config.display.thinking_style = thinking_style
+
         if dev:
             config.logging.level = "DEBUG"
+            config.display.show_thinking = True
+            config.display.thinking_style = "full"
             console.print("[yellow]Development mode enabled[/yellow]")
 
         # Initialize daemon
@@ -82,7 +106,8 @@ if HAS_TYPER:
         console.print(f"[green]LM Studio endpoint: {config.lm_studio.base_url}[/green]")
         console.print(f"[green]Thinking interval: {thinking_interval}s[/green]")
         console.print(f"[green]Confidence threshold: {config.decision.min_confidence}[/green]")
-        console.print(f"[green]Working directory: {daemon.root_path}[/green]\n")
+        console.print(f"[green]Working directory: {daemon.root_path}[/green]")
+        console.print(f"[green]Show thinking: {config.display.show_thinking} ({config.display.thinking_style} style)[/green]\n")
 
         console.print("[bold green]Starting consciousness loop...[/bold green]\n")
 

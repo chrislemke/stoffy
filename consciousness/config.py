@@ -92,6 +92,18 @@ class LoggingConfig(BaseModel):
     format: str = "json"
 
 
+class DisplayConfig(BaseModel):
+    """CLI display configuration for consciousness output."""
+
+    show_thinking: bool = True  # Show the LLM's reasoning/thinking process
+    show_observations: bool = True  # Show file change observations
+    show_decisions: bool = True  # Show decision summaries
+    show_actions: bool = True  # Show action execution details
+    thinking_style: str = "full"  # "full", "summary", "minimal"
+    use_colors: bool = True  # Use Rich console colors
+    panel_width: int = 100  # Width of display panels
+
+
 class LoopConfig(BaseModel):
     """Main loop configuration."""
 
@@ -115,6 +127,7 @@ class ConsciousnessConfig(BaseSettings):
     state: StateConfig = Field(default_factory=StateConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     loop: LoopConfig = Field(default_factory=LoopConfig)
+    display: DisplayConfig = Field(default_factory=DisplayConfig)
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> "ConsciousnessConfig":
