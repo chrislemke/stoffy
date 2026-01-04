@@ -36,3 +36,23 @@ coordination/orchestration/*
 claude-flow
 # Removed Windows wrapper files per user request
 hive-mind-prompt-*.txt
+
+# Consciousness daemon
+consciousness.db
+consciousness.db-*
+.venv/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+# SQLite journal files
+*.db-journal
+
+# Internal consciousness state directory (runtime data)
+.consciousness/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# macOS Finder artifacts
+.DS_Store

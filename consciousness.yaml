@@ -1,0 +1,72 @@
+# Consciousness Daemon Configuration
+# Self-referential AI with continuous observation and decision-making
+
+lm_studio:
+  base_url: "http://localhost:1234/v1"
+  model: "qwen2.5-14b-instruct"
+  temperature: 0.7
+  max_tokens: 4096
+  timeout_seconds: 60
+
+watcher:
+  root_path: "."
+  ignore_patterns:
+    - ".git"
+    - "__pycache__"
+    - ".venv"
+    - "*.pyc"
+    - ".DS_Store"
+    - "logs/"
+    - "*.db"
+    - "node_modules"
+    - ".claude-flow"
+    - ".hive-mind"
+    - ".swarm"
+    - "*.log"
+    - ".ruff_cache"
+    - ".mypy_cache"
+    - ".pytest_cache"
+  debounce_ms: 500
+  max_file_size_kb: 1024
+
+executor:
+  timeout_seconds: 300
+  working_dir: "."
+  allowed_commands:
+    - "git"
+    - "python"
+    - "pip"
+    - "uv"
+    - "npm"
+    - "node"
+    - "cat"
+    - "ls"
+    - "find"
+    - "grep"
+  blocked_patterns:
+    - "rm -rf /"
+    - "sudo"
+    - "> /dev"
+
+decision:
+  min_confidence: 0.7
+  thinking_interval_seconds: 5
+  max_actions_per_cycle: 3
+  require_confirmation_above: 0.9
+
+state:
+  database_path: "./consciousness.db"
+  max_history_entries: 10000
+  checkpoint_interval_seconds: 300
+
+logging:
+  level: "INFO"
+  file: "./logs/consciousness.log"
+  max_file_size_mb: 10
+  backup_count: 5
+  format: "json"
+
+loop:
+  tick_interval_seconds: 1.0
+  idle_threshold_seconds: 30
+  max_consecutive_errors: 5

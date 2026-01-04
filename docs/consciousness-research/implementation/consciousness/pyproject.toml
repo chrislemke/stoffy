@@ -1,0 +1,59 @@
+[project]
+name = "consciousness"
+version = "0.1.0"
+description = "Autonomous Consciousness Orchestrator for Stoffy - OIDA Loop Implementation"
+requires-python = ">=3.11"
+dependencies = [
+    # LLM Clients
+    "openai>=1.0.0",           # LM Studio client (OpenAI-compatible)
+    "anthropic>=0.40.0",       # Claude API client
+
+    # Async & Concurrency
+    "aiofiles>=24.0.0",        # Async file operations
+    "aiosqlite>=0.20.0",       # Async SQLite
+
+    # File Watching
+    "watchfiles>=0.21.0",      # Fast file watching (Rust-based)
+
+    # Process Monitoring
+    "psutil>=5.9.0",           # Process and system monitoring
+
+    # Configuration
+    "pydantic>=2.0.0",         # Settings validation
+    "pydantic-settings>=2.0.0", # Environment variable loading
+    "pyyaml>=6.0.0",           # YAML config files
+
+    # Logging
+    "structlog>=24.0.0",       # Structured logging
+
+    # CLI
+    "typer>=0.9.0",            # CLI framework
+    "rich>=13.0.0",            # Rich terminal output
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.8.0",
+]
+
+[project.scripts]
+consciousness = "consciousness.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

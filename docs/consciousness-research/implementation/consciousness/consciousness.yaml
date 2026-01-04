@@ -1,0 +1,89 @@
+# =============================================================================
+# CONSCIOUSNESS ORCHESTRATOR CONFIGURATION
+# =============================================================================
+# Autonomous OIDA Loop Implementation
+# Based on: Free Energy Principle + Global Workspace Theory + Strange Loops
+
+# LM Studio (local reasoning engine)
+lm_studio:
+  base_url: "http://localhost:1234/v1"
+  model: "qwen2.5-14b-instruct"  # Recommended for structured output
+  max_tokens: 4096
+  temperature: 0.7
+  context_window: 32768
+  rolling_window: true
+
+# Anthropic API (task execution)
+anthropic:
+  # API key loaded from ANTHROPIC_API_KEY environment variable
+  model: "claude-sonnet-4-20250514"
+  max_tokens: 8192
+
+# Observation settings
+observers:
+  filesystem:
+    watch_paths:
+      - "."
+    ignore_patterns:
+      - ".git"
+      - "__pycache__"
+      - ".venv"
+      - "*.pyc"
+      - ".DS_Store"
+      - "logs/"
+      - "*.db"
+      - "node_modules"
+      - ".claude-flow"
+      - ".hive-mind"
+    debounce_ms: 500
+
+  git:
+    enabled: true
+    check_interval_seconds: 30
+
+  processes:
+    track_claude_code: true
+    track_claude_flow: true
+    check_interval_seconds: 10
+
+# Decision settings
+decision:
+  # ARCH-006: Metacognitive gate threshold
+  min_confidence_to_act: 0.7
+  max_concurrent_tasks: 5
+  thinking_interval_seconds: 5.0
+  dry_run: false
+
+# Task queue
+tasks:
+  max_queue_size: 100
+  default_timeout_seconds: 600
+  retry_attempts: 3
+
+# State persistence
+state:
+  database_path: "./consciousness.db"
+  checkpoint_interval_seconds: 60
+
+# Logging
+logging:
+  level: "INFO"
+  file: "./logs/consciousness.log"
+  format: "json"
+  rotation: "10 MB"
+
+# Global Workspace Theory configuration (ARCH-004)
+global_workspace:
+  capacity: 7  # Miller's magical number
+  salience_decay_rate: 0.95
+  broadcast_threshold: 0.5
+
+# Metacognitive controller configuration
+metacognitive:
+  self_model_levels:
+    - "computational"   # What I'm processing
+    - "relational"      # How I relate to environment
+    - "introspective"   # My internal states
+    - "narrative"       # My story/identity
+  reflection_trigger_threshold: 0.3
+  confidence_calibration_enabled: true
