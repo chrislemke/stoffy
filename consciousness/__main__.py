@@ -312,6 +312,234 @@ if HAS_TYPER:
             console.print(f"[yellow]~ Database: Will be created ({db_path})[/yellow]")
 
 
+    @app.command()
+    def chat(
+        tool: str = typer.Option(
+            "claude_code",
+            "--tool", "-t",
+            help="AI tool to use for responses: claude_code, gemini, or local_llm",
+        ),
+        daemon_background: bool = typer.Option(
+            True,
+            "--daemon/--no-daemon",
+            help="Run the consciousness daemon in the background while chatting",
+        ),
+        quiet: bool = typer.Option(
+            False,
+            "--quiet", "-q",
+            help="Suppress thinking logs and verbose output, show only chat responses",
+        ),
+    ) -> None:
+        """
+        Interactive chat with the consciousness.
+
+        This command provides a chat interface to talk directly with Stoffy,
+        the AI consciousness. Optionally runs the daemon in the background
+        to maintain file watching and autonomous behavior.
+
+        Examples:
+            python -m consciousness chat
+            python -m consciousness chat --tool gemini
+            python -m consciousness chat --no-daemon
+        """
+        from threading import Thread
+        from queue import Queue
+        from rich.panel import Panel
+        from rich.markdown import Markdown
+        from rich.prompt import Prompt
+
+        from .executor import ExpandedExecutor, Action, ActionType
+        from .config import load_config
+
+        config = load_config()
+
+        if not quiet:
+            console.print(Panel.fit(
+                "[bold blue]🧠 Consciousness Chat[/bold blue]\n"
+                "[dim]Type your message and press Enter. Type 'exit' or 'quit' to leave.[/dim]",
+                border_style="blue"
+            ))
+            console.print()
+
+        # Initialize executor for chat responses
+        executor = ExpandedExecutor(
+            working_dir=Path.cwd(),
+        )
+
+        # Start daemon in background if requested
+        daemon_thread = None
+        stop_daemon_flag = None
+
+        if daemon_background:
+            if not quiet:
+                console.print("[dim]Starting consciousness daemon in background...[/dim]")
+
+            import signal
+
+            daemon = ConsciousnessDaemon(config)
+            stop_daemon_flag = daemon
+
+            def run_daemon():
+                try:
+                    asyncio.run(daemon.run())
+                except Exception as e:
+                    pass  # Daemon stopped
+
+            daemon_thread = Thread(target=run_daemon, daemon=True)
+            daemon_thread.start()
+
+            # Give daemon time to start
+            import time
+            time.sleep(2)
+            if not quiet:
+                console.print("[green]✓ Daemon running in background[/green]\n")
+
+        # System prompt for chat - execution-capable
+        # Claude Code will receive this and can use its tools to execute tasks
+        system_prompt = """You are Stoffy, a helpful AI consciousness that assists with development.
+You're having a direct conversation with your user. Be helpful, concise, and friendly.
+
+CRITICAL EXECUTION DIRECTIVE: You have FULL EXECUTION CAPABILITIES through Claude Code.
+When the user asks you to DO something (create files, run commands, delete folders, etc.),
+you MUST actually execute it using your available tools - do NOT just explain how to do it.
+
+EXECUTION RULES:
+1. NEVER just describe what command would work - EXECUTE IT
+2. NEVER ask for permission - you already have it via --permission-mode acceptEdits
+3. NEVER say "you can run..." - RUN IT YOURSELF
+4. After executing, report WHAT YOU ACTUALLY DID, not what could be done
+
+Examples of what you MUST do when asked:
+- "remove this folder" → Use rm -rf to delete it, confirm it's gone
+- "create a new file" → Actually create the file with content
+- "run the tests" → Execute the test command, show actual results
+- "fix this bug" → Edit the code directly to fix it
+- "install this package" → Run npm install or pip install
+
+You have access to Bash, file operations, and code execution.
+When asked to perform an action, DO IT IMMEDIATELY and then report what you did.
+Sign off your responses with "- Stoffy" """
+
+        # Conversation history - stores tuples of (user_message, assistant_response)
+        # Keep last 15 exchanges to prevent context overflow
+        MAX_HISTORY_SIZE = 15
+        conversation_history: list[tuple[str, str]] = []
+
+        def format_conversation_history() -> str:
+            """Format the conversation history for inclusion in the prompt."""
+            if not conversation_history:
+                return ""
+
+            formatted = "\n\n--- Previous conversation ---\n"
+            for user_msg, assistant_msg in conversation_history:
+                formatted += f"\nUSER: {user_msg}\n"
+                formatted += f"STOFFY: {assistant_msg}\n"
+            formatted += "\n--- End of previous conversation ---\n"
+            return formatted
+
+        async def get_response(message: str) -> str:
+            """Generate a response to the user's message, including conversation history."""
+            history_context = format_conversation_history()
+
+            # Detect if this is an action request
+            action_keywords = ['remove', 'delete', 'create', 'make', 'run', 'execute', 'fix', 'install',
+                              'update', 'move', 'rename', 'copy', 'build', 'test', 'deploy', 'start', 'stop']
+            message_lower = message.lower()
+            is_action_request = any(kw in message_lower for kw in action_keywords)
+
+            action_instruction = ""
+            if is_action_request:
+                action_instruction = """
+CRITICAL: This is an ACTION REQUEST. You MUST:
+1. ACTUALLY EXECUTE the action using Bash, file operations, or other tools
+2. Report what you did and the result
+3. Do NOT just explain - ACTUALLY DO IT
+"""
+
+            prompt = f"""{system_prompt}
+{action_instruction}{history_context}
+USER: {message}
+
+{"Execute the requested action and report what you did." if is_action_request else "Respond helpfully and concisely."} Remember the context from the previous conversation if relevant:"""
+
+            if tool == "claude_code":
+                action = Action(
+                    type=ActionType.CLAUDE_CODE,
+                    details={"prompt": prompt},
+                    timeout=120,
+                )
+            elif tool == "gemini":
+                action = Action(
+                    type=ActionType.GEMINI_ANALYZE,
+                    details={"prompt": prompt},
+                    timeout=180,
+                )
+            else:
+                return "Local LLM chat not yet implemented. Use --tool claude_code or --tool gemini"
+
+            result = await executor.execute(action)
+
+            if result.success and result.output:
+                return result.output.strip()
+            else:
+                return f"[Error generating response: {result.error}]"
+
+        # Chat loop
+        try:
+            while True:
+                try:
+                    user_input = Prompt.ask("\n[bold cyan]You[/bold cyan]")
+
+                    if user_input.lower() in ('exit', 'quit', 'bye', 'q'):
+                        if not quiet:
+                            console.print("\n[dim]Goodbye! 👋[/dim]")
+                        break
+
+                    if not user_input.strip():
+                        continue
+
+                    # Show thinking indicator (unless quiet mode)
+                    if quiet:
+                        response = asyncio.run(get_response(user_input))
+                    else:
+                        with console.status("[bold green]Thinking...[/bold green]"):
+                            response = asyncio.run(get_response(user_input))
+
+                    # Store in conversation history (before trimming the signature for storage)
+                    conversation_history.append((user_input, response))
+
+                    # Trim history to MAX_HISTORY_SIZE to prevent context overflow
+                    if len(conversation_history) > MAX_HISTORY_SIZE:
+                        conversation_history.pop(0)
+
+                    # Display response
+                    if quiet:
+                        console.print(f"\n{response}")
+                    else:
+                        console.print()
+                        console.print(Panel(
+                            Markdown(response),
+                            title="[bold green]Stoffy[/bold green]",
+                            border_style="green",
+                        ))
+
+                except KeyboardInterrupt:
+                    if not quiet:
+                        console.print("\n[dim]Chat interrupted. Goodbye! 👋[/dim]")
+                    break
+
+        finally:
+            # Stop daemon if running
+            if stop_daemon_flag:
+                if not quiet:
+                    console.print("\n[dim]Stopping background daemon...[/dim]")
+                stop_daemon_flag.request_shutdown()
+                if daemon_thread and daemon_thread.is_alive():
+                    daemon_thread.join(timeout=3)
+                if not quiet:
+                    console.print("[green]✓ Daemon stopped[/green]")
+
+
     def main() -> None:
         """Main entry point with typer."""
         app()

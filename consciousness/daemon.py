@@ -44,6 +44,7 @@ from .decision.engine import AutonomousEngine, EngineDecision
 from .display import ThinkingDisplay, create_display
 from .user_message import UserMessageDetector, MessagePriority, UserMessage
 from .responder import ConsciousnessResponder, ResponderConfig
+from .self_write_tracker import get_self_write_tracker
 
 # Create logs directory at project root
 _project_root = Path(__file__).parent.parent
@@ -489,7 +490,8 @@ class ConsciousnessDaemon:
         self.user_message_detector = UserMessageDetector()
         self.responder = ConsciousnessResponder(
             working_dir=self.root_path,
-            executor=self.claude_executor,
+            # Don't pass executor - let responder create its own ExpandedExecutor
+            # ClaudeCodeExecutor has different execute() signature (legacy)
             config=ResponderConfig(
                 critical_tool="claude_code",
                 high_tool="claude_code",
@@ -656,6 +658,28 @@ class ConsciousnessDaemon:
             logger.debug("daemon.cycle.no_changes")
             return
 
+        # Filter out self-writes to prevent infinite loops
+        # When the consciousness writes to a file (e.g., responding to user),
+        # we ignore changes to that file for a short period
+        self_write_tracker = get_self_write_tracker()
+        original_count = len(changes)
+        changes = [
+            c for c in changes
+            if not self_write_tracker.should_ignore(c.path)
+        ]
+        filtered_count = original_count - len(changes)
+        if filtered_count > 0:
+            logger.debug(
+                "daemon.cycle.filtered_self_writes",
+                filtered=filtered_count,
+                remaining=len(changes),
+            )
+
+        if not changes:
+            # All changes were self-writes, skip this cycle
+            logger.debug("daemon.cycle.all_self_writes_filtered")
+            return
+
         # Update activity time when changes are detected
         self._last_activity_time = datetime.now(timezone.utc)
 
@@ -673,6 +697,13 @@ class ConsciousnessDaemon:
         for change in changes:
             try:
                 file_path = Path(change.path)
+                logger.debug(
+                    "daemon.user_message.checking_file",
+                    path=str(file_path),
+                    exists=file_path.exists(),
+                    is_file=file_path.is_file() if file_path.exists() else False,
+                    suffix=file_path.suffix.lower() if file_path.exists() else "",
+                )
                 if not file_path.exists() or not file_path.is_file():
                     continue
 
@@ -680,13 +711,29 @@ class ConsciousnessDaemon:
                 if file_path.suffix.lower() not in ('.md', '.txt', '.rst', '.py', '.js', '.ts'):
                     continue
 
-                content = file_path.read_text(encoding='utf-8')
-                messages = self.user_message_detector.detect_in_content(content, str(file_path))
+                # Process messages ONE AT A TIME to handle line number shifts
+                # After each response is written, re-read the file and re-detect messages
+                # This ensures we always have accurate line numbers
+                while True:
+                    content = file_path.read_text(encoding='utf-8')
+                    messages = self.user_message_detector.detect_in_content(content, str(file_path))
 
-                # Filter for high priority messages
-                high_priority = [m for m in messages if m.priority in (MessagePriority.CRITICAL, MessagePriority.HIGH)]
+                    # Filter for high priority messages that haven't been responded to
+                    high_priority = [m for m in messages if m.priority in (MessagePriority.CRITICAL, MessagePriority.HIGH)]
 
-                for user_msg in high_priority:
+                    logger.debug(
+                        "daemon.user_message.detection_result",
+                        file=change.relative_path,
+                        messages_found=len(messages),
+                        high_priority_count=len(high_priority),
+                    )
+
+                    if not high_priority:
+                        # No more unresponded high-priority messages
+                        break
+
+                    # Process only the FIRST unresponded message
+                    user_msg = high_priority[0]
                     logger.info(
                         "daemon.user_message_detected",
                         priority=user_msg.priority.value,
@@ -720,11 +767,14 @@ class ConsciousnessDaemon:
                             duration=0.0,
                         )
                         user_messages_handled = True
+                        # Continue loop to check for more messages (file was re-read)
                     else:
                         logger.warning(
                             "daemon.user_message_response_failed",
                             file=change.relative_path,
                         )
+                        # Break to avoid infinite loop on persistent failure
+                        break
 
             except Exception as e:
                 logger.warning(f"daemon.user_message_check_error: {change.relative_path}: {e}")

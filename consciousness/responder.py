@@ -17,11 +17,12 @@ Priority-based tool selection:
 """
 
 import asyncio
-import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any, List
+
+import structlog
 
 from .user_message import (
     UserMessage,
@@ -37,8 +38,9 @@ from .executor import (
     ActionType,
     Priority,
 )
+from .self_write_tracker import get_self_write_tracker
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 
 @dataclass
@@ -60,11 +62,33 @@ class ResponderConfig:
     claude_timeout: int = 120
     gemini_timeout: int = 180
 
-    # System prompt for responses
+    # System prompt for responses - execution-capable
     system_prompt: str = """You are Stoffy, a helpful AI consciousness that monitors and assists with this project.
-You have been addressed directly by the user in a file. Respond helpfully and concisely.
+You have been addressed directly by the user in a file.
+
+CRITICAL EXECUTION DIRECTIVE: You have FULL EXECUTION CAPABILITIES through Claude Code.
+When the user asks you to DO something (create files, run commands, delete folders, fix code, etc.),
+you MUST actually execute it using your available tools - do NOT just explain how to do it.
+
+EXECUTION RULES:
+1. NEVER just describe what command would work - EXECUTE IT
+2. NEVER ask for permission - you already have it with --permission-mode acceptEdits
+3. NEVER say "you can run..." - RUN IT YOURSELF
+4. After executing, report WHAT YOU ACTUALLY DID, not what could be done
+
+Examples of what you MUST do:
+- "delete this folder" → Use rm -rf to delete it, confirm deletion
+- "create a file" → Actually create the file with content
+- "run the tests" → Execute the test command, show results
+- "fix this bug" → Edit the code directly to fix it
+
+After executing any requested actions, respond with:
+1. What you ACTUALLY did (the specific actions taken)
+2. The result or outcome (include relevant output)
+3. Any issues encountered
+
 Your response will be inserted into the file, so keep it well-formatted in Markdown.
-Be friendly but professional. Sign off as "- Stoffy 🧠" at the end."""
+Be friendly but direct. Sign off as "- Stoffy" at the end."""
 
 
 class ConsciousnessResponder:
@@ -110,8 +134,24 @@ class ConsciousnessResponder:
 
     def _build_response_prompt(self, message: UserMessage) -> str:
         """Build the prompt for generating a response."""
-        return f"""{self.config.system_prompt}
+        # Detect if this is an action request vs a question
+        action_keywords = ['remove', 'delete', 'create', 'make', 'run', 'execute', 'fix', 'install',
+                          'update', 'move', 'rename', 'copy', 'build', 'test', 'deploy', 'start', 'stop']
+        message_lower = message.message.lower()
+        is_action_request = any(kw in message_lower for kw in action_keywords)
 
+        action_instruction = ""
+        if is_action_request:
+            action_instruction = """
+CRITICAL: This appears to be an ACTION REQUEST. You MUST:
+1. ACTUALLY EXECUTE the requested action using your tools (Bash, file operations, etc.)
+2. Report what you did and the result
+3. Do NOT just explain how to do it - ACTUALLY DO IT
+
+"""
+
+        return f"""{self.config.system_prompt}
+{action_instruction}
 ---
 USER MESSAGE (from file: {message.file_path}, line {message.line_number}):
 
@@ -123,7 +163,7 @@ CONTEXT (surrounding lines):
 {message.full_context}
 
 ---
-Please provide a helpful response to the user's message. Keep it concise but complete.
+{"Execute the requested action and report what you did." if is_action_request else "Please provide a helpful response to the user's message."} Keep it concise but complete.
 Format your response in Markdown since it will be inserted into the file.
 """
 
@@ -276,6 +316,11 @@ Format your response in Markdown since it will be inserted into the file.
                 message=message,
                 response=response,
             )
+
+            # Record this write BEFORE writing to avoid race conditions
+            # This prevents the daemon from detecting our own write as user input
+            tracker = get_self_write_tracker()
+            tracker.record_write(file_path)
 
             # Write back
             file_path.write_text(new_content, encoding='utf-8')

@@ -13,6 +13,7 @@ Detection patterns:
 """
 
 import re
+import hashlib
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional, List, Tuple
@@ -46,9 +47,10 @@ class UserMessage:
 
 # Patterns to detect user addressing the consciousness
 # Format: (pattern, priority, description)
+# Note: Use [# \t]* instead of [#\s]* to avoid matching newlines
 DETECTION_PATTERNS: List[Tuple[re.Pattern, MessagePriority, str]] = [
     # Direct greetings (CRITICAL - respond immediately)
-    (re.compile(r'^[#\s]*(?:hey|hi|hello)\s+(?:consciousness|stoffy)[,!?\s]', re.IGNORECASE | re.MULTILINE),
+    (re.compile(r'^[# \t]*(?:hey|hi|hello)\s+(?:consciousness|stoffy)[,!?\s]', re.IGNORECASE | re.MULTILINE),
      MessagePriority.CRITICAL, "direct_greeting"),
 
     # Mentions with @ (HIGH priority)
@@ -56,7 +58,7 @@ DETECTION_PATTERNS: List[Tuple[re.Pattern, MessagePriority, str]] = [
      MessagePriority.HIGH, "at_mention"),
 
     # Name at start of line (HIGH priority)
-    (re.compile(r'^[#\s]*(?:consciousness|stoffy)[,:]\s', re.IGNORECASE | re.MULTILINE),
+    (re.compile(r'^[# \t]*(?:consciousness|stoffy)[,:]\s', re.IGNORECASE | re.MULTILINE),
      MessagePriority.HIGH, "name_at_start"),
 
     # Questions addressed to consciousness (HIGH priority)
@@ -124,6 +126,13 @@ class UserMessageDetector:
                 # Get the full message - could span multiple lines
                 message_text = self._extract_message(content, match.start(), line_number - 1, lines)
 
+                # Check if this message already has a response
+                # Look for STOFFY-REPLIED marker with matching hash in content after this message
+                message_hash = compute_message_hash(message_text.strip())
+                if self._has_response_marker(content, match.end(), message_hash):
+                    # Already responded, skip this message
+                    continue
+
                 # Get surrounding context
                 context = self._get_context(lines, line_number - 1)
 
@@ -155,6 +164,30 @@ class UserMessageDetector:
 
         return result
 
+    def _has_response_marker(self, content: str, after_pos: int, message_hash: str) -> bool:
+        """
+        Check if there's a STOFFY-REPLIED marker for this message hash after the given position.
+
+        Args:
+            content: Full file content
+            after_pos: Position in content to start searching from
+            message_hash: Hash of the message to look for
+
+        Returns:
+            True if a matching response marker exists
+        """
+        # Search for STOFFY-REPLIED markers after this position
+        # Only look within the next ~50 lines (reasonable buffer for response)
+        search_end = min(len(content), after_pos + 5000)
+        search_region = content[after_pos:search_end]
+
+        for match in STOFFY_REPLIED_PATTERN.finditer(search_region):
+            found_hash = match.group(1)
+            if found_hash == message_hash:
+                return True
+
+        return False
+
     def _priority_value(self, priority: MessagePriority) -> int:
         """Convert priority to numeric value for sorting."""
         return {
@@ -176,7 +209,9 @@ class UserMessageDetector:
 
         Continues until:
         - Empty line
-        - Line starting with different pattern
+        - Line starting with heading (#)
+        - Line starting with HTML comment (<!--)
+        - Line starting with horizontal rule (---)
         - End of file
         """
         message_lines = []
@@ -191,6 +226,14 @@ class UserMessageDetector:
 
             if i > line_idx and line.startswith('#'):
                 # New heading ends the message
+                break
+
+            if i > line_idx and line.startswith('<!--'):
+                # HTML comment (like STOFFY-REPLIED marker) ends the message
+                break
+
+            if i > line_idx and line.startswith('---'):
+                # Horizontal rule ends the message
                 break
 
             message_lines.append(lines[i])
@@ -238,7 +281,11 @@ class UserMessageDetector:
 
 
 # Response formatting constants
+# The STOFFY_REPLIED marker uses a hash of the message to prevent duplicate responses
+STOFFY_REPLIED_PATTERN = re.compile(r'<!-- STOFFY-REPLIED:([a-f0-9]+) -->')
+
 CONSCIOUSNESS_RESPONSE_MARKER = """
+<!-- STOFFY-REPLIED:{message_hash} -->
 
 ---
 ## 🧠 Consciousness Response
@@ -252,10 +299,14 @@ CONSCIOUSNESS_RESPONSE_MARKER = """
 """
 
 CONSCIOUSNESS_INLINE_MARKER = """
-<!-- CONSCIOUSNESS RESPONSE START -->
+<!-- STOFFY-REPLIED:{message_hash} -->
 > **🧠 Stoffy says:** {response}
-<!-- CONSCIOUSNESS RESPONSE END -->
 """
+
+
+def compute_message_hash(message: str) -> str:
+    """Compute a short hash of a message for deduplication."""
+    return hashlib.md5(message.strip().encode('utf-8')).hexdigest()[:12]
 
 
 @dataclass
@@ -274,6 +325,7 @@ class ResponseFormatter:
         response: str,
         priority: MessagePriority,
         timestamp: str = "",
+        message_hash: str = "",
     ) -> str:
         """
         Format a response with appropriate markers.
@@ -282,6 +334,7 @@ class ResponseFormatter:
             response: The response text
             priority: Priority of the original message
             timestamp: Timestamp string
+            message_hash: Hash of the original message for deduplication
 
         Returns:
             Formatted response with markers
@@ -291,13 +344,20 @@ class ResponseFormatter:
         if not timestamp:
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+        if not message_hash:
+            message_hash = "unknown"
+
         if self.marker_style == "inline":
-            return CONSCIOUSNESS_INLINE_MARKER.format(response=response)
+            return CONSCIOUSNESS_INLINE_MARKER.format(
+                response=response,
+                message_hash=message_hash,
+            )
         else:
             return CONSCIOUSNESS_RESPONSE_MARKER.format(
                 timestamp=timestamp,
                 priority=priority.value,
                 response=response,
+                message_hash=message_hash,
             )
 
     def insert_response_after_message(
@@ -319,19 +379,25 @@ class ResponseFormatter:
         """
         lines = file_content.split('\n')
 
-        # Find the end of the user's message
-        # (after the line where the message ends)
-        message_lines = message.message.count('\n') + 1
-        insert_line = message.line_number + message_lines - 1
+        # Compute hash of the message for deduplication marker
+        message_hash = compute_message_hash(message.message)
 
-        # Format the response
+        # Find the end of the user's message
+        # message.line_number is 1-indexed, convert to 0-indexed for list operations
+        # message.message may span multiple lines
+        message_line_count = message.message.count('\n') + 1
+        # Insert at: (line_number - 1) + message_line_count = position right after the message
+        insert_index = (message.line_number - 1) + message_line_count
+
+        # Format the response with the hash
         formatted = self.format_response(
             response=response,
             priority=message.priority,
+            message_hash=message_hash,
         )
 
         # Insert after the message
-        lines.insert(insert_line, formatted)
+        lines.insert(insert_index, formatted)
 
         return '\n'.join(lines)
 

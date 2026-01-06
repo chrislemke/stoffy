@@ -1064,7 +1064,9 @@ class ExpandedExecutor:
             )
 
         # Build command
-        cmd = [self.claude_path, "--print"]
+        # Use --permission-mode acceptEdits to allow Claude Code to execute commands
+        # without prompting for permission (essential for autonomous operation)
+        cmd = [self.claude_path, "--print", "--permission-mode", "acceptEdits"]
 
         if output_format:
             cmd.extend(["--output-format", output_format])
