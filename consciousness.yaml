@@ -70,3 +70,30 @@ loop:
   tick_interval_seconds: 1.0
   idle_threshold_seconds: 30
   max_consecutive_errors: 5
+
+# Fallback system configuration
+# Enables graceful degradation when LM Studio is unavailable
+fallback:
+  # Mode settings
+  enabled: true                    # Whether fallback system is active
+  prefer_lm_studio: true           # Prefer LM Studio when available
+  check_interval_seconds: 30.0     # How often to check primary availability
+
+  # LM Studio settings (overrides for fallback context)
+  lm_studio_url: "http://localhost:1234/v1"
+  lm_studio_timeout: 5.0           # Quick timeout for availability checks
+  lm_studio_retry_count: 2         # Retries before switching to fallback
+
+  # Gemini consciousness settings
+  gemini_model: "gemini-1.5-flash" # Model for consciousness mode
+  gemini_timeout: 30.0             # Timeout for Gemini API calls
+  gemini_enabled: true             # Whether Gemini fallback is available
+
+  # Claude Code settings
+  claude_timeout: 120.0            # Timeout for Claude Code operations
+  auto_execute_threshold: 0.8      # Confidence threshold for auto-execution
+
+  # Behavior settings
+  show_mode_changes: true          # Display notifications when mode changes
+  log_consciousness_thoughts: false # Log internal reasoning
+  sign_off: "- Stoffy"             # Signature for consciousness-mode responses

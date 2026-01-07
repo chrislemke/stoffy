@@ -112,6 +112,39 @@ class LoopConfig(BaseModel):
     max_consecutive_errors: int = 5
 
 
+class FallbackConfig(BaseModel):
+    """Configuration for the fallback system.
+
+    The fallback system provides graceful degradation when the primary
+    LM Studio backend is unavailable, switching to Gemini consciousness
+    mode or Claude Code integration.
+    """
+
+    # Mode settings
+    enabled: bool = True  # Whether fallback system is active
+    prefer_lm_studio: bool = True  # Prefer LM Studio when available
+    check_interval_seconds: float = 30.0  # How often to check primary availability
+
+    # LM Studio settings (overrides for fallback context)
+    lm_studio_url: str = "http://localhost:1234/v1"
+    lm_studio_timeout: float = 5.0  # Quick timeout for availability checks
+    lm_studio_retry_count: int = 2  # Retries before switching to fallback
+
+    # Gemini consciousness settings
+    gemini_model: str = "gemini-1.5-flash"  # Model for consciousness mode
+    gemini_timeout: float = 30.0  # Timeout for Gemini API calls
+    gemini_enabled: bool = True  # Whether Gemini fallback is available
+
+    # Claude Code settings
+    claude_timeout: float = 120.0  # Timeout for Claude Code operations
+    auto_execute_threshold: float = 0.8  # Confidence threshold for auto-execution
+
+    # Behavior settings
+    show_mode_changes: bool = True  # Display notifications when mode changes
+    log_consciousness_thoughts: bool = False  # Log internal reasoning
+    sign_off: str = "- Stoffy"  # Signature for consciousness-mode responses
+
+
 class ConsciousnessConfig(BaseSettings):
     """Root configuration for the Consciousness daemon."""
 
@@ -128,6 +161,7 @@ class ConsciousnessConfig(BaseSettings):
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     loop: LoopConfig = Field(default_factory=LoopConfig)
     display: DisplayConfig = Field(default_factory=DisplayConfig)
+    fallback: FallbackConfig = Field(default_factory=FallbackConfig)
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> "ConsciousnessConfig":
@@ -176,3 +210,21 @@ def load_config(config_path: str | Path | None = None) -> ConsciousnessConfig:
         return ConsciousnessConfig.from_yaml(config_path)
 
     return ConsciousnessConfig()
+
+
+def load_fallback_config(config_path: str | Path | None = None) -> FallbackConfig:
+    """Load fallback configuration from file or defaults.
+
+    This is a convenience function that loads just the fallback portion
+    of the configuration, useful for components that only need fallback
+    settings without the full consciousness config.
+
+    Args:
+        config_path: Path to YAML config file. If None, searches for
+                     consciousness.yaml in standard locations.
+
+    Returns:
+        Loaded fallback configuration object.
+    """
+    full_config = load_config(config_path)
+    return full_config.fallback

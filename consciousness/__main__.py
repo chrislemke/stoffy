@@ -29,6 +29,16 @@ if HAS_TYPER:
     )
     console = Console()
 
+    CONSCIOUSNESS_BANNER = """[bold cyan]
+    ╭─────────────────────────────╮
+    │   ◉ ─── ◉ ─── ◉ ─── ◉     │
+    │   │ ╲   │ ╱   │ ╲   │     │
+    │   ◉ ─── ◉ ─── ◉ ─── ◉     │
+    │   │ ╱   │ ╲   │ ╱   │     │
+    │   ◉ ─── ◉ ─── ◉ ─── ◉     │
+    │       S T O F F Y         │
+    ╰─────────────────────────────╯[/bold cyan]"""
+
     @app.command()
     def run(
         config_path: Optional[Path] = typer.Option(
@@ -329,6 +339,16 @@ if HAS_TYPER:
             "--quiet", "-q",
             help="Suppress thinking logs and verbose output, show only chat responses",
         ),
+        fallback: bool = typer.Option(
+            True,
+            "--fallback/--no-fallback",
+            help="Enable automatic fallback to Claude+Gemini when LM Studio is unavailable",
+        ),
+        mode: Optional[str] = typer.Option(
+            None,
+            "--mode", "-m",
+            help="Force a specific mode: 'primary' (LM Studio) or 'fallback' (Claude+Gemini). Overrides --fallback.",
+        ),
     ) -> None:
         """
         Interactive chat with the consciousness.
@@ -337,10 +357,20 @@ if HAS_TYPER:
         the AI consciousness. Optionally runs the daemon in the background
         to maintain file watching and autonomous behavior.
 
+        FALLBACK MODE:
+        When --fallback is enabled (default), the system automatically detects
+        if LM Studio is available:
+        - If available: Uses LM Studio for thinking (PRIMARY mode)
+        - If unavailable: Uses Claude Code + Gemini (FALLBACK mode)
+
+        Use --mode to force a specific mode regardless of LM Studio availability.
+
         Examples:
             python -m consciousness chat
             python -m consciousness chat --tool gemini
             python -m consciousness chat --no-daemon
+            python -m consciousness chat --mode fallback
+            python -m consciousness chat --no-fallback
         """
         from threading import Thread
         from queue import Queue
@@ -350,12 +380,30 @@ if HAS_TYPER:
 
         from .executor import ExpandedExecutor, Action, ActionType
         from .config import load_config
+        from .fallback import FallbackRouter, create_fallback_router
 
         config = load_config()
 
+        # Initialize fallback router
+        # Determine force_mode from CLI options
+        force_mode = mode  # None, "primary", or "fallback"
+
+        async def init_router():
+            return await create_fallback_router(
+                config=config,
+                force_mode=force_mode,
+                fallback_enabled=fallback,
+            )
+
+        router = asyncio.run(init_router())
+
         if not quiet:
+            console.print(CONSCIOUSNESS_BANNER)
+            # Build status panel with mode indicator
+            mode_status = router.get_status_display()
             console.print(Panel.fit(
-                "[bold blue]🧠 Consciousness Chat[/bold blue]\n"
+                "[bold blue]Consciousness Chat[/bold blue]\n"
+                f"{mode_status}\n"
                 "[dim]Type your message and press Enter. Type 'exit' or 'quit' to leave.[/dim]",
                 border_style="blue"
             ))
@@ -392,7 +440,7 @@ if HAS_TYPER:
             import time
             time.sleep(2)
             if not quiet:
-                console.print("[green]✓ Daemon running in background[/green]\n")
+                console.print("[green]Daemon running in background[/green]\n")
 
         # System prompt for chat - execution-capable
         # Claude Code will receive this and can use its tools to execute tasks
@@ -437,9 +485,16 @@ Sign off your responses with "- Stoffy" """
             formatted += "\n--- End of previous conversation ---\n"
             return formatted
 
-        async def get_response(message: str) -> str:
-            """Generate a response to the user's message, including conversation history."""
+        async def get_response(message: str) -> tuple[str, bool]:
+            """
+            Generate a response to the user's message, including conversation history.
+
+            Returns:
+                Tuple of (response_text, mode_changed) where mode_changed indicates
+                if the router switched modes during this request.
+            """
             history_context = format_conversation_history()
+            old_mode = router.status.mode
 
             # Detect if this is an action request
             action_keywords = ['remove', 'delete', 'create', 'make', 'run', 'execute', 'fix', 'install',
@@ -456,6 +511,19 @@ CRITICAL: This is an ACTION REQUEST. You MUST:
 3. Do NOT just explain - ACTUALLY DO IT
 """
 
+            # Use fallback router if enabled, otherwise use direct tool selection
+            if fallback:
+                response = await router.get_response(
+                    message=message,
+                    executor=executor,
+                    system_prompt=system_prompt,
+                    conversation_history=history_context,
+                    action_instruction=action_instruction,
+                )
+                mode_changed = router.status.mode != old_mode
+                return response, mode_changed
+
+            # Direct tool selection (fallback disabled)
             prompt = f"""{system_prompt}
 {action_instruction}{history_context}
 USER: {message}
@@ -475,14 +543,14 @@ USER: {message}
                     timeout=180,
                 )
             else:
-                return "Local LLM chat not yet implemented. Use --tool claude_code or --tool gemini"
+                return ("Local LLM chat not yet implemented. Use --tool claude_code or --tool gemini", False)
 
             result = await executor.execute(action)
 
             if result.success and result.output:
-                return result.output.strip()
+                return (result.output.strip(), False)
             else:
-                return f"[Error generating response: {result.error}]"
+                return (f"[Error generating response: {result.error}]", False)
 
         # Chat loop
         try:
@@ -492,7 +560,7 @@ USER: {message}
 
                     if user_input.lower() in ('exit', 'quit', 'bye', 'q'):
                         if not quiet:
-                            console.print("\n[dim]Goodbye! 👋[/dim]")
+                            console.print("\n[dim]Goodbye![/dim]")
                         break
 
                     if not user_input.strip():
@@ -500,10 +568,14 @@ USER: {message}
 
                     # Show thinking indicator (unless quiet mode)
                     if quiet:
-                        response = asyncio.run(get_response(user_input))
+                        response, mode_changed = asyncio.run(get_response(user_input))
                     else:
                         with console.status("[bold green]Thinking...[/bold green]"):
-                            response = asyncio.run(get_response(user_input))
+                            response, mode_changed = asyncio.run(get_response(user_input))
+
+                    # Notify if mode changed during request
+                    if mode_changed and not quiet:
+                        console.print(f"[yellow][Mode switched: {router.status.mode_display}][/yellow]")
 
                     # Store in conversation history (before trimming the signature for storage)
                     conversation_history.append((user_input, response))
@@ -516,16 +588,21 @@ USER: {message}
                     if quiet:
                         console.print(f"\n{response}")
                     else:
+                        # Show mode indicator in panel title
+                        mode_indicator = ""
+                        if router.status.is_fallback:
+                            mode_indicator = " [yellow](FALLBACK)[/yellow]"
+
                         console.print()
                         console.print(Panel(
                             Markdown(response),
-                            title="[bold green]Stoffy[/bold green]",
+                            title=f"[bold green]Stoffy[/bold green]{mode_indicator}",
                             border_style="green",
                         ))
 
                 except KeyboardInterrupt:
                     if not quiet:
-                        console.print("\n[dim]Chat interrupted. Goodbye! 👋[/dim]")
+                        console.print("\n[dim]Chat interrupted. Goodbye![/dim]")
                     break
 
         finally:

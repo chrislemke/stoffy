@@ -156,6 +156,62 @@ from .learning.integration import (
     LearningConfig,
 )
 
+# Gemini Consciousness exports
+from .gemini_consciousness import (
+    GeminiConsciousness,
+    ConsciousnessThought,
+    quick_contemplate,
+)
+
+# Autonomous Executor with Consciousness exports
+from .autonomous_executor import (
+    AutonomousExecutorWithConsciousness,
+    ExecutionResponse,
+    process_user_message,
+    think_then_act,
+)
+
+# Task intent exports
+from .task_intent import (
+    IntentType,
+    Urgency,
+    TaskIntent,
+    IntentClassifier,
+    classify_intent,
+    is_task_request,
+    extract_entities_from_message,
+)
+
+# Fallback router exports
+from .fallback_router import (
+    FallbackRouter,
+    FallbackMode,
+    FallbackConfig,
+    LMStudioDetector,
+    LMStudioStatus,
+    create_router,
+    route_thinking,
+)
+
+# Consciousness forwarder exports
+from .consciousness_forwarder import (
+    ConsciousnessForwarder,
+    ConsciousnessGuidance,
+    QuestionType,
+    ForwarderConfig,
+    GuidanceCache,
+    ask_consciousness,
+    get_quick_guidance,
+)
+
+# Fallback System exports (complete integration)
+from .fallback_system import (
+    FallbackSystem,
+    FallbackSystemConfig,
+    FallbackResponse,
+    create_fallback_system,
+)
+
 __all__ = [
     # Version
     "__version__",
@@ -240,4 +296,42 @@ __all__ = [
     "Suggestion",
     "LearningIntegration",
     "LearningConfig",
+    # Gemini Consciousness
+    "GeminiConsciousness",
+    "ConsciousnessThought",
+    "quick_contemplate",
+    # Autonomous Executor with Consciousness
+    "AutonomousExecutorWithConsciousness",
+    "ExecutionResponse",
+    "process_user_message",
+    "think_then_act",
+    # Task Intent
+    "IntentType",
+    "Urgency",
+    "TaskIntent",
+    "IntentClassifier",
+    "classify_intent",
+    "is_task_request",
+    "extract_entities_from_message",
+    # Fallback Router
+    "FallbackRouter",
+    "FallbackMode",
+    "FallbackConfig",
+    "LMStudioDetector",
+    "LMStudioStatus",
+    "create_router",
+    "route_thinking",
+    # Consciousness Forwarder
+    "ConsciousnessForwarder",
+    "ConsciousnessGuidance",
+    "QuestionType",
+    "ForwarderConfig",
+    "GuidanceCache",
+    "ask_consciousness",
+    "get_quick_guidance",
+    # Fallback System (complete integration)
+    "FallbackSystem",
+    "FallbackSystemConfig",
+    "FallbackResponse",
+    "create_fallback_system",
 ]
